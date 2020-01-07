@@ -126,6 +126,6 @@ percorsoFile varchar(50) not null,
 primary key(percorsoFile),
 id int,
 foreign key (id) references articolo(id)
-on update cascade
+on update cascade,
 on delete cascade,
 );
