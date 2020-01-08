@@ -1,0 +1,35 @@
+@charset "ISO-8859-1";
+
+#logo
+{
+	width:150px;
+	cursor: pointer;
+	float:left;
+}
+
+#navigazione
+{
+	float: left;
+    position: absolute;
+    width: 100%;
+    margin: 0 auto;
+    left: 30%;
+    top: 5%;
+}
+
+#subNav
+{
+	float: left;
+    position: relative;
+    top: 30px;
+    left: 30px;
+}
+
+.buttonNav
+{
+	margin-left: 10px;
+    border-radius: 10px;
+    background: #363636;
+    color: white;
+    border-color: #363636
+}

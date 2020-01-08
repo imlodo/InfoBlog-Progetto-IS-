@@ -1,6 +1,6 @@
 package model.bean;
 
-public class Utente 
+public class Autore 
 {
 	private String email;
 	private String password;
@@ -8,11 +8,12 @@ public class Utente
 	private String cognome;
 	private String username;
 	
-	public Utente()
+	public Autore()
 	{
 		
 	}
-	public Utente(String email, String password, String nome, String cognome, String username) 
+	
+	public Autore(String email, String password, String nome, String cognome, String username) 
 	{
 		this.email = email;
 		this.password = password;
@@ -76,6 +77,5 @@ public class Utente
 				", nome = " + nome + ", cognome = " + cognome + ", username = " + username + "]";
 		
 	}
-	
 	
 }
