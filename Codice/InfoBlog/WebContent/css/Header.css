@@ -1,35 +1,482 @@
 @charset "ISO-8859-1";
 
+body
+{
+	margin: 5px 0px 0px 0px;
+}
+
 #logo
 {
 	width:150px;
 	cursor: pointer;
-	float:left;
+
 }
 
-#navigazione
+.itemButton
 {
-	float: left;
-    position: absolute;
-    width: 100%;
-    margin: 0 auto;
-    left: 30%;
-    top: 5%;
-}
-
-#subNav
-{
-	float: left;
-    position: relative;
-    top: 30px;
-    left: 30px;
-}
-
-.buttonNav
-{
+	margin-top: 6px;
 	margin-left: 10px;
-    border-radius: 10px;
+    border-radius: 21px;
     background: #363636;
     color: white;
-    border-color: #363636
+    border-color: #363636;
+    font-size: 15px;
+}
+
+.container 
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0;
+}
+.fixLogo 
+{
+  order:0;
+  border-radius: 100%;
+  color: #beddef;
+}
+.item 
+{
+  color: #111;
+  text-decoration: none;
+  font-family: sans-serif;
+  margin-top: 6px;
+  margin-left: 10px;
+}
+.item:nth-of-type(n+4)
+ {
+  order: 2;
+}
+
+ /* Menu guest CSS */
+.menuBar 
+{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0;
+    background: #FF9800;
+    padding: 6px 0px 10px 0px;
+}
+
+.itemMenu
+{
+  color: white;
+  text-decoration: none;
+  font-family: sans-serif;
+  margin-top: 6px;
+  margin-left: 10px;
+}
+.itemMenu:nth-of-type(n+4)
+ {
+  order: 2;
+}
+
+.searchBarGuest
+{
+	width: 80%;
+    font-family: sans-serif;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    margin-top: 2px;
+}
+.searchButtonGuest
+{
+	margin-left: -4px;
+    padding: 5px;
+    width: 5%;
+    border: none;
+    background: #03A9F4;
+    color: white;
+	
+}
+.formRicercaGuest
+{
+	width:80%;
+    margin-left: 10px;
+}
+.selectBar
+{
+	padding: 4.8px;
+    margin-left: -13px;
+    border: none;
+    background: #dfdede;
+    margin-top: 4px;
+}
+
+/* Menu utente CSS*/
+.menuBarUtente 
+{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0;
+    background: #FF9800;
+    padding: 6px 0px 10px 0px;
+}
+
+.itemMenuUtente 
+{
+ 	color: white;
+    text-decoration: none;
+    font-family: sans-serif;
+    margin-top: 6px;
+    margin-left: 0px;
+    width: 15%;
+    text-align: center;
+}
+.itemMenuUtente :nth-of-type(n+4)
+ {
+  order: 2;
+}
+
+.searchBarUtente 
+{
+	width: 60%;
+    font-family: sans-serif;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    margin-top: 2px;
+}
+.searchButtonUtente 
+{
+	margin-left: -4px;
+    padding: 5px;
+    width: 10%;
+    border: none;
+    background: #03A9F4;
+    color: white;
+    text-align: center;
+	
+}
+.formRicercaUtente 
+{
+	width: 40%;
+    margin-left: 10px;
+}
+.messageIcon
+{
+	width:30px;
+}
+.selectBarUtente
+{
+	padding: 4.8px;
+    margin-left: -13px;
+    border: none;
+    background: #dfdede;
+    margin-top: 4px;
+}
+
+/* Menu autore CSS*/
+.menuBarAutore
+{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0;
+    background: #FF9800;
+    padding: 6px 0px 10px 0px;
+}
+
+.itemMenuAutore 
+{
+ 	color: white;
+    text-decoration: none;
+    font-family: sans-serif;
+    margin-top: 6px;
+    margin-left: 10px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 15px;
+}
+.itemMenuAutoreIcon
+{
+   	margin-top: 6px;
+    margin-left: 10px;
+    text-align: center;
+    margin-right: 5px;
+    text-decoration: none;
+}
+.itemMenuAutore :nth-of-type(n+4)
+ {
+  order: 2;
+}
+
+.searchBarAutore
+{
+	width: 45%;
+    font-family: sans-serif;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    margin-top: 2px;
+    font-size: 13px;
+}
+.searchButtonAutore
+{
+	margin-left: -4px;
+    padding: 5px;
+    width: 7%;
+    border: none;
+    background: #03A9F4;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+.formRicercaAutore 
+{
+	text-align: center;
+    background: #ff9800;
+    padding-bottom: 15px;
+}
+.messageIconAutore
+{
+	width:27px;
+}
+.notificaIconAutore
+{
+	width:40px;
+}
+.selectBarAutore
+{
+	padding: 4.4px;
+    margin-left: -13px;
+    border: none;
+    background: #dfdede;
+    margin-top: 2px;
+    font-size: 13px;
+}
+.numeroNotifiche
+{
+	background-color: white;
+    font-size: 11px;
+    position: relative;
+    padding: 4px;
+    bottom: 9px;
+    right: 24px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+/* Menu moderatore CSS*/
+.menuBarModeratore
+{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0;
+    background: #FF9800;
+    padding: 6px 0px 10px 0px;
+}
+
+.itemMenuModeratore
+{
+ 	color: white;
+    text-decoration: none;
+    font-family: sans-serif;
+    margin-top: 6px;
+    margin-left: 10px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 15px;
+}
+.itemMenuModeratoreIcon
+{
+   	margin-top: 6px;
+    margin-left: 10px;
+    text-align: center;
+    margin-right: 5px;
+    text-decoration: none;
+}
+.itemMenuModeratore :nth-of-type(n+4)
+ {
+  order: 2;
+}
+
+.searchBarModeratore
+{
+	width: 45%;
+    font-family: sans-serif;
+    border-radius: 10px;
+    border: none;
+    padding: 5px;
+    margin-top: 2px;
+    font-size: 13px;
+}
+.searchButtonModeratore
+{
+	margin-left: -4px;
+    padding: 5px;
+    width: 7%;
+    border: none;
+    background: #03A9F4;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+.formRicercaModeratore
+{
+	text-align: center;
+    background: #ff9800;
+    padding-bottom: 15px;
+}
+.messageIconModeratore
+{
+	width:27px;
+}
+.notificaIconModeratore
+{
+	width:40px;
+}
+.selectBarModeratore
+{
+	padding: 4.4px;
+    margin-left: -13px;
+    border: none;
+    background: #dfdede;
+    margin-top: 2px;
+    font-size: 13px;
+}
+
+/* MediaQuery */
+@media all and (max-width: 800px)
+ {
+	 .container 
+	 {
+	   flex-direction: column;
+	   align-items: stretch;
+	  }
+	  .fixLogo {
+	    order: 0;
+	    text-align: center;
+	    width: 100px;
+	    margin: auto;
+	  }
+	  .item {
+	    text-align: center;
+	    margin-top: 0px;
+	    margin-left: 0px;
+	    margin-bottom:5px;
+	  }
+	  .itemButton
+	  {
+		margin-top: 0px;
+	    margin-left: 0px;
+	    background: #363636;
+	    color: white;
+	    border:none;
+	    font-size: 15px;
+	    border-radius:0px;
+	    padding: 8px;
+	    margin-bottom:5px;
+	  }
+	  
+	  /* Menu guest CSS */
+	  .menuBar 
+	  {
+	    flex-direction: column;
+	    align-items: center;
+	  }
+	  .itemMenu {
+	    text-align: center;
+	    margin-top: 5px;
+	    margin-left: 0px;
+	    margin-bottom: 5px;
+	  }
+	  .searchBarGuest
+	  {
+	 	width: 65%;
+	  }
+	 .searchButtonGuest
+	  {
+	    width: 10%;
+	  }
+	 .selectBar
+	 {
+		padding: 4.8px;
+		margin-top:7px;
+	 }
+	 
+	 /* Menu utente CSS */
+	 .menuBarUtente 
+	  {
+	    flex-direction: column;
+	    align-items: center;
+	  }
+	  .itemMenuUtente {
+	    text-align: center;
+	    margin-top: 5px;
+	    margin-left: 0px;
+	    margin-bottom: 5px;
+	    width:auto;
+	  }
+	  .formRicercaUtente
+	  {
+	  	width: 100%;
+    	text-align: center;
+	  	margin-left:0px;
+	  	padding-bottom:8px;
+	  }
+	  .searchBarGuest
+	  {
+	 	width: 65%;
+	  }
+	 .searchButtonGuest
+	  {
+	    width: 10%;
+	  }
+	 .selectBarUtente
+	 {
+		padding: 4.8px;
+		margin-top:8px;
+	 }
+	 
+	 /* Menu autore CSS */
+	 .menuBarAutore
+	  {
+	    flex-direction: column;
+	    align-items: center;
+	  }
+	  .numeroNotifiche
+	  {
+    	right: 22px;
+    	bottom: 10px;
+	  }
+	  .searchBarAutore
+	  {
+	 	width: 65%;
+	  }
+	 .searchButtonAutore
+	  {
+	    width: 10%;
+	  }
+	 .selectBarAutore
+	 {
+		padding: 4.8px;
+		margin-top:7px;
+	 }
+	 
+	 /* Menu moderatore CSS */
+	 .menuBarModeratore
+	  {
+	    flex-direction: column;
+	    align-items: center;
+	  }
+	  .searchBarModeratore
+	  {
+	 	width: 65%;
+	  }
+	 .searchButtonModeratore
+	  {
+	    width: 10%;
+	  }
+	 .selectBarModeratore
+	 {
+		padding: 4.8px;
+		margin-top:8px;
+	 }
 }
