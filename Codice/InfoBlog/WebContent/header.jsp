@@ -100,14 +100,14 @@
   				<label class="numeroNotifiche">0</label>
   			</a>
 			</div>
-			<form class = "formRicercaAutore" action="RicercaControl" method="post">
+			<!-- <form class = "formRicercaAutore" action="RicercaControl" method="post">
   				<input type="text" class="searchBarAutore" placeholder="Search..">
   				<select class="selectBarAutore">
   					<option value="autore">Autore</option>
   					<option value="articolo">Articolo</option>
   				</select>
   				<button type="submit" class="searchButtonAutore"><i class="fa fa-search"></i></button>
-  			</form>
+  			</form> -->
 	<%
 			}
 			if(email.substring(0, 1).equals("m"))
@@ -123,14 +123,14 @@
   				<label class="numeroNotifiche">0</label>
   			</a>
 			</div>
-			<form class = "formRicercaModeratore" action="RicercaControl" method="post">
+			<!-- <form class = "formRicercaModeratore" action="RicercaControl" method="post">
   				<input type="text" class="searchBarModeratore" placeholder="Search..">
   				<select class="selectBarModeratore">
   					<option value="autore">Autore</option>
   					<option value="articolo">Articolo</option>
   				</select>
   				<button type="submit" class="searchButtonModeratore"><i class="fa fa-search"></i></button>
-  			</form>
+  			</form> -->
 	<%
 						
 			}
