@@ -6,7 +6,9 @@ La piattaforma “InfoBlog” intende fornire agli utenti del web servizi per fa
 
 # Il team
 0512105076 Siano Federico
+<br>
 0512105328 Lodato Antonio	
+<br>
 0512105548 Lauro Francesco
 
 
