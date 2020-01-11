@@ -14,6 +14,8 @@ La piattaforma “InfoBlog” intende fornire agli utenti del web servizi per fa
 
 # Come utilizzare il progetto
 Clonare la repository.
+<br>
 Importare la cartella Infoblog come progetto java dynamic web project.
+<br>
 Importare il file su MySQL presente al seguente link: https://github.com/lodo744/InfoBlog-Progetto-IS-/tree/master/Codice/DB/ddlInfoBlog.sql e avviarlo per ottenere il db in locale.
 <br><b>Compilare ed avviare</b>
