@@ -1,8 +1,6 @@
 package control;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,54 +23,7 @@ import utils.Utils;
  */
 @WebServlet("/LoginControl")
 public class LoginControl extends HttpServlet 
-{
-	private static boolean controlTypeUser(String text)
-	{
-		if(text == null)
-		{
-			return false;
-		}
-		switch(text)
-		{
-		case "Utente": return true;
-		case "Autore": return true;
-		case "Moderatore": return true;
-		default: return false;
-		}
-	}
-	private static boolean controlPassword(String text)
-	{	
-		if(text == null)
-		{
-			return false;
-		}
-		String regexp = "([\\wA-Z\\d]*(\\w|[A-Z]|\\d)[!%]*).{1,64}$";
-		// in javascript vanno inserite tra /regexrp/ in java NO
-		Pattern pt = Pattern.compile(regexp);
-		Matcher mt = pt.matcher(text);
-		boolean resultmatch = mt.matches();	
-		return resultmatch;
-	}
-
-	private static boolean checkEmail(String text)
-	{
-		if(text == null)
-		{
-			return false;
-		}
-		String regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-		// in javascript vanno inserite tra /regexrp/ in java NO
-
-		Pattern pt = Pattern.compile(regexp);
-		Matcher mt = pt.matcher(text);
-
-		boolean resultmatch = mt.matches();
-
-		return resultmatch;
-
-	}
-	
-	
+{	
 
 	private static final long serialVersionUID = 1L;
 
@@ -122,10 +73,10 @@ public class LoginControl extends HttpServlet
 		String password = request.getParameter("password");
 		String typeUser = request.getParameter("typeUser");
 //		System.out.println("email: " + email + " password: " + password + " tipo utente: " + typeUser);
-		if(!controlPassword(password) || !checkEmail(email) || !controlTypeUser(typeUser))
+		if(!Utils.controlPassword(password) || !Utils.checkEmail(email) || !Utils.controlTypeUser(typeUser))
 		{
 			//Se era giusto il tipo utente lo setto.
-			if(controlTypeUser(typeUser))
+			if(Utils.controlTypeUser(typeUser))
 			{
 				request.setAttribute("checked", typeUser+"Check");
 			}

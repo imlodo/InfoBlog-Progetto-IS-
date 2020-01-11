@@ -5,19 +5,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
 	<title> LOGIN UTENTE</title>
-	<link rel="stylesheet" href="css/Login.css">
 	<script type="text/javascript" src="javascript/jquery-3.4.1.min.js"></script>
-	</head>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
 <body>
-	<form name="formLogin" action="LoginControl" method="post">
-		<a href="homepage.jsp">
-			<img id="logo" src="icone/logo.svg">
-		</a>
-		<br>
-		<label>Login Panel</label>
+
+		
+		<div class="limiter">
+		<div class="container-login100">
+			<div class="login100-more" style="background-image: url('icone/logo.svg');cursor:pointer" onclick="location.href='/InfoBlog/'">
+			</div>
+
+			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
+				<form class="login100-form validate-form" action="LoginControl" method="post">
+					<span class="login100-form-title p-b-20">
+						Login Panel
+					</span>
+
 		<%
 			String utenteLog = (String) request.getAttribute("UtenteLog");
 			String autoreLog = (String) request.getAttribute("AutoreLog");
@@ -26,7 +54,6 @@
 			{
 				String email = (utenteLog != null) ? utenteLog : ((autoreLog != null) ? autoreLog : moderatoreLog);
 		%>
-				<br>
 				<label class="errorLabel">Sei già loggato, la tua email è: <%=email%></label>	
 		<%
 			}
@@ -38,7 +65,6 @@
 					if(error.equals("DATI_ERRATI"))
 					{
 		%>
-						<br>
 						<label class="errorLabel">Email o password errata, riprova!</label>
 		<%
 					}
@@ -46,20 +72,28 @@
 				}
 			}
 		%>
-		<br>
-		<input type='text' name='email' placeholder="Email" value='' autocomplete='off' required>
-		<br>
-		<input type='password' name='password' placeholder="Password" required>
-		<br> 
+			<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+						<span class="label-input100" >Email</span>
+						<input class="input100" type="text" name="email" placeholder="Inserisci Email" required>
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+						<span class="label-input100">Password</span>
+						<input class="input100" type="password" name="password" placeholder="*************" required>
+						<span class="focus-input100"></span>
+					</div>
 		<%
 			String checked = (String) request.getAttribute("checked");
 			if(checked == null)
 			{
 						
 		%>
-			<input type="radio" name="typeUser" value="Utente" checked>Utente
-			<input type="radio" name="typeUser" value="Autore">Autore
-			<input type="radio" name="typeUser" value="Moderatore">Moderatore
+			<div class="radioGroup">
+				<input type="radio" name="typeUser" value="Utente" checked><label>Utente</label>
+				<input type="radio" name="typeUser" value="Autore"><label>Autore</label>
+				<input type="radio" name="typeUser" value="Moderatore"><label>Moderatore</label>
+			</div>
 		<%
 			}
 			else
@@ -68,28 +102,33 @@
 				{
 					case "UtenteCheck":
 					{
-		%>
-						<input type="radio" name="typeUser" value="Utente" checked>Utente
-						<input type="radio" name="typeUser" value="Autore">Autore
-						<input type="radio" name="typeUser" value="Moderatore">Moderatore	
+		%>				<div class="radioGroup">
+							<input type="radio" name="typeUser" value="Utente" checked><label>Utente</label>
+							<input type="radio" name="typeUser" value="Autore"><label>Autore</label>
+							<input type="radio" name="typeUser" value="Moderatore"><label>Moderatore</label>
+						</div>
 		<%				
 					}break;
 							
 					case "AutoreCheck":
 					{
 		%>
-						<input type="radio" name="typeUser" value="Utente">Utente
-						<input type="radio" name="typeUser" value="Autore" checked>Autore
-						<input type="radio" name="typeUser" value="Moderatore">Moderatore
+						<div class="radioGroup">
+							<input type="radio" name="typeUser" value="Utente"><label>Utente</label>
+							<input type="radio" name="typeUser" value="Autore" checked><label>Autore</label>
+							<input type="radio" name="typeUser" value="Moderatore"><label>Moderatore</label>
+						</div>
 		<%				
 					}break;
 							
 					case "ModeratoreCheck":
 					{
 		%>
-						<input type="radio" name="typeUser" value="Utente">Utente
-						<input type="radio" name="typeUser" value="Autore">Autore
-						<input type="radio" name="typeUser" value="Moderatore" checked>Moderatore
+						<div class="radioGroup">
+							<input type="radio" name="typeUser" value="Utente"><label>Utente</label>
+							<input type="radio" name="typeUser" value="Autore"><label>Autore</label>
+							<input type="radio" name="typeUser" value="Moderatore"checked><label>Moderatore</label>
+						</div>
 		<% 
 					}break;
 							
@@ -97,17 +136,48 @@
 					{
 								
 		%>
-						<input type="radio" name="typeUser" value="Utente" checked>Utente
-						<input type="radio" name="typeUser" value="Autore">Autore
-						<input type="radio" name="typeUser" value="Moderatore">Moderatore
+						<div class="radioGroup">
+							<input type="radio" name="typeUser" value="Utente" checked><label>Utente</label>
+							<input type="radio" name="typeUser" value="Autore"><label>Autore</label>
+							<input type="radio" name="typeUser" value="Moderatore"><label>Moderatore</label>
+						</div>
 		<%
 					}break;
 							
 				}
 			}
 		%>
-		<br>
-		<input type='submit' value='Accedi'>
-	</form>
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn">
+								Login
+							</button>
+						</div>
+					</div>
+					<a href="/InfoBlog/" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+						<i class="fa fa-long-arrow-left m-l-5" aria-hidden="true"></i>
+						Homepage
+						</a>
+						<a href="/InfoBlog/registrazione.jsp" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+							Registrati
+							<i class="fa fa-long-arrow-right m-l-5"></i>
+						</a>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!--===============================================================================================-->	
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+
+	<script src="javascript/main.js"></script>
 </body>
 </html>
