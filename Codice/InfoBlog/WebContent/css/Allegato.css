@@ -1,0 +1,56 @@
+@charset "ISO-8859-1";
+
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+
+*{
+	font-family: 'Roboto', sans-serif;
+}
+#allegatoBlock{
+	border-style: solid;
+	background-color:#B0B0B0;
+	-moz-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+	-webkit-box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+	box-shadow: 5px 5px 5px rgba(68,68,68,0.6);
+}
+
+#listaAllegati{
+	margin-bottom:3%;
+	paddin-top:4%;
+	padding-top:2%;
+	height: 100px;
+  	overflow-y: scroll;
+}
+
+.item{
+	float:left;
+	text-align:center;
+	padding-right:30px;
+}
+
+.item:focus {
+    outline: 1px solid blue;
+}
+
+.item:hover{
+	background-color: MediumSeaGreen;
+}
+
+.immagine{
+	border-radius:40%;
+	width:50px;
+	height:30px;
+	padding-right:10px;	
+}
+
+.nome{
+	text-align:bottom;
+}
+
+#deleteAllegato{
+	display:inline;
+}
+
+#form{
+	display:inline;
+	margin-right:5%;
+}

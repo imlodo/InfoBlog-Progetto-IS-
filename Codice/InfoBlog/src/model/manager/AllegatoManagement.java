@@ -74,7 +74,7 @@ public class AllegatoManagement implements ItemModel<Allegato, String>{
 
         Collection<Allegato> allegati = new ArrayList<Allegato>();
 
-        String selectSQL = "SELECT * FROM " + AllegatoManagement.TABLE_NAME+ "WHERE id=?";
+        String selectSQL = "SELECT * FROM " + AllegatoManagement.TABLE_NAME+ " WHERE id= ?";
         
         try{
             connection = driver.getConnection();

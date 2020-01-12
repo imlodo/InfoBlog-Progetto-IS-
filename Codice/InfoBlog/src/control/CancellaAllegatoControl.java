@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import model.bean.Allegato;
 import model.manager.AllegatoManagement;
 import storage.DriverManagerConnectionPool;
@@ -27,23 +29,36 @@ public class CancellaAllegatoControl extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//String pathAllegato=request.getParameter("path");
-		
 		DriverManagerConnectionPool dm=new DriverManagerConnectionPool();
 		AllegatoManagement manAll=new AllegatoManagement(dm);
 		
 		try {
-			Allegato allegato=new Allegato();
-			allegato.setPercorsoFile("C:\\Users\\Federico\\Desktop\\allegati\\03.Integration and System Testing.pdf");
+			Allegato allegato=new Allegato(getServletContext().getInitParameter("allegati")+"\\"+request.getParameter("path"),
+					Integer.parseInt(request.getParameter("id")));
+			
+			System.out.println("Path da cancellare: "+allegato.getPercorsoFile());
 			
 			File file=new File(allegato.getPercorsoFile());
-			file.delete();
 			
-			manAll.doDelete(allegato);
+			Gson gson=new Gson();
+			
+			response.setContentType("application/json");
+			
+			if(file.delete()) {
+				System.out.println("cancellato"+file.getAbsolutePath());
+				String result=gson.toJson("si");
+				response.getWriter().print(result);
+				manAll.doDelete(allegato);
+				System.out.println(result);
+			}
+			else {
+				System.out.println("non cancellato"+file.getAbsolutePath());
+				String result=gson.toJson("no");
+				response.getWriter().print(result);
+			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-	    response.sendRedirect(request.getContextPath()+"/index.html");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

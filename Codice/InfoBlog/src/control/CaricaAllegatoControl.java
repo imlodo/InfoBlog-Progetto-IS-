@@ -7,7 +7,6 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.google.gson.Gson;
 
 import model.bean.Allegato;
 import model.manager.AllegatoManagement;
@@ -52,13 +50,7 @@ public class CaricaAllegatoControl extends HttpServlet {
 	    try {
 	    	Allegato nuovoAll=new Allegato();
 	    	nuovoAll.setPercorsoFile(new File(uploadsDir,fileName).toString());
-	    
-	    	//ArrayList<Allegato> allegati=(ArrayList<Allegato>) allMan.doRetrieveAll("percorsoFile");
-	    	
-	    	//Gson gson=new Gson();
-	    	//String jsonAllegati=gson.toJson(allegati);
-	    	
-	    	//response.getWriter().write(jsonAllegati);
+	    	nuovoAll.setId(Integer.parseInt(request.getParameter("id")));
 	    	
 			allMan.doSave(nuovoAll);
 		
@@ -69,11 +61,12 @@ public class CaricaAllegatoControl extends HttpServlet {
 		    
 		    InputStream fileContent=fileAllegato.getInputStream();
 		    Files.copy(fileContent, new File(uploadsDir,fileName).toPath());
-			
+			response.sendRedirect(response.encodeURL(request.getContextPath()+"/caricaAllegato.jsp"));
+
 	    } catch (SQLException | FileAlreadyExistsException e) {
 			e.printStackTrace();
-		}
-	    response.sendRedirect(request.getContextPath()+"/index.html");
+		}	
+	    
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -20,11 +20,12 @@ public class Allegato implements Serializable{
 		
 	}
 	/**
-	 * Costrutture di allegato che prende la path del file come parametro
+	 * Costrutture di allegato che prende la path del file e l'id dell'articolo come parametro
 	 * @param path String, path del file
 	 */
-	public Allegato(String path) {
+	public Allegato(String path,int id) {
 		this.percorsoFile=path;
+		this.id=id;
 	}
 	/**
 	 * Restituisce il path del allegato a cui è associato

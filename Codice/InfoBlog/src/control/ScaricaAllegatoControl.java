@@ -35,7 +35,7 @@ public class ScaricaAllegatoControl extends HttpServlet {
 		AllegatoManagement allMan=new AllegatoManagement(dm);
 		
 		try {
-			Allegato allegato=allMan.doRetrieveByKey("C:\\Users\\Federico\\Desktop\\allegati\\03.Integration and System Testing.pdf");
+			Allegato allegato=allMan.doRetrieveByKey(getServletContext().getInitParameter("allegati")+"\\"+request.getParameter("path"));
 			File file=new File(allegato.getPercorsoFile());
 			
 			response.setContentType("application/octet-stream");
