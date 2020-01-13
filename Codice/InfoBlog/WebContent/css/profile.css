@@ -1,0 +1,57 @@
+@charset "ISO-8859-1";
+
+*
+{
+	font-family: sans-serif;
+}
+
+#logo
+{
+	width:200px;
+	cursor:pointer;
+}
+.container
+{
+	/* Per centrare al centro della pagina */
+	width: 30%;
+    height: auto;
+    margin: 0 auto;
+    text-align:center;
+    padding-top: 10px;
+}
+
+.topTitle
+{
+	font-size:24px;
+	font-weight: bold;
+	margin-bottom:10px;
+}
+
+.data
+{
+	background: #f1f1f1;
+	padding:10px;	
+	text-align: left;
+}
+
+.titleTopData
+{
+	font-size:20px;
+	text-align:center;
+}
+
+.button
+{
+	background: buttonface;
+    border-width: 2px;
+    border-style: outset;
+    border-color: buttonface;
+    border-image: initial;
+    font-size:16px;
+        margin-left: 5px;
+    margin-right: 5px;
+}
+.fixButton
+{
+	text-align:center;
+}
