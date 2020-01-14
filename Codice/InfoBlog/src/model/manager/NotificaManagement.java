@@ -35,7 +35,7 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
 		String selectSQL="SELECT * FROM "+ NotificaManagement.TABLE_NAME +" WHERE id= ?";
 		
 		try {
-			connection=driver.getConnection();
+			connection=(Connection)driver.getConnection();
 			preparedStatement=connection.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, id);
 			
@@ -77,7 +77,7 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
 
         ResultSet resultSet = null;
 
-        Collection<Notifica> notifiche = new ArrayList<Notifica>();
+        ArrayList<Notifica> notifiche = new ArrayList<Notifica>();
 
         String selectSQL = "SELECT * FROM " + NotificaManagement.TABLE_NAME;
         
@@ -85,7 +85,7 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
             selectSQL+=" ORDER BY " + order;
         }
         try{
-            connection = driver.getConnection();
+            connection = (Connection)driver.getConnection();
             preparedStatement = connection.prepareStatement(selectSQL);
             resultSet = preparedStatement.executeQuery();
             
@@ -129,7 +129,7 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
 		String insertSQL=" INSERT INTO "+ NotificaManagement.TABLE_NAME +
 				" (contenuto, id, stato, autore, moderatore) VALUES (?,?,?,?,?)";
 		try{
-			connection=driver.getConnection();
+			connection=(Connection)driver.getConnection();
 			preparedStatement =  connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, notifica.getContenuto());
 			preparedStatement.setInt(2, notifica.getId());
@@ -196,7 +196,7 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
 		String deleteSQL="DELETE FROM " + NotificaManagement.TABLE_NAME + " WHERE id= ?";
 
 		try{
-			connection = driver.getConnection();
+			connection = (Connection)driver.getConnection();
 			preparedStatement = connection.prepareStatement(deleteSQL);
 			preparedStatement.setInt(1,notifica.getId());
 
@@ -225,7 +225,7 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
 			connection=(Connection)driver.getConnection();
 			prepSt=connection.prepareStatement(update);
 
-			prepSt.setString(1,Stato.LETTO.toString());
+			prepSt.setString(1,Stato.letto.toString());
 			prepSt.setInt(2, id);
 			
 			prepSt.executeUpdate();
@@ -238,5 +238,40 @@ public class NotificaManagement implements ItemModel<Notifica, Integer> {
 				driver.releaseConnection(connection);
 			}
 		}
+	}
+	public Collection<Notifica> doRetrieveByEmail(String email) throws SQLException{
+		PreparedStatement prepSt=null;
+		Connection connection=null;
+		ResultSet resultSet = null;
+		ArrayList<Notifica> notifiche = new ArrayList<Notifica>();
+		
+		String selectSQL="SELECT * FROM "+ NotificaManagement.TABLE_NAME +" WHERE autore=? OR moderatore=?";
+		try {
+			connection = driver.getConnection();
+			prepSt = connection.prepareStatement(selectSQL);
+			prepSt.setString(1, email);
+			prepSt.setString(2, email);
+            resultSet = prepSt.executeQuery();
+
+            while(resultSet.next()) {
+				Notifica notifica=new Notifica();
+	        	
+	        	notifica.setId(resultSet.getInt("id"));
+				notifica.setContenuto(resultSet.getString("contenuto"));
+				notifica.setStato(Stato.valueOf(resultSet.getString("stato")));
+				notifica.setAutoreEmail(resultSet.getString("moderatore"));
+				notifica.setModeratoreEmail(resultSet.getString("autore"));
+				
+				notifiche.add(notifica);
+            }
+		}finally {
+			try {
+				if (prepSt != null)
+					prepSt.close();
+			}finally{
+				driver.releaseConnection(connection);
+			}
+		}
+		return notifiche;
 	}
 }
