@@ -91,7 +91,7 @@
   				</select>
   				<button type="submit" class="searchButtonUtente"><i class="fa fa-search"></i></button>
   			</form>
-  			<a href="#" class="itemMenu"><img class="messageIcon" src="icone/iconaNessunMessaggio.svg" onclick=""></a>
+  			<a href="Chat" class="itemMenu"><img class="messageIcon" src="icone/iconaNessunMessaggio.svg" onclick=""></a>
 			</div>
 	<%
 			}
@@ -105,7 +105,7 @@
   			<a href="areapubblicazioni.jsp" class="itemMenuAutore">AreaPubblicazioni</a>
   			<a href="richiestapubblicazione.jsp" class="itemMenuAutore">PubblicaArticolo</a>
   			<a href="organizzaevento.jsp" class="itemMenuAutore">OrganizzaEvento</a>
-  			<a href="#" class="itemMenuAutoreIcon"><img class="messageIconAutore" src="icone/iconaNessunMessaggio.svg" onclick=""></a>
+  			<a href="Chat" class="itemMenuAutoreIcon"><img class="messageIconAutore" src="icone/iconaNessunMessaggio.svg" onclick=""></a>
   			<a href="#" class="itemMenuAutoreIcon" id="itemNotifiche">
   				<img class="notificaIconAutore" src="icone/iconNotifica.svg">
   				<label class="numeroNotifiche">0</label>
@@ -163,3 +163,52 @@
 	<%		
 		}
 	%>
+	
+	
+<script>
+if(document.getElementById("mailAutore")!=null)
+{
+	var email=$("#mailAutore").val();
+	
+	$.ajax({
+		url: 'verificaMessaggi',
+		type: 'GET',
+		dataType: 'json',
+		data: {
+			email: email,
+			tipologia: "risposta",
+		},
+		success: function (data)
+		{
+			if(data=="true")
+				$(".messageIconAutore").attr("src","icone/mail.svg")
+			else
+				$(".messageIconAutore").attr("src","icone/iconaNessunMessaggio.svg")
+		}
+	});
+}
+else
+	if(document.getElementById("mailUtente")!=null)
+	{
+		var email=$("#mailUtente").val();
+		
+		$.ajax({
+			url: 'verificaMessaggi',
+			type: 'GET',
+			dataType: 'json',
+			data: {
+				email: email,
+				tipologia: "messaggio",
+			},
+			success: function (data)
+			{
+				if(data=="true")
+					$(".messageIcon").attr("src","icone/mail.svg")
+				else
+					$(".messageIcon").attr("src","icone/iconaNessunMessaggio.svg")
+			}
+		});
+	}
+	
+</script>
+

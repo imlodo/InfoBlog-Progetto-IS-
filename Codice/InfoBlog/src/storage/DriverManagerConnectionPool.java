@@ -28,7 +28,7 @@ public class DriverManagerConnectionPool  {
 		String url = "jdbc:mysql://localhost:3306/InfoBlog?useSSL=false&serverTimezone=UTC&requireSSL=false&allowPublicKeyRetrieval=true";
 		
 
-		newConnection = DriverManager.getConnection(url,"dbUser","InfoBlog");
+		newConnection = DriverManager.getConnection(url,"root","toor");
 
 		newConnection.setAutoCommit(false);
 		return newConnection;
