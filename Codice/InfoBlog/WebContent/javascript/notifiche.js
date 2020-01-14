@@ -19,6 +19,9 @@ $(document).ready(function(){
 			else{
 				$("#itemNotifiche").append("<ul id='lista'/>");
 				$.post("/InfoBlog/PrelevaNotificheControl",{e_mail:email},function(jsons){
+					if(jsons.length==0){
+						$("#lista").append("<div style='display:flex; color:black; border-style:solid; border-width:thin;'>Non ci sono notifiche...</div>");
+					}
 					for(var i=0;i<jsons.length;i++){
 						$("#lista").append("<li id='notifica"+i+"' class='item'/>")
 						if(jsons[i].stato==="letto"){
