@@ -71,15 +71,16 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 		ArrayList<Articolo> articles=new ArrayList<Articolo>();
 
 		if(order.indexOf("a:")!=-1)
-			query+=" WHERE autore=?";
+			query+=" WHERE scrittore=?";
 		else
 			if(order.indexOf("m:")!=-1)
 				query+=" WHERE categoria=? AND stato=\"daPubblicare\"";
 			else
 				if(order.indexOf("u:")!=-1)
 					query+=" WHERE stato=\"pubblicato\"";
-				else
+				else 
 					query+=" WHERE stato=\"pubblicato\" ORDER BY dataPubblicazione DESC";
+
 		try 
 		{
 			conn=forConnection.getConnection();
@@ -187,6 +188,30 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 	@Override
 	public boolean doDelete(Articolo item) throws SQLException
 	{
-		return false;
+		String query="DELETE FROM articolo WHERE id=?";
+		Boolean flag=false;
+		
+		try
+		{
+			conn=forConnection.getConnection();
+			statement=conn.prepareStatement(query);
+
+			statement.setInt(1,item.getId());
+			flag=statement.executeUpdate()>0;
+			conn.commit();
+		}
+		finally
+		{
+			try
+			{
+				if(statement!=null)
+					statement.close();
+			}
+			finally
+			{
+				forConnection.releaseConnection(conn);
+			}
+		}
+		return flag;
 	}
 }
