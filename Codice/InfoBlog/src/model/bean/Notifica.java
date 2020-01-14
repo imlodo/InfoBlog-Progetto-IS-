@@ -3,7 +3,7 @@ package model.bean;
 public class Notifica {
 	private int id;
 	private String contenuto;
-	private Stato stato=Stato.INVIATO; //Default
+	private Stato stato=Stato.inviato; //Default
 	private String emailAutore;
 	private String emailModeratore;
 	

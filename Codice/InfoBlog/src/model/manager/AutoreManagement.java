@@ -227,5 +227,52 @@ public class AutoreManagement implements ItemModel<Autore, String>
 		}
 		return (result == 0 ? false : true);
 	}
+	/**
+	 * Permette di prelevare dal DB tutti gli autori che hanno come sottostringa il parametro text nel proprio username
+	 * @param text String, la sottostringa da controllare
+	 * @return Una Collection di tipo Autore con il suo interno tutti gli autori che hanno la sottostringa text nel proprio username
+	 * @throws SQLException
+	 * @throws AutoreNonPresenteException 
+	 */
+	public Collection<Autore> doRetrieveByUsernameAutore(String text) throws SQLException
+	{
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 
+		Collection<Autore> autori = new ArrayList<Autore>();
+		String selectSQL = "SELECT * FROM autore WHERE username LIKE ?";
+		
+		try
+		{
+			connection = pool.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement.setString(1, "%"+text+"%");
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next())
+			{
+				Autore autore = new Autore();
+				autore.setEmail(rs.getString("email"));
+				autore.setPassword(rs.getString("password"));
+				autore.setNome(rs.getString("nome"));
+				autore.setCognome(rs.getString("cognome"));
+				autore.setUsername(rs.getString("username"));
+				autori.add(autore);
+			}
+		}
+		finally
+		{
+			try
+			{
+				if(preparedStatement != null)
+					preparedStatement.close();
+			}
+			finally
+			{
+				pool.releaseConnection(connection);
+			}
+		}
+		return autori;
+	}
 }

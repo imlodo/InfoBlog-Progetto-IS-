@@ -4,10 +4,21 @@
     pageEncoding="ISO-8859-1"%>
     <link rel="stylesheet" href="css/Header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/notifiche.css">
+    <script type="text/javascript" src="javascript/notifiche.js"></script>
     <%
     	String email = Utils.checkLogin(session, request.getCookies());
     	Cookie[] cookies = request.getCookies();
-		String username = ""; 
+		String username = "";
+		if(email!=null)
+		{
+	%>
+	<script>
+			email='<%=email.substring(1)%>';
+	</script>
+	<%
+
+		}
 	%>
 	<!-- Da qui inizia la navigation -->
 	<div class="container">
@@ -95,8 +106,8 @@
   			<a href="richiestapubblicazione.jsp" class="itemMenuAutore">PubblicaArticolo</a>
   			<a href="organizzaevento.jsp" class="itemMenuAutore">OrganizzaEvento</a>
   			<a href="#" class="itemMenuAutoreIcon"><img class="messageIconAutore" src="icone/iconaNessunMessaggio.svg" onclick=""></a>
-  			<a href="#" class="itemMenuAutoreIcon">
-  				<img class="notificaIconAutore" src="icone/iconNotifica.svg" onclick="">
+  			<a href="#" class="itemMenuAutoreIcon" id="itemNotifiche">
+  				<img class="notificaIconAutore" src="icone/iconNotifica.svg">
   				<label class="numeroNotifiche">0</label>
   			</a>
 			</div>
