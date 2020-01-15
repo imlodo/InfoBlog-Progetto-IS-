@@ -2,10 +2,15 @@ $(document).ready(function(){
 	$.post("/InfoBlog/PrelevaNotificheControl",{e_mail:email},function(jsons){
 		for(var i=0;i<jsons.length;i++){
 			console.log(jsons[i].stato);
+			console.log(caratterePazzo)
 			if(jsons[i].stato==="inviato"){
 				var number = parseInt($(".numeroNotifiche").text(), 10);
 				console.log(number);
 				$(".numeroNotifiche").text(number+1);
+				if(caratterePazzo==="a" && (jsons[i].contenuto.indexOf("Richiesta_pubblicazione_articolo") >= 0)){
+					var number = parseInt($(".numeroNotifiche").text(), 10);
+					$(".numeroNotifiche").text(number-1);
+				}
 				if(number>99)
 					$(".numeroNotifiche").text("99+");
 			}
@@ -24,7 +29,8 @@ $(document).ready(function(){
 						$("#lista").append("<div style='display:flex; color:black; border-style:solid; border-width:thin;'>Non ci sono notifiche...</div>");
 					}
 					for(var i=0;i<jsons.length;i++){
-						if(jsons[i].contenuto.indexOf("Richiesta_pubblicazione_articolo") >= 0){
+						console.log(jsons[i].contenuto)
+						if(jsons[i].contenuto.indexOf("Richiesta_pubblicazione_articolo") < 0){
 							$("#lista").append("<li id='notifica"+i+"' class='item'/>")
 							if(jsons[i].stato==="letto"){
 								$("#notifica"+i+"").append("<div class='stato'><span>(LETTO)</span></div>");
