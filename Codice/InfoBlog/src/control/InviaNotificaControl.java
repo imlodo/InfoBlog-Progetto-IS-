@@ -36,7 +36,7 @@ public class InviaNotificaControl extends HttpServlet {
 			
 			notMan.doSave(notifica);
 			
-		    response.sendRedirect(request.getContextPath()+"/notifica.html");
+		    response.sendRedirect(request.getContextPath()+"/login.jsp");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
