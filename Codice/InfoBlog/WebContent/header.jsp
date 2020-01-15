@@ -129,7 +129,7 @@
   			<a href="profile.jsp" class="itemMenuModeratore">AreaPersonale</a>
   			<a href="modpanel.jsp" class="itemMenuModeratore">PannelloModerazione</a>
   			<a href="areamoderapubblicazione.jsp" class="itemMenuModeratore">SezionePubblicazioni</a>
-  			<a href="#" class="itemMenuModeratoreIcon">
+  			<a href="#" class="itemMenuModeratoreIcon" id="itemNotificheMod">
   				<img class="notificaIconModeratore" src="icone/iconNotifica.svg" onclick="">
   				<label class="numeroNotifiche">0</label>
   			</a>
