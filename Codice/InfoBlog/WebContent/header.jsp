@@ -100,8 +100,8 @@
 	%>
 			<div class="menuBarAutore">
   			<a href="homepage.jsp" class="itemMenuAutore">Homepage</a>
-  			<a href="esplora.jsp" class="itemMenuAutore">Esplora</a>
   			<a href="profile.jsp" class="itemMenuAutore">AreaPersonale</a>
+  			<a href="#" class="itemMenuAutore">AreaEventi</a>
   			<a href="areapubblicazioni.jsp" class="itemMenuAutore">AreaPubblicazioni</a>
   			<a href="richiestapubblicazione.jsp" class="itemMenuAutore">PubblicaArticolo</a>
   			<a href="organizzaevento.jsp" class="itemMenuAutore">OrganizzaEvento</a>

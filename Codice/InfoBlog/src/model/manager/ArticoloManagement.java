@@ -78,8 +78,11 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			else
 				if(order.indexOf("u:")!=-1)
 					query+=" WHERE stato=\"pubblicato\"";
-				else 
-					query+=" WHERE stato=\"pubblicato\" ORDER BY dataPubblicazione DESC";
+				else
+					if(order.indexOf("e:")!=-1)
+						query+=" WHERE stato=\"pubblicato\" ORDER BY dataPubblicazione DESC";
+		
+				
 
 		try 
 		{
