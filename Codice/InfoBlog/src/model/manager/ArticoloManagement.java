@@ -169,7 +169,7 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			statement.setString(3, item.getContenuto());
 			statement.setString(4,String.valueOf(item.getData()));
 			statement.setString(5,item.getStato());
-			statement.setString(6, item.getModeratore().getEmail());
+			statement.setString(5, item.getModeratore().getEmail());
 			statement.setInt(7, item.getId());
 			statement.executeUpdate();
 			conn.commit();
