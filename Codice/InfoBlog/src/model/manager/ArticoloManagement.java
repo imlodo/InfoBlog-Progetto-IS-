@@ -35,7 +35,6 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			AutoreManagement DAOAutore =new AutoreManagement(new DriverManagerConnectionPool());
 			ModeratoreManagement DAOModeratore= new ModeratoreManagement(new DriverManagerConnectionPool());
 
-			String daCancellare="";
 			statement.setInt(1,Integer.parseInt(item_value));
 			set=statement.executeQuery();
 			while(set.next())
