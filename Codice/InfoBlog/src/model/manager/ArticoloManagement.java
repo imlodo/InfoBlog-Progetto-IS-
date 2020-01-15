@@ -33,6 +33,7 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			conn=forConnection.getConnection();
 			statement=conn.prepareStatement(query);
 			AutoreManagement DAOAutore =new AutoreManagement(new DriverManagerConnectionPool());
+			ModeratoreManagement DAOModeratore= new ModeratoreManagement(new DriverManagerConnectionPool());
 
 
 			statement.setInt(1,Integer.parseInt(item_value));
@@ -46,6 +47,9 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 				article.setId(set.getInt("id"));
 				article.setStato(set.getString("stato"));
 				article.setTitolo(set.getString("Titolo"));
+				String moderatore=set.getString("moderatore");
+				if(moderatore!=null)
+					article.setModeratore(DAOModeratore.doRetrieveByKey(moderatore));
 			}
 		}
 		finally
@@ -69,7 +73,8 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 		AutoreManagement DAOAutore =new AutoreManagement(new DriverManagerConnectionPool());
 		String query="SELECT * FROM articolo";
 		ArrayList<Articolo> articles=new ArrayList<Articolo>();
-
+		ModeratoreManagement DAOModeratore= new ModeratoreManagement(new DriverManagerConnectionPool());
+		
 		if(order.indexOf("a:")!=-1)
 			query+=" WHERE scrittore=?";
 		else
@@ -104,6 +109,9 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 				article.setId(set.getInt("id"));
 				article.setStato(set.getString("stato"));
 				article.setTitolo(set.getString("Titolo"));
+				String moderatore=set.getString("moderatore");
+				if(moderatore!=null)
+					article.setModeratore(DAOModeratore.doRetrieveByKey(moderatore));
 				articles.add(article);
 			}
 		}
