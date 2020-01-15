@@ -14,6 +14,7 @@
 		{
 	%>
 	<script>
+			caratterePazzo='<%=email.charAt(0)%>';
 			email='<%=email.substring(1)%>';
 	</script>
 	<%
