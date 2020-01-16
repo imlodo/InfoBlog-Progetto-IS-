@@ -11,9 +11,9 @@ public class Utils
 	public static String checkLogin(HttpSession session, Cookie[] cookies)
 	{
 		boolean trovato = false;
-		String emailUtente="";
-		String emailAutore="";
-		String emailModeratore="";
+		String emailUtente=null;
+		String emailAutore=null;
+		String emailModeratore=null;
 		if(session != null)
 		{	
 			//Cerco nei cookies
@@ -141,6 +141,96 @@ public class Utils
 		Matcher mt = pt.matcher(text);
 		boolean resultmatch = mt.matches();
 		return resultmatch;
+	}
+	
+	public static boolean checkTitolo(String text)
+	{
+		if(text == null)
+			return false;
+		String regexp = "^[A-Za-z]{4,50}$";
+		// in javascript vanno inserite tra /regexrp/ in java NO
+		Pattern pt = Pattern.compile(regexp);
+		Matcher mt = pt.matcher(text);
+		boolean resultmatch = mt.matches();
+		return resultmatch;
+	}
+	
+	public static boolean checkContenuto(String text)
+	{
+		if(text == null)
+			return false;
+		String regexp = "^[a-zA-Z0-9 #.:(),!@&<>'’\\è\\é\\ù\\ò\\\"~;$^%{}?]{200,15000}$";
+		// in javascript vanno inserite tra /regexrp/ in java NO
+		Pattern pt = Pattern.compile(regexp);
+		Matcher mt = pt.matcher(text);
+		boolean resultmatch = mt.matches();
+		return resultmatch;
+	}
+	
+	public static boolean checkCategoria(String text)
+	{
+		if(text == null)
+		{
+			return false;
+		}
+		//controllare se la categoria text fa parte delle categorie prestabilite
+		return true;
+	}
+	public static boolean checkFormato(String text)
+	{
+		String ext = text.substring(text.lastIndexOf(".")+1);
+		if(ext.equals("pdf") || ext.equals("doc") || ext.equals("docx"))
+			return true;
+		return false;
+	}
+	
+	public static boolean checkCommento(String text)
+	{
+		if(text == null)
+		{
+			return false;
+		}
+		String regexp = "^[A-Za-z0-9]{8,300}+$";
+		// in javascript vanno inserite tra /regexrp/ in java NO
+		Pattern pt = Pattern.compile(regexp);
+		Matcher mt = pt.matcher(text);
+		boolean resultmatch = mt.matches();
+		return resultmatch;
+	}
+	
+	public static boolean checkNumeroStelle(String text)
+	{
+		if (text == null) 
+	    {
+	        return false;
+	    }
+	    try 
+	    {
+	        Integer d = Integer.parseInt(text.trim());
+	        if(d.intValue() < 0 || d.intValue() > 5)
+	        	return false;
+	    } 
+	    catch (NumberFormatException nfe) 
+	    {
+	        return false;
+	    }
+	    return true;
+	}
+	public static boolean isNumeric(String strNum) 
+	{
+	    if (strNum == null) 
+	    {
+	        return false;
+	    }
+	    try 
+	    {
+	        Double.parseDouble(strNum.trim());
+	    } 
+	    catch (NumberFormatException nfe) 
+	    {
+	        return false;
+	    }
+	    return true;
 	}
 	
 }

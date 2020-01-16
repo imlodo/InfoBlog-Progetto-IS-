@@ -23,35 +23,35 @@ public class RatingManagement implements ItemModel<Rating,String>
 	@Override
 	public Rating doRetrieveByKey(String item_value) throws SQLException 
 	{
-		String query="SELECT avg(numeroStelle) as stelle FROM rating WHERE id=?";
-		Rating rat=null;
-
-		try
-		{
-			conn=forConnection.getConnection();
-			statement=conn.prepareStatement(query);
-
-			statement.setString(1,item_value);
-			set=statement.executeQuery();
-			while(set.next())
-			{
-				rat=new Rating();
-				rat.setNumeroStelle(Float.parseFloat(set.getString("stelle")));
-			}
-		}
-		finally
-		{
-			try
-			{
-				if(statement!=null)
-					statement.close();
-			}
-			finally
-			{
-				forConnection.releaseConnection(conn);
-			}
-		}
-		return rat;
+		String query="SELECT numeroStelle FROM rating WHERE id=? AND email=?";
+	    Rating rat=null;
+	
+	    try
+	    {
+	        conn=forConnection.getConnection();
+	        statement=conn.prepareStatement(query);
+	        statement.setString(1,item_value.substring(0,item_value.indexOf(' ')));
+	        statement.setString(2,item_value.substring(item_value.indexOf(' ')+1));
+	        set=statement.executeQuery();
+	        while(set.next())
+	        {
+	            rat=new Rating();
+	            rat.setNumeroStelle(Float.parseFloat(set.getString("numeroStelle")));
+	        }
+	    }
+	    finally
+	    {
+	        try
+	        {
+	            if(statement!=null)
+	                statement.close();
+	        }
+	        finally
+	        {
+	            forConnection.releaseConnection(conn);
+	        }
+	    }
+	    return rat;
 	}
 
 	@Override

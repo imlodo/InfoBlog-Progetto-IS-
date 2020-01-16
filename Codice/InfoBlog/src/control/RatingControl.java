@@ -8,23 +8,27 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.bean.Articolo;
-import model.bean.Commento;
+import model.bean.Rating;
 import model.bean.Utente;
-import model.manager.CommentoManagment;
+import model.manager.RatingManagement;
 import storage.DriverManagerConnectionPool;
 import utils.Utils;
 
 /**
- * Servlet implementation class CommentoControl
+ * Servlet implementation class RatingControl
  */
-@WebServlet("/CommentoControl")
-public class CommentoControl extends HttpServlet {
+@WebServlet("/RatingControl")
+public class RatingControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CommentoControl(){super();}
+    public RatingControl() 
+    {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +37,7 @@ public class CommentoControl extends HttpServlet {
 	{
 		String emailSession = Utils.checkLogin(request.getSession(), request.getCookies());
 		RequestDispatcher dispatcher = null;
-		//Controllo se è un utente che sta commentando
+		//Controllo se è un utente che sta facendo il rating
 		if(emailSession == null || !emailSession.substring(0,1).equalsIgnoreCase("u"))
 		{
 			//redirect a notFound
@@ -41,11 +45,12 @@ public class CommentoControl extends HttpServlet {
 			dispatcher.forward(request, response);
 			return;
 		}
+		
 		String idArticolo = request.getParameter("idArticolo");
-		String commento = request.getParameter("commento");
-		if(!Utils.checkCommento(commento))
+		String numeroStelle = request.getParameter("numeroStelle");
+		if(!Utils.checkNumeroStelle(numeroStelle))
 		{
-			request.setAttribute("errore","contenuto mancante");
+			request.setAttribute("errore","numeroStelle errato");
 			dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
 			dispatcher.forward(request, response);
 			return;
@@ -60,38 +65,42 @@ public class CommentoControl extends HttpServlet {
 		}
 		//Qui controllo se il commento esiste, se esiste faccio l'update, altrimenti faccio il save.
 		DriverManagerConnectionPool pool = new DriverManagerConnectionPool();
-		CommentoManagment commentoDM = new CommentoManagment(pool);
+		RatingManagement ratingDM = new RatingManagement(pool);
 		try
 		{
-			Commento test = commentoDM.doRetrieveByKey(idArticolo+" "+emailSession.substring(1));
+			Rating test = ratingDM.doRetrieveByKey(idArticolo+" "+emailSession.substring(1));
 			if(test != null)
 			{
-				if(test.getContenuto().contentEquals(commento))
+				float numeroStelleF = Float.parseFloat(numeroStelle);
+				if(test.getNumeroStelle() == numeroStelleF)
 				{
 					request.setAttribute("errore","nessuna modifica");
 					dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
 					dispatcher.forward(request, response);
 					return;
 				}
-				test.setContenuto(commento);
+				//Faccio l'update
+				test.setNumeroStelle(numeroStelleF);
 				Articolo tmp = new Articolo();
 				tmp.setId(Integer.parseInt(idArticolo));
 				test.setArticolo(tmp);
-				commentoDM.doUpdate(test);
-				request.setAttribute("successo","commento modificato");
+				test.setUtente(new Utente(emailSession.substring(1),"","","",""));
+				ratingDM.doUpdate(test);
+				request.setAttribute("successo","rating modificato");
 				dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
 				dispatcher.forward(request, response);
 			}
 			else
 			{
-				Commento nuovo = new Commento();
+				//Faccio il save
+				Rating nuovo = new Rating();
 				nuovo.setUtente(new Utente(emailSession.substring(1),"","","",""));
-				nuovo.setContenuto(commento);
+				nuovo.setNumeroStelle(Float.parseFloat(numeroStelle));
 				Articolo tmp = new Articolo();
 				tmp.setId(Integer.parseInt(idArticolo));
 				nuovo.setArticolo(tmp);
-				commentoDM.doSave(nuovo);
-				request.setAttribute("successo","commento pubblicato");
+				ratingDM.doSave(nuovo);
+				request.setAttribute("successo","rating inserito");
 				dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
 				dispatcher.forward(request, response);
 			}
@@ -106,7 +115,8 @@ public class CommentoControl extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
