@@ -74,7 +74,7 @@ public class AllegatoManagement implements ItemModel<Allegato, String>{
 
         Collection<Allegato> allegati = new ArrayList<Allegato>();
 
-        String selectSQL = "SELECT * FROM " + AllegatoManagement.TABLE_NAME+ " WHERE id= ?";
+        String selectSQL = "SELECT * FROM " + AllegatoManagement.TABLE_NAME+ " WHERE id=?";
         
         try{
             connection = driver.getConnection();
@@ -197,7 +197,7 @@ public class AllegatoManagement implements ItemModel<Allegato, String>{
 		Connection connection =null;
 		PreparedStatement preparedStatement = null;
 
-		int result  = 0;
+		int result = 0;
 
 		String deleteSQL="DELETE FROM " + AllegatoManagement.TABLE_NAME + " WHERE percorsoFile= ?";
 
