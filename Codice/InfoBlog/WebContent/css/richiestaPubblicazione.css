@@ -1,0 +1,69 @@
+.containerArea
+{
+	width: 70%;
+    height: auto;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 10px;
+    border: 2px solid black;
+    margin-bottom:20px;
+}
+
+.titoloContainer
+{
+	margin-top:10px;
+	margin-bottom:10px;
+	text-align: center;
+    font-size: 20px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.title
+{
+	font-size: 16px;
+    font-family: sans-serif;
+}
+
+.titleError
+{
+	font-size: 16px;
+    font-family: sans-serif;
+    color:red;
+}
+
+.area
+{
+	margin-bottom:15px;
+}
+
+.area input, select
+{
+	width: 95%;
+    text-align: center;
+}
+
+.area textarea
+{
+	width: 95%;
+	height: 300px;
+    text-align: center;
+}
+
+.areaAllegati
+{
+    text-align: center;
+    margin-bottom:10px;
+}
+
+.areaAllegati input
+{
+	border: 2px solid red;
+	width:95%;
+}
+
+.areaSubmit
+{
+	text-align:center;
+	margin-bottom:10px;
+}

@@ -84,8 +84,8 @@
   			<a href="homepage.jsp" class="itemMenuUtente">Homepage</a>
   			<a href="esplora.jsp" class="itemMenuUtente">Esplora</a>
   			<a href="profile.jsp" class="itemMenuUtente">AreaPersonale</a>
-  			<form class = "formRicercaUtente" action="RicercaControl" method="post">
-  				<input type="text" class="searchBarUtente" placeholder="Search..">
+  			<form class = "formRicercaUtente" action="RicercaControl"  method="post">
+  				<input id="myInput" type="text" class="searchBarUtente"  autocomplete="off" placeholder="Search..">
   				<select class="selectBarUtente">
   					<option value="autore">Autore</option>
   					<option value="articolo">Articolo</option>
@@ -153,7 +153,7 @@
 			<div class="menuBar">
   			<a href="homepage.jsp" class="itemMenu">Homepage</a>
   			<form class = "formRicercaGuest" action="RicercaControl" method="post">
-  				<input type="text" class="searchBarGuest" placeholder="Search..">
+  				<input id="myInput" type="text" class="searchBarGuest"  autocomplete="off" placeholder="Search..">
   				<select class="selectBar">
   					<option value="autore">Autore</option>
   					<option value="articolo">Articolo</option>
@@ -164,7 +164,7 @@
 	<%		
 		}
 	%>
-	
+	<div id="suggestMenu"></div>
 	
 <script>
 if(document.getElementById("mailAutore")!=null)
@@ -212,4 +212,13 @@ else
 	}
 	
 </script>
-
+<script type="text/javascript">typeuser = null;</script>
+<%
+	if(email != null)
+	{
+%>
+	<script>typeuser='<%=email.substring(0,1)%>';</script>
+<%
+	}
+%>
+<script type="text/javascript" src="javascript/suggerimento.js"></script>

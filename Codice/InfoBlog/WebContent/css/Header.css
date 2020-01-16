@@ -1,5 +1,28 @@
 @charset "ISO-8859-1";
 
+/*Regole riguardanti il suggerimento*/
+#suggestMenu
+{
+    display: flex;
+    justify-content: left;
+    margin: -10px 210px;
+}
+
+#myInputautocomplete-list
+{
+	background: #dbdbdb;
+    width: 50%;
+    text-align: center;
+    font-family: sans-serif;
+    cursor:pointer;
+    padding: 10px;
+}
+
+#myInputautocomplete-list div
+{
+ border-bottom: 2px solid #787878;
+}
+
 body
 {
 	margin: 5px 0px 0px 0px;

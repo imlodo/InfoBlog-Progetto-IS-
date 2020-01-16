@@ -45,9 +45,9 @@ public class LoginControl extends HttpServlet
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession();
 		//Vedo se è stato effettuato già l'accesso
 		String email = Utils.checkLogin(session, request.getCookies());
 		if(email != null)
@@ -84,6 +84,7 @@ public class LoginControl extends HttpServlet
 			// mandiamo l'errore alla jsp 
 			String url = "login.jsp"; // url della jsp
 			request.setAttribute("errore", "DATI_ERRATI");
+			System.out.println("Errore formato parametri");
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);
 		}
@@ -251,7 +252,10 @@ public class LoginControl extends HttpServlet
 								else
 								{
 									String url = "login.jsp"; // url della jsp
+									System.out.println(request);
 									request.setAttribute("errore", "DATI_ERRATI");
+									System.out.println(request.getAttribute("errore"));
+									System.out.println("SONO QUI");
 									RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 									dispatcher.forward(request, response);
 								}
