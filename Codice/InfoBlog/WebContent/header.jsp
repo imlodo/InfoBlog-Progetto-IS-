@@ -164,7 +164,6 @@
 	<%		
 		}
 	%>
-	<div id="suggestMenu"></div>
 	
 <script>
 if(document.getElementById("mailAutore")!=null)

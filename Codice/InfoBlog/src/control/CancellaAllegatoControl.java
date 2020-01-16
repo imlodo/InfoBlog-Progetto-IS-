@@ -46,7 +46,6 @@ public class CancellaAllegatoControl extends HttpServlet {
 			if(file.delete()) {
 				System.out.println("cancellato"+file.getAbsolutePath());
 				String result=gson.toJson("si");
-				manAll.doDelete(allegato);
 				response.getWriter().print(result);
 				System.out.println(result);
 			}
@@ -55,6 +54,7 @@ public class CancellaAllegatoControl extends HttpServlet {
 				String result=gson.toJson("no");
 				response.getWriter().print(result);
 			}
+			manAll.doDelete(allegato);
 		}catch (SQLException e) {
 			request.setAttribute("errore", e.getMessage());
 		}

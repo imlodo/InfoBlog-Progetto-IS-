@@ -7,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +20,6 @@ import com.google.gson.Gson;
 import model.bean.Allegato;
 import model.manager.AllegatoManagement;
 import storage.DriverManagerConnectionPool;
-import utils.Utils;
 
 /**
  * Servlet implementation class CaricaAllegatoControl
@@ -81,6 +78,7 @@ public class CaricaAllegatoControl extends HttpServlet
 //		{
 		files = (ArrayList<Part>) request.getAttribute("files");
 //		}
+		ArrayList<Allegato> allegatiSave = new ArrayList<Allegato>();
 		int allegatiCaricati = 0;
 		try 
 		{
@@ -100,7 +98,6 @@ public class CaricaAllegatoControl extends HttpServlet
 				    	nuovoAll.setId(Integer.parseInt(idArticolo));
 				    	
 				    	allMan.doSave(nuovoAll);
-					
 						if(!uploadsDir.exists()) {
 					    	uploadsDir.mkdir();
 					    	System.out.println("cartella creata");
@@ -127,7 +124,7 @@ public class CaricaAllegatoControl extends HttpServlet
 						}
 					    InputStream fileContent=el.getInputStream();
 					    Files.copy(fileContent, new File(uploadsDir,fileName).toPath());
-					    
+					    allegatiSave.add(nuovoAll);
 					    allegatiCaricati+=1;
 				  }
 				request.setAttribute("successUpload", allegatiCaricati);
@@ -135,6 +132,39 @@ public class CaricaAllegatoControl extends HttpServlet
 		}
 		catch (SQLException | FileAlreadyExistsException e) 
 	    {
+			//Cancello gli allegati caricati
+			for(Allegato a : allegatiSave)
+			{
+				try
+				{
+					allMan.doDelete(a);
+					File file=new File(a.getPercorsoFile());
+					
+					Gson gson=new Gson();
+					
+					response.setContentType("application/json");
+					
+					if(file.delete()) 
+					{
+						System.out.println("cancellato"+file.getAbsolutePath());
+						String result=gson.toJson("si");
+						response.getWriter().print(result);
+						System.out.println(result);
+						
+					}
+					else {
+						System.out.println("non cancellato"+file.getAbsolutePath());
+						String result=gson.toJson("no");
+						response.getWriter().print(result);
+					}
+				}
+				catch (SQLException e1)
+				{
+					
+					e1.printStackTrace();
+				}
+			}
+			
 			if(e.getClass().getSimpleName().equals(SQLException.class.getSimpleName()))
 				request.setAttribute("errorUpload", "ALLEGATO_PRESENTE");
 			else

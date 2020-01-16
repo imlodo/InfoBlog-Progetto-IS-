@@ -184,8 +184,7 @@ public class ModificaArticoloControl extends HttpServlet {
 					{
 						notificaDM.doSave(notifica);
 						articoloDM.doUpdate(articolo);
-						String url = "modificaArticolo.jsp"; // url della jsp
-						request.setAttribute("success", "MODIFICHE_SUCCESS");
+						String url = "VisualizzaArticoliControl"; // url del control visualizza
 						dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);
 						return;

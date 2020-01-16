@@ -100,7 +100,8 @@
 		<div style="padding-top:1%;">
 			<input id='idArticolo' type="hidden" name="id" value=<%=articolo.getId() %>>
 			<input id="files" type='file' name="files[]" accept="application/pdf,application/msword" multiple required>
-			<input type='button' onclick='checkSubmit()' value='Cancella allegato'/>
+			<br>
+			<label>Seleziona gli allegati da cancellare: </label>
 		</div>
 		<div id="listaAllegati"></div>
 		</div>
