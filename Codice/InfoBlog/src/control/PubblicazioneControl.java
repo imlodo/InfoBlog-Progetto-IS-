@@ -175,53 +175,8 @@ public class PubblicazioneControl extends HttpServlet {
 					dispatcher.forward(request, response);
 					return;
 				}
-				//Moderatore management fare query
 				ModeratoreManagement moderatoreDM = new ModeratoreManagement(pool);
-				ArrayList<Moderatore> moderatori = (ArrayList<Moderatore>) moderatoreDM.doRetrieveAll("categoriaModerazione");
-				moderatori.removeIf(x->{
-					if(x.getCategoria_moderazione().equalsIgnoreCase(categoriaArticolo))
-						return false;
-					return true;
-				});
-				Moderatore mod0 = moderatori.size() > 0 ? moderatori.get(0) : null;
-				Moderatore modRiceventeNotifica = null;
-				if(mod0 != null)
-				{
-					modRiceventeNotifica = mod0;
-					articoli = (ArrayList<Articolo>) articoloDM.doRetrieveAll("");
-					articoli.removeIf(x->{
-						Moderatore m = x.getModeratore();
-						if(m != null)
-						{
-							if(m.getEmail().equals(mod0.getEmail()))
-								return false;
-						}
-						return true;
-					});
-					int numeroArticoli = articoli.size();
-					moderatori.remove(0);
-					//Cerco il moderatore con il numero di articoli moderati per quella categoria più piccolo
-					for(Moderatore mod : moderatori)
-					{
-						articoli = (ArrayList<Articolo>) articoloDM.doRetrieveAll("");
-						articoli.removeIf(x->{
-							Moderatore m = x.getModeratore();
-							if(m != null)
-							{
-								if(m.getEmail().equals(mod0.getEmail()))
-									return false;
-							}
-							return true;
-						});
-						int num = articoli.size();
-						if(num < numeroArticoli)
-						{
-							modRiceventeNotifica = mod;
-							numeroArticoli = num;
-						}
-					}
-				}
-				
+				Moderatore modRiceventeNotifica = Utils.getRiceventeNotifica(moderatoreDM,categoriaArticolo,articoloDM);
 				if(modRiceventeNotifica != null)
 				{
 					Notifica notifica = new Notifica("Richiesta_pubblicazione_articolo",autore.getEmail(), modRiceventeNotifica.getEmail());

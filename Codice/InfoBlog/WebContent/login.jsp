@@ -1,3 +1,4 @@
+<%@page import="utils.Utils"%>
 <%@page import="storage.DriverManagerConnectionPool"%>
 <%@page import="model.manager.UserManagement"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -33,54 +34,59 @@
 <!--===============================================================================================-->
 </head>
 <body>
-
+	
+	<%
+		if(Utils.checkLogin(request.getSession(), request.getCookies()) != null)
+			response.sendRedirect("/InfoBlog/");
+	
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		email = email == null ? "" : email;
+		password = password == null ? "" : password;
+	%>
 		
 		<div class="limiter">
 		<div class="container-login100">
-			<div class="login100-more" style="background-image: url('icone/logo.svg');cursor:pointer" onclick="location.href='/InfoBlog/'">
+			<div class="login100-more">
+			<img id="logo" class='animazione' alt="Logo" src="icone/logo.svg" onclick="location.href='/InfoBlog/'" style="cursor:pointer">
+			<label id="text" class="textDescription"></label>
 			</div>
-
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-72 p-b-50">
-				<form class="login100-form validate-form" action="LoginControl" method="post">
+				<form class="login100-form validate-form" action="LoginControl" method="post" autocomplete="off">
 					<span class="login100-form-title p-b-20">
 						Login Panel
 					</span>
 
 		<%
-			String utenteLog = (String) request.getAttribute("UtenteLog");
-			String autoreLog = (String) request.getAttribute("AutoreLog");
-			String moderatoreLog = (String) request.getAttribute("ModeratoreLog");
-			if(utenteLog != null || autoreLog != null || moderatoreLog != null)
-			{
-				String email = (utenteLog != null) ? utenteLog : ((autoreLog != null) ? autoreLog : moderatoreLog);
-		%>
-				<label class="errorLabel">Sei già loggato, la tua email è: <%=email%></label>	
-		<%
-			}
-			else
-			{
 				String error = (String) request.getAttribute("errore");
 				if(error != null)
 				{
-					if(error.equals("DATI_ERRATI"))
+					switch(error)
 					{
+						case "DATI_ERRATI": 
+						{
 		%>
-						<label class="errorLabel">Email o password errata, riprova!</label>
+							<label class="errorLabel">Email o password errata, riprova!</label>
 		<%
-					}
-					
-				}
-			}
+						}break;
+						case "FORMATO_DATI_ERRATO":
+						{
 		%>
-			<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+							<label class="errorLabel">Il formato di uno o più campi è errato, riprova!</label>
+		<%
+						}break;
+					}
+				}
+		%>
+			<div class="wrap-input100 validate-input" data-validate = "Formato email non valido, example: ex@abc.xyz">
 						<span class="label-input100" >Email</span>
-						<input class="input100" type="text" name="email" placeholder="Inserisci Email" required>
+						<input class="input100" type="text" name="email" placeholder="Inserisci Email" value="<%=email %>" autocomplete="on" required>
 						<span class="focus-input100"></span>
 					</div>
 
-					<div class="wrap-input100 validate-input" data-validate = "Password is required">
+					<div class="wrap-input100 validate-input" data-validate = "Formato Non valido: Lunghezza:(min=8,max=30) Richiesto almeno: un carattere speciale, una lettera maiuscola e sun numero">
 						<span class="label-input100">Password</span>
-						<input class="input100" type="password" name="password" placeholder="*************" required>
+						<input class="input100" type="password" name="password" value="<%=password %>" placeholder="*************" required>
 						<span class="focus-input100"></span>
 					</div>
 		<%
@@ -176,8 +182,10 @@
 <!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
-	<script src="vendor/tilt/tilt.jquery.min.js"></script>
-
+<!--===============================================================================================-->
 	<script src="javascript/main.js"></script>
+	<script>
+	
+	</script>
 </body>
 </html>
