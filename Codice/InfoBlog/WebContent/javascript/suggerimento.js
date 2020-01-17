@@ -180,9 +180,13 @@ $(document).ready(function()
 		          a.appendChild(b);
 		        }
 	    	}
-	    	if($("#myInputautocomplete-list")[0].childElementCount <= 0)
+	    	var x = $("#myInputautocomplete-list")[0];
+	    	if(x != null)
 	    	{
-	    		$("#myInputautocomplete-list").remove();
+	    		if(x.childElementCount <= 0)
+		    	{
+		    		$("#myInputautocomplete-list").remove();
+		    	}
 	    	}
 	      }
 	  });
@@ -228,6 +232,7 @@ $(document).ready(function()
 	    }
 	  }
 	  function closeAllLists(elmnt) {
+		$("#suggestMenu").remove();
 	    /*close all autocomplete lists in the document,
 	    except the one passed as an argument:*/
 	    var x = document.getElementsByClassName("autocomplete-items");
