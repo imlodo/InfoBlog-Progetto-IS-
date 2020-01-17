@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/notifiche.css">
     <script type="text/javascript" src="javascript/notifiche.js"></script>
     <%
-    	String email = Utils.checkLogin(session, request.getCookies());
+    	String email = Utils.checkLogin(request.getSession(), request.getCookies());
     	Cookie[] cookies = request.getCookies();
 		String username = "";
 		if(email!=null)
@@ -84,7 +84,7 @@
   			<a href="homepage.jsp" class="itemMenuUtente">Homepage</a>
   			<a href="ArticleShowServlet?esplora=e" class="itemMenuUtente">Esplora</a>
   			<a href="profile.jsp" class="itemMenuUtente">AreaPersonale</a>
-  			<form class = "formRicercaUtente" action="RicercaControl"  method="post">
+  			<form class = "formRicercaUtente" method="post">
   				<input id="myInput" type="text" class="searchBarUtente"  autocomplete="off" placeholder="Search..">
   				<select class="selectBarUtente">
   					<option value="autore">Autore</option>
@@ -152,7 +152,7 @@
 	%>
 			<div class="menuBar">
   			<a href="homepage.jsp" class="itemMenu">Homepage</a>
-  			<form class = "formRicercaGuest" action="RicercaControl" method="post">
+  			<form class = "formRicercaGuest" method="post">
   				<input id="myInput" type="text" class="searchBarGuest"  autocomplete="off" placeholder="Search..">
   				<select class="selectBar">
   					<option value="autore">Autore</option>

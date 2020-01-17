@@ -31,7 +31,7 @@ $(document).ready(function(){
 					for(var i=0;i<jsons.length;i++){
 						console.log(jsons[i].contenuto)
 						if(jsons[i].contenuto.indexOf("Richiesta_pubblicazione_articolo") < 0){
-							$("#lista").append("<li id='notifica"+i+"' class='item'/>")
+							$("#lista").append("<li id='notifica"+i+"' class='itemx'/>")
 							if(jsons[i].stato==="letto"){
 								$("#notifica"+i+"").append("<div class='stato'><span>(LETTO)</span></div>");
 							}

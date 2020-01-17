@@ -1,0 +1,62 @@
+@charset "ISO-8859-1";
+
+#titolo{
+	font-family: 'Roboto', sans-serif;
+	text-align:center;
+	font-size:30px;
+	margin-top:10px;
+}
+#trovati{
+	font-family: 'Roboto', sans-serif;
+	font-size:28px;
+	padding-left:18px;
+}
+#areaListaDati{
+	list-style:none;
+	display: block;
+	margin:auto;
+}
+#listaRicerca{
+  list-style: none;
+  display:block;
+  padding-top:20px;
+  padding-bottom:20px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+.elemento{
+	display:flex;
+	margin-top:20px;
+	margin-bottom:20px;
+	padding-top:20px;
+	padding-bottom:20px;
+	background-color: silver;
+	border-style: solid;
+    box-shadow: 10px 10px;
+}
+.s-testo{
+	margin-right:10%;
+	margin-left:10%;
+}
+.s-bottone{
+	background-color: BlueViolet; 
+  	border: none;
+  	color: white;
+  	padding: 15px 32px;
+  	text-align: center;
+  	text-decoration: none;
+  	font-size: 16px;
+  	border-radius: 12px;
+	-webkit-transition: 1s;
+}
+.s-bottone:hover{
+	background-color:DarkOrange;
+}
+.s-testo{
+	font-family: 'Roboto', sans-serif;
+	font-size:23px;
+}
+.fof{
+	display:block;
+	width:160px;
+}

@@ -1,13 +1,13 @@
-li{
+.itemx{
 	display:flex;
 	transition-duration:0.5sec;
 	border-style:solid;
 }
-ul{
+#lista{
 	margin:0px;
 	padding:0px;
 }
-.item{
+.itemx{
 	margin:0px;
 	padding:0px;
 }
@@ -22,11 +22,11 @@ ul{
  	-webkit-transition: 0.5s;
  	transition: 0.5s;
 }
-li a{
+.itemx a{
     color: #FFFFFF;
     text-decoration: none;
 }
-li:hover{
+.itemx:hover{
 	background-color:#673AB7;
 	transition-duration:0.5sec;
 }
