@@ -82,7 +82,7 @@
 	%>
 			<div class="menuBarUtente">
   			<a href="homepage.jsp" class="itemMenuUtente">Homepage</a>
-  			<a href="esplora.jsp" class="itemMenuUtente">Esplora</a>
+  			<a href="ArticleShowServlet" class="itemMenuUtente">Esplora</a>
   			<a href="profile.jsp" class="itemMenuUtente">AreaPersonale</a>
   			<form class = "formRicercaUtente" action="RicercaControl"  method="post">
   				<input id="myInput" type="text" class="searchBarUtente"  autocomplete="off" placeholder="Search..">
@@ -103,7 +103,7 @@
   			<a href="homepage.jsp" class="itemMenuAutore">Homepage</a>
   			<a href="profile.jsp" class="itemMenuAutore">AreaPersonale</a>
   			<a href="EventShowServlet" class="itemMenuAutore">AreaEventi</a>
-  			<a href="areapubblicazioni.jsp" class="itemMenuAutore">AreaPubblicazioni</a>
+  			<a href="ArticleShowServlet" class="itemMenuAutore">AreaPubblicazioni</a>
   			<a href="richiestapubblicazione.jsp" class="itemMenuAutore">PubblicaArticolo</a>
   			<a href="event.jsp" class="itemMenuAutore">OrganizzaEvento</a>
   			<a href="Chat" class="itemMenuAutoreIcon"><img class="messageIconAutore" src="icone/iconaNessunMessaggio.svg" onclick=""></a>
