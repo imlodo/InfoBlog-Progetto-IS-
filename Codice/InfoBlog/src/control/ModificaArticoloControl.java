@@ -2,7 +2,6 @@ package control;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -11,11 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
 import model.bean.Allegato;
 import model.bean.Articolo;
+import model.bean.Moderatore;
 import model.bean.Notifica;
+import model.manager.AllegatoManagement;
 import model.manager.ArticoloManagement;
+import model.manager.ModeratoreManagement;
 import model.manager.NotificaManagement;
 import storage.DriverManagerConnectionPool;
 import utils.Utils;
@@ -49,7 +50,7 @@ public class ModificaArticoloControl extends HttpServlet {
 		}
 		
 		Articolo articolo = null;
-		String idArticolo = request.getParameter("id");
+		String idArticolo = request.getParameter("idArticolo");
 		DriverManagerConnectionPool pool = new DriverManagerConnectionPool();
 		if(idArticolo != null)
 		{
@@ -66,7 +67,7 @@ public class ModificaArticoloControl extends HttpServlet {
 			}
 		
 			String action = request.getParameter("action"); 
-			if(action != null && action.equals("richiestaDiModifica"))
+			if(action != null && action.equals("richiestaModifica"))
 			{
 			
 				if(articolo.getAutore() != null)
@@ -173,17 +174,55 @@ public class ModificaArticoloControl extends HttpServlet {
 				
 				if(modificato == true)
 				{
+					String statoPrecedente = articolo.getStato();
+					
 					articolo.setTitolo(titoloArticolo);
 					articolo.setContenuto(contenutoArticolo);
 					articolo.setCategoria(categoriaArticolo);
 					articolo.setStato("daPubblicare");
-					NotificaManagement notificaDM = new NotificaManagement(pool);
-					Notifica notifica = new Notifica("Richiesta_pubblicazione_articolo",articolo.getAutore().getEmail(),articolo.getModeratore().getEmail());
 					ArticoloManagement articoloDM = new ArticoloManagement(pool);
 					try
 					{
-						notificaDM.doSave(notifica);
 						articoloDM.doUpdate(articolo);
+						//Controllo che sia presente almeno un allegato
+						AllegatoManagement allegatoDM = new AllegatoManagement(pool);
+						ArrayList<Allegato> a = (ArrayList<Allegato>) allegatoDM.doRetrieveByID(articolo.getId());
+						//Non ci sono allegati presenti, setto l'errore e rimando alla pagina di modifica.
+						if(a.size() == 0)
+						{
+							articolo.setModeratore(null);
+							articoloDM.doUpdate(articolo);
+							// mandiamo l'errore alla jsp 
+							String url = "modificaArticolo.jsp"; // url della jsp
+							request.setAttribute("errore", "NESSUN_ALLEGATO");
+							dispatcher = request.getRequestDispatcher(url);
+							dispatcher.forward(request, response);
+							return;
+						}
+						else
+						{
+							ModeratoreManagement moderatoreDM = new ModeratoreManagement(pool);
+							Moderatore modRiceventeNotifica = Utils.getRiceventeNotifica(moderatoreDM,categoriaArticolo,articoloDM);
+							articolo.setModeratore(modRiceventeNotifica);
+							articoloDM.doUpdate(articolo);
+						}
+						if(!statoPrecedente.equals("daPubblicare"))
+						{
+							Articolo articoloDB = articoloDM.doRetrieveByKey(String.valueOf(articolo.getId()));
+							Notifica notifica = null;
+							if(articoloDB.getModeratore() == null)
+							{
+								notifica = new Notifica("Richiesta_pubblicazione_articolo",articolo.getAutore().getEmail(),articolo.getModeratore().getEmail());
+							}
+							else
+							{
+								notifica = new Notifica("Richiesta_pubblicazione_articolo",articolo.getAutore().getEmail(),articolo.getModeratore().getEmail());
+							}
+							NotificaManagement notificaDM = new NotificaManagement(pool);
+							if(notifica != null)
+								notificaDM.doSave(notifica);
+						}
+						//Inutile inviare la notifica è già stata inviata precedentemente.
 						String url = "VisualizzaArticoliControl"; // url del control visualizza
 						dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);

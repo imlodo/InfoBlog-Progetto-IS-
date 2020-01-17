@@ -26,7 +26,8 @@ public class LoginControl extends HttpServlet
 {	
 
 	private static final long serialVersionUID = 1L;
-
+	private static final String loginPage = "login.jsp";
+	private static final String homePage = "/InfoBlog/";
 	/**
 	 * Default constructor. 
 	 */
@@ -52,40 +53,25 @@ public class LoginControl extends HttpServlet
 		String email = Utils.checkLogin(session, request.getCookies());
 		if(email != null)
 		{
-			if(email.substring(0, 1).equals("u"))
-			{
-				request.setAttribute("UtenteLog",email.substring(1));
-			}
-			if(email.substring(0, 1).equals("a"))
-			{
-				request.setAttribute("AutoreLog",email.substring(1));
-			}
-			if(email.substring(0, 1).equals("m"))
-			{
-				request.setAttribute("ModeratoreLog",email.substring(1));
-			}
-			String url = "login.jsp"; // url della jsp
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-			dispatcher.forward(request, response);
+			response.sendRedirect(homePage);
 			return;
 		}
+		
 		email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String typeUser = request.getParameter("typeUser");
-//		System.out.println("email: " + email + " password: " + password + " tipo utente: " + typeUser);
+
+		request.setAttribute("email", email);
+		request.setAttribute("password", password);
 		if(!Utils.controlPassword(password) || !Utils.checkEmail(email) || !Utils.controlTypeUser(typeUser))
 		{
 			//Se era giusto il tipo utente lo setto.
 			if(Utils.controlTypeUser(typeUser))
-			{
 				request.setAttribute("checked", typeUser+"Check");
-			}
-			// errore nell'inserimento dei dati da parte dell'utente
-			// mandiamo l'errore alla jsp 
-			String url = "login.jsp"; // url della jsp
-			request.setAttribute("errore", "DATI_ERRATI");
-			System.out.println("Errore formato parametri");
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			
+			// errore nell'inserimento dei dati da parte dell'utente, mandiamo l'errore alla jsp 
+			request.setAttribute("errore", "FORMATO_DATI_ERRATO");
+			RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 			dispatcher.forward(request, response);
 		}
 		else
@@ -104,10 +90,8 @@ public class LoginControl extends HttpServlet
 						Utente user = managerUser.doRetrieveByKey(email);
 						if(user == null)
 						{
-							String url = "login.jsp"; // url della jsp
 							request.setAttribute("errore", "DATI_ERRATI");
-							url = response.encodeRedirectURL(url);
-							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 							dispatcher.forward(request, response);
 						}
 						else
@@ -119,38 +103,34 @@ public class LoginControl extends HttpServlet
 								if(emailDB.equals(email) && passwordDB.equals(password))
 								{
 									// l'utente ha effettuato l'accesso con successo
-									//Sessione
+									// prendo la sessione in modo sincronizzato
 									synchronized(session) 
 									{
 										session.setAttribute("Utente", emailDB);
 										session.setAttribute("Username", user.getUsername());
-										//setting session to expiry in 30 mins
+										//sessione invalida in 30 minuti
 										session.setMaxInactiveInterval(30*60);
-										//Cookie
+										//setto i cookie
 										Cookie emailCookie = new Cookie("Utente", emailDB);
 										Cookie usernameCookie = new Cookie("Username", user.getUsername());
 										response.addCookie(emailCookie);
 										response.addCookie(usernameCookie);
 										//Reindirizzo l'utente loggato all'homepage
-										String encodedURL = response.encodeRedirectURL("homepage.jsp");
-										response.sendRedirect(encodedURL);
+										response.sendRedirect(homePage);
 									}
 								}
 								else
 								{
-									String url = "login.jsp"; // url della jsp
+									//Username e password errati segnalo l'errore alla jsp
 									request.setAttribute("errore", "DATI_ERRATI");
-									url = response.encodeRedirectURL(url);
-									RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+									RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 									dispatcher.forward(request, response);
 								}
 							}
 							else
 							{
-								String url = "login.jsp"; // url della jsp
 								request.setAttribute("errore", "DATI_ERRATI");
-								url = response.encodeRedirectURL(url);
-								RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+								RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 								dispatcher.forward(request, response);
 							}
 						}
@@ -162,9 +142,8 @@ public class LoginControl extends HttpServlet
 						Autore autore = managerAutore.doRetrieveByKey(email);
 						if(autore == null)
 						{
-							String url = "login.jsp"; // url della jsp
 							request.setAttribute("errore", "DATI_ERRATI");
-							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 							dispatcher.forward(request, response);
 						}
 						else
@@ -175,7 +154,7 @@ public class LoginControl extends HttpServlet
 							{
 								if(emailDB.equals(email) && passwordDB.equals(password))
 								{
-									// l'utente ha effettuato l'accesso con successo
+									// l'autore ha effettuato l'accesso con successo
 									//Sessione
 									synchronized(session) 
 									{
@@ -189,23 +168,20 @@ public class LoginControl extends HttpServlet
 										response.addCookie(emailCookie);
 										response.addCookie(usernameCookie);
 										//Reindirizzo l'utente loggato all'homepage
-										String encodedURL = response.encodeRedirectURL("homepage.jsp");
-										response.sendRedirect(encodedURL);
+										response.sendRedirect(homePage);
 									}
 								}
 								else
 								{
-									String url = "login.jsp"; // url della jsp
 									request.setAttribute("errore", "DATI_ERRATI");
-									RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+									RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 									dispatcher.forward(request, response);
 								}
 							}
 							else
 							{
-								String url = "login.jsp"; // url della jsp
 								request.setAttribute("errore", "DATI_ERRATI");
-								RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+								RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 								dispatcher.forward(request, response);
 							}
 						}
@@ -217,10 +193,8 @@ public class LoginControl extends HttpServlet
 						Moderatore moderatore = managerModeratore.doRetrieveByKey(email);
 						if(moderatore == null)
 						{
-							String url = "login.jsp"; // url della jsp
 							request.setAttribute("errore", "DATI_ERRATI");
-							url = response.encodeRedirectURL(url);
-							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 							dispatcher.forward(request, response);
 						}
 						else
@@ -231,7 +205,7 @@ public class LoginControl extends HttpServlet
 							{
 								if(emailDB.equals(email) && passwordDB.equals(password))
 								{
-									// l'utente ha effettuato l'accesso con successo
+									// il moderatore ha effettuato l'accesso con successo
 									//Sessione
 									synchronized(session) 
 									{
@@ -245,26 +219,20 @@ public class LoginControl extends HttpServlet
 										response.addCookie(emailCookie);
 										response.addCookie(usernameCookie);
 										//Reindirizzo l'utente loggato all'homepage
-										String encodedURL = response.encodeRedirectURL("homepage.jsp");
-										response.sendRedirect(encodedURL);
+										response.sendRedirect(homePage);
 									}
 								}
 								else
 								{
-									String url = "login.jsp"; // url della jsp
-									System.out.println(request);
 									request.setAttribute("errore", "DATI_ERRATI");
-									System.out.println(request.getAttribute("errore"));
-									System.out.println("SONO QUI");
-									RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+									RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 									dispatcher.forward(request, response);
 								}
 							}
 							else
 							{
-								String url = "login.jsp"; // url della jsp
 								request.setAttribute("errore", "DATI_ERRATI");
-								RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+								RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
 								dispatcher.forward(request, response);
 							}
 						}

@@ -52,7 +52,10 @@ public class SuggerimentoControl extends HttpServlet {
 				{
 					ArrayList<Articolo> articoli = (ArrayList<Articolo>) articoloDM.doRetrieveAll("u:");
 					for(Articolo a : articoli)
-						sugg.add(a.getTitolo());
+					{
+						if(!sugg.contains(a.getTitolo()))
+							sugg.add(a.getTitolo());
+					}
 				}
 				catch (SQLException e)
 				{
@@ -68,8 +71,14 @@ public class SuggerimentoControl extends HttpServlet {
 					ArrayList<Autore> autori = (ArrayList<Autore>) autoreDM.doRetrieveAll("nome");
 					for(Autore a: autori)
 					{
-						sugg.add(a.getNome());
-						sugg.add(a.getCognome());
+						if(!sugg.contains(a.getNome()))
+						{
+							sugg.add(a.getNome());
+						}
+						if(!sugg.contains(a.getCognome()))
+						{
+							sugg.add(a.getCognome());
+						}
 					}
 						
 				}

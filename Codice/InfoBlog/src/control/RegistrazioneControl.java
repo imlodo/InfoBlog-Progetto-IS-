@@ -26,6 +26,7 @@ import utils.Utils;
 public class RegistrazioneControl extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
+	private static final String regPage = "registrazione.jsp";
 	
     public RegistrazioneControl() 
     {
@@ -53,6 +54,14 @@ public class RegistrazioneControl extends HttpServlet
 		String password = request.getParameter("password");
 		String type = request.getParameter("typeUser");
 		
+		//Setto i parametri passati per non perdere lo stato in caso di errore
+		request.setAttribute("nome", nome);
+		request.setAttribute("cognome", cognome);
+		request.setAttribute("email", email);
+		request.setAttribute("username", username);
+		request.setAttribute("password", password);
+		request.setAttribute("checked", type+"Check");
+		
 		//Serve a controllare i parametri passati alla servlet
 		boolean cname = Utils.checkName(nome);
 		boolean ccognome = Utils.checkName(cognome);
@@ -63,24 +72,16 @@ public class RegistrazioneControl extends HttpServlet
 		
 		if(!cname || !ccognome || !cemail || !cusername || !cpassword || !ctype)
 		{
-			//Se era giusto il tipo utente lo setto nella request.
-			if(Utils.controlTypeUser(type))
-			{
-				request.setAttribute("checked", type+"Check");
-			}
 			// errore nell'inserimento dei dati da parte dell'utente
-			// mandiamo l'errore alla jsp 
-			String url = "registrazione.jsp"; // url della jsp
+			// mandiamo l'errore alla jsp
 			request.setAttribute("errore", "FORMATO_DATI_ERRATI");
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
 			dispatcher.forward(request, response);
 		}
 		
 		//Se tutti i controlli precedenti sono stati superati, si può provare a registrare l'account.
 		else
 		{
-			//Serve a salvare il tipo di account che si sta registrando(utente/autore)
-			request.setAttribute("checked", type+"Check");
 			//Istanzio il pool
 			DriverManagerConnectionPool pool = new DriverManagerConnectionPool();
 			//Controllo che l'email e l'username non siano già stati utilizzati da nessun utente.
@@ -130,9 +131,8 @@ public class RegistrazioneControl extends HttpServlet
 			{
 				// Dati già presenti
 				// mandiamo l'errore alla jsp 
-				String url = "registrazione.jsp"; // url della jsp
 				request.setAttribute("errore", "DATI_PRESENTI");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+				RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
 				dispatcher.forward(request, response);
 				return;
 			}
@@ -165,7 +165,7 @@ public class RegistrazioneControl extends HttpServlet
 								"			<td>"+cognome+"</td>\r\n" + 
 								"			<td>"+email+"</td>\r\n" + 
 								"			<td>"+username+"</td>\r\n" + 
-								"			<td>"+password+"</td>\r\n" + 
+								"			<td><input type='password' value="+password+"/></td>\r\n" + 
 								"		</tr>\r\n" + 
 								"	</table>\r\n" + 
 								"	<p><a href='/InfoBlog/'>Torna alla HomePage</a></p>");
@@ -179,26 +179,36 @@ public class RegistrazioneControl extends HttpServlet
 						//Provo a salvare l'autore
 						managerAutore.doSave(autore);
 						ServletOutputStream out = response.getOutputStream();
+						response.setContentType("text/html");
+						out.println("<link rel='stylesheet' type='text/css' href='" + request.getContextPath() +  "/css/successoRegistrazione.css' />");
 						//Se tutto è andato a buon fine Visualizzo un messaggio di successo registrazione
-						out.print("<h1 id='success'>Account Autore registrato con successo!</h1>\r\n" + 
-								"	<table>\r\n" + 
-								"		<caption>Riepilogo dati registrazione</caption>\r\n" + 
-								"		<tr>\r\n" + 
-								"			<th>Nome</th>\r\n" + 
-								"			<th>Cognome</th>\r\n" + 
-								"			<th>Email</th>\r\n" + 
-								"			<th>Username</th>\r\n" + 
-								"			<th>Password</th>\r\n" + 
-								"		</tr>\r\n" + 
-								"		<tr>\r\n" + 
-								"			<td>"+nome+"</td>\r\n" + 
-								"			<td>"+cognome+"</td>\r\n" + 
-								"			<td>"+email+"</td>\r\n" + 
-								"			<td>"+username+"</td>\r\n" + 
-								"			<td><input type='password' value="+password+"/></td>\r\n" + 
-								"		</tr>\r\n" + 
-								"	</table>\r\n" + 
-								"	<p><a href='/InfoBlog/'>Torna alla HomePage</a></p>");
+						out.print(
+						"<div class='container'>"+
+						"<div class='subContainer'>"+
+						"<h1 id='success'>Account Utente registrato con successo!</h1>"+
+						"<table>"+
+						  "<caption>Riepilogo dati registrazione</caption>"+
+						    "<thead>"+
+						      "<tr>"+
+						        "<th scope='col'>Nome</th>"+
+						        "<th scope='col'>Cognome</th>"+
+						        "<th scope='col'>Email</th>"+
+						        "<th scope='col'>Username</th>"+
+						        "<th scope='col'>Password</th>"+
+						      "</tr>"+
+						  "</thead>"+
+						  "<tbody>"+
+						    "<tr>"+
+						      "<td data-label='Nome'>"+nome+"</td>"+
+						      "<td data-label='Cognome'>"+cognome+"</td>"+
+						      "<td data-label='Email'>"+email+"</td>"+
+						      "<td data-label='Username'>"+username+"</td>"+
+						"<td data-label='Password'><input type='password' value="+password+"/></td>"+
+						    "</tr>"+
+						  "</tbody>"+
+						"</table>"+
+						"<p class='link'><a href='/InfoBlog/'>Torna alla HomePage</a><a href='/InfoBlog/login.jsp'>Vai al login</a></p></div>"+
+						"</div>");
 					}break;
 				}
 			
@@ -207,9 +217,8 @@ public class RegistrazioneControl extends HttpServlet
 			{
 				// Dati già presenti
 				// mandiamo l'errore alla jsp 
-				String url = "registrazione.jsp"; // url della jsp
 				request.setAttribute("errore", "DATI_PRESENTI");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+				RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
 				dispatcher.forward(request, response);
 			}		
 		}

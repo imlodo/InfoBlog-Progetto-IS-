@@ -33,7 +33,9 @@
 	
 	<div class="limiter">
 		<div class="container-login100">
-			<div class="login100-more-reg" style="background-image: url('icone/logo.svg');cursor:pointer" onclick="location.href='/InfoBlog/'">
+		<div class="login100-more-reg">
+			<img id="logo" class='animazione' alt="Logo" src="icone/logo.svg" onclick="location.href='/InfoBlog/'" style="cursor:pointer">
+			<label id="text" class="textDescription2"></label>
 			</div>
 
 			<div class="wrap-login100 p-l-50 p-r-50 p-t-20 p-b-20">
@@ -42,6 +44,12 @@
 						Registrazione
 					</span>
 			<%
+				String nome = request.getAttribute("nome") != null ? (String) request.getAttribute("nome") : "";
+				String cognome = request.getAttribute("cognome") != null ? (String) request.getAttribute("cognome") : "";
+				String username = request.getAttribute("username") != null ? (String) request.getAttribute("username") : "";
+				String password = request.getAttribute("password") != null ? (String) request.getAttribute("password") : "";
+				String email = request.getAttribute("email") != null ? (String) request.getAttribute("email") : "";
+				
 				String error = (String) request.getAttribute("errore");
 				if(error != null)
 				{
@@ -62,33 +70,33 @@
 					}
 				}
 			%>
-					<div class="wrap-input100-reg validate-input" data-validate="Il Nome è richiesto">
+					<div class="wrap-input100-reg validate-input" data-validate="Errore formato: Sono ammessi solo caratteri e il primo carattere deve essere Maiuscolo">
 						<span class="label-input100-reg">Nome</span>
-						<input class="input100-reg" type="text" name="nome" placeholder="Nome">
+						<input class="input100-reg" type="text" name="nome" value="<%=nome %>" placeholder="Nome">
 						<span class="focus-input100"></span>
 					</div>
 
-					<div class="wrap-input100-reg validate-input" data-validate = "Il Cognome è richiesto">
+					<div class="wrap-input100-reg validate-input" data-validate = "Errore formato: Sono ammessi solo caratteri e il primo carattere deve essere Maiuscolo">
 						<span class="label-input100-reg">Cognome</span>
-						<input class="input100-reg" type="text" name="cognome" placeholder="Cognome">
+						<input class="input100-reg" type="text" name="cognome" value="<%=cognome %>" placeholder="Cognome">
 						<span class="focus-input100"></span>
 					</div>
 
-					<div class="wrap-input100-reg validate-input" data-validate="L'email è richiesta">
+					<div class="wrap-input100-reg validate-input" data-validate="Formato email non valido, example: ex@abc.xyz">
 						<span class="label-input100-reg">Email</span>
-						<input class="input100-reg" type="text" name="email" placeholder="Indirizzo Email">
+						<input class="input100-reg" type="text" name="email" value="<%=email %>" placeholder="Indirizzo Email">
 						<span class="focus-input100"></span>
 					</div>
 
-					<div class="wrap-input100-reg validate-input" data-validate = "L'username è richiesta">
+					<div class="wrap-input100-reg validate-input" data-validate = "Errore formato: Sono ammessi solo caratteri e numeri">
 						<span class="label-input100-reg">Username</span>
-						<input class="input100-reg" name="username" placeholder="Username">
+						<input class="input100-reg" name="username" value="<%=username %>" placeholder="Username">
 						<span class="focus-input100"></span>
 					</div>
 					
-					<div class="wrap-input100-reg validate-input" data-validate = "Password is required">
+					<div class="wrap-input100-reg validate-input" data-validate = "Formato Non valido: Lunghezza:(min=8,max=30) Richiesto almeno: un carattere speciale, una lettera maiuscola e sun numero">
 						<span class="label-input100-reg">Password</span>
-						<input class="input100-reg" type="password" name="password" placeholder="*************">
+						<input class="input100-reg" type="password" name="password" value="<%=password %>" placeholder="*************">
 						<span class="focus-input100"></span>
 					</div>
 					<div class="radioGroup-reg">
@@ -166,7 +174,7 @@
 <!--===============================================================================================-->
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
-	<script src="javascript/main.js"></script>
+	<script src="javascript/registrazione.js"></script>
 
 </body>
 </html>
