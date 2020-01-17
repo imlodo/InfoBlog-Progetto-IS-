@@ -45,7 +45,16 @@
 						<p style="display: inline-block;width: 140px;margin-left: 8%;"><%=articoli.get(i).getCategoria()%></p>
 						<p style="display: inline-block;width: 50px;margin-left: 4%;text-align: center;color: black;">12</p>
 						<p style="display: inline-block;width: 175px;margin-left: 7%;">12</p>
-						<button style="border-radius: 19px; width: 90px; height: 40px; background:#1583cc;"><a href="ViewArticleServlet?id=<%=articoli.get(i).getId()%>" style="color: black; text-decoration: none;">Visualizza</a></button>
+						<%if(request.getSession().getAttribute("Moderatore")==null) 
+						{%>
+						<button style="border-radius: 19px; width: 90px; height: 40px; background:#1583cc;"><a href="ViewArticleServlet?id=<%=articoli.get(i).getId()%>&Titolo=<%=articoli.get(i).getTitolo() %>" style="color: black; text-decoration: none;">Visualizza</a></button>
+						<%} %>
+						<%
+						if(request.getSession().getAttribute("Moderatore")!=null) 
+						{
+						%>
+						<button style="border-radius: 19px; width: 90px; height: 40px; margin-left:1%; background:#1583cc;"><a href="ViewArticleServlet?id=<%=articoli.get(i).getId() %>&Titolo=<%=articoli.get(i).getTitolo() %>" style="color: black; text-decoration: none;">Moderazione</a></button>
+						<%} %>
 						<%
 						if(request.getSession().getAttribute("Autore")!=null) 
 						{%>

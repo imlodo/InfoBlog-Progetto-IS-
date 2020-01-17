@@ -20,9 +20,20 @@ if(articolo!=null)
   <h1 class="main-title">@InfoBlog</h1>
   <h3 class="article-title"><%=articolo.getTitolo()%></h3>
   <p class="article-author">By <span class="uppercase"><%=articolo.getAutore().getNome()+" "+articolo.getAutore().getCognome()%></p>
-  <textarea class="paragraph-text"><%=articolo.getContenuto() %></textarea>
-  <button><a href="ScaricaAllegatoControl">Scarica file</a></button>
+  <textarea class="paragraph-text" readonly><%=articolo.getContenuto() %></textarea>
+  <button style="border-radius: 19px; width: 90px; height: 40px; background:#1583cc;"><a style="color:black; text-decoration:none;" href="ScaricaAllegatoControl?id=<%=articolo.getId()%>">Scarica file</a></button>
+  <%if(request.getSession().getAttribute("Moderatore")!=null)
+	  {
+	%>
+	  </div>
+	 <button style="border-radius: 19px; width: 90px; height: 40px; background:green; margin-left: 41%; margin-top: 1%; margin-right: 1%;"><a style="color:black; text-decoration:none;" href="Moderazione?azione=accetta&idArticolo=<%=articolo.getId()%>">Accetta</a></button>
+	 <button style="border-radius: 19px; width: 90px; height: 40px; background:red;"><a style="color:black; text-decoration:none;" href="Moderazione?azione=rifiuta&idArticolo=<%=articolo.getId()%>">Rifiuta</a></button>
+	  <div>
+	<%} %>
 </div>
-<%} %>
+<%}
+else
+	response.sendRedirect("notfound.jsp");
+%>
 </body>
 </html>

@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.bean.Articolo;
+import model.bean.Moderatore;
 import model.bean.Seguace;
 import model.manager.ArticoloManagement;
+import model.manager.ModeratoreManagement;
 import model.manager.SeguiManagement;
 import storage.DriverManagerConnectionPool;
 
@@ -48,14 +50,18 @@ public class ArticleShowServlet extends HttpServlet {
 		{
 			if(ssn.getAttribute("Moderatore")!=null)
 			{
-				String email=(String)ssn.getAttribute("Autore");
+				String email=(String)ssn.getAttribute("Moderatore");
+				ModeratoreManagement dAOModeratoreManagement=new ModeratoreManagement(new DriverManagerConnectionPool());
+				
 				try
 				{
-					articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("m:"+email);
+					Moderatore mod=dAOModeratoreManagement.doRetrieveByKey(email);
+					articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("m:"+mod.getCategoria_moderazione());
 					if(articoli!=null && articoli.size()>0)
 						request.setAttribute("articoli",articoli);
 					else
 						request.setAttribute("Vuoto","Non hai pubblicato articoli");
+					System.out.println(articoli.size());
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
 					requestDispatcher.forward(request, response);
 				}

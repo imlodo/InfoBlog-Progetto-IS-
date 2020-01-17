@@ -19,14 +19,14 @@ import storage.DriverManagerConnectionPool;
 @WebServlet("/ViewArticleServlet")
 public class ViewArticleServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ViewArticleServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ViewArticleServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -38,23 +38,53 @@ public class ViewArticleServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		String id=request.getParameter("id");
 		ArticoloManagement DAOArticolo=new ArticoloManagement(new DriverManagerConnectionPool());
 		Articolo articolo=null;
 		String url="SingleArticle.jsp";
-		
-		try
-		{
-			articolo=(Articolo)DAOArticolo.doRetrieveByKey(id);
-			request.setAttribute("articolo",articolo);
-		}
-		catch(SQLException ex)
-		{
-			ex.printStackTrace();
-		}
-		RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
-		requestDispatcher.forward(request, response);
-	}
+		String titolo=request.getParameter("Titolo");
 
+		if(id!=null && titolo!=null)
+		{
+			if(utils.Utils.checkTitolo(titolo))
+			{
+				try
+				{	
+					Integer.parseInt(id);
+					articolo=(Articolo)DAOArticolo.doRetrieveByKey(id);
+					if(articolo==null)
+					{
+						request.setAttribute("Errore","Paramentri errati");
+						RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
+						requestDispatcher.forward(request, response);
+					}
+					else
+					{
+						request.setAttribute("articolo",articolo);
+						RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
+						requestDispatcher.forward(request, response);
+					}
+				}
+				catch (NumberFormatException e) 
+				{
+					request.setAttribute("Errore","id non valido");
+					RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
+					requestDispatcher.forward(request, response);
+				}
+				catch(SQLException ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+			else
+			{
+				request.setAttribute("Errore","titolo non valido");
+				RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
+				requestDispatcher.forward(request, response);
+			}
+		}
+		
+	}
 }
