@@ -18,7 +18,7 @@ $(document).ready(function () {
 	    			$("#cognomeAutore"+i+"").append("<span>"+jsons[i].cognome+"</span>")
 	    			var e_mail=jsons[i].email;
 	    			$("#vadoAlPannello"+i+"").click(function(){
-	    				$.post("/InfoBlog/PageAutoreServlet",{email:e_mail});
+	    				 window.location.href = "/InfoBlog/PageAutoreServlet?email="+e_mail+"";
 	    			});	
 	    		}
 		    });
