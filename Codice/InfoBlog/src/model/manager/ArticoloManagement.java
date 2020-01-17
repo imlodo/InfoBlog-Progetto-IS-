@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import model.bean.Articolo;
-import model.bean.Autore;
 import storage.DriverManagerConnectionPool;
 
 public class ArticoloManagement implements ItemModel<Articolo,String>
@@ -85,9 +84,7 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 					query+=" WHERE stato=\"pubblicato\"";
 				else
 					if(order.indexOf("e:")!=-1)
-						query+=" WHERE stato=\"pubblicato\" ORDER BY dataPubblicazione DESC";
-		
-				
+						query+=" WHERE stato=\"pubblicato\" ORDER BY dataPubblicazione DESC";			
 
 		try 
 		{
@@ -227,20 +224,5 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			}
 		}
 		return flag;
-	}
-	
-	public static void main(String[] args) throws SQLException {
-		Autore autore=new Autore();
-		autore.setEmail("lauro.francesco123@gmail.com");
-		Articolo article=new Articolo();
-		article.setAutore(autore);
-		article.setCategoria("dadasd");
-		article.setContenuto("dasdasdasdasdsadasd");
-		article.setData(LocalDate.now());
-		article.setId(1);
-		article.setStato("daPubblicare");
-		article.setTitolo("dasdaasdas");
-		ArticoloManagement dAOArticoloManagement=new ArticoloManagement(new DriverManagerConnectionPool());
-		dAOArticoloManagement.doUpdate(article);
 	}
 }

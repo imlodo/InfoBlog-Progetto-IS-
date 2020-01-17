@@ -1,0 +1,50 @@
+.containerArticle {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Ultra');
+
+$title-heading: 'Ultra', serif;
+$article-title: 'Georgia';
+$paragraph-text: 'Georgia';
+
+.bold {
+  font-weight: 700;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-family: $title-heading;
+  font-size: 28px;
+  padding-bottom: 25px;
+  letter-spacing: -1px;
+}
+
+.article-title {
+  font-family: $article-title;
+  font-style: italic;
+  padding-bottom: 10px;
+}
+
+.article-author {
+  font-size: 10px;
+  color: #929292;
+}
+.paragraph-text {
+  font-family: $paragraph-text;
+  font-size: 14px;
+  line-height: 20px;
+  resize: none;
+  width: 100%;
+  height: auto; 
+  border: none;
+}
+
+p+p {
+  margin-top: 10px;
+}

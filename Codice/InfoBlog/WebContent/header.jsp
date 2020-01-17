@@ -82,7 +82,7 @@
 	%>
 			<div class="menuBarUtente">
   			<a href="homepage.jsp" class="itemMenuUtente">Homepage</a>
-  			<a href="ArticleShowServlet" class="itemMenuUtente">Esplora</a>
+  			<a href="ArticleShowServlet?esplora=e" class="itemMenuUtente">Esplora</a>
   			<a href="profile.jsp" class="itemMenuUtente">AreaPersonale</a>
   			<form class = "formRicercaUtente" action="RicercaControl"  method="post">
   				<input id="myInput" type="text" class="searchBarUtente"  autocomplete="off" placeholder="Search..">
