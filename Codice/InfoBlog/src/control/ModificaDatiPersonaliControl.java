@@ -25,7 +25,8 @@ import utils.Utils;
 @WebServlet("/ModificaDatiPersonaliControl")
 public class ModificaDatiPersonaliControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static final String notFoundPage = "notfound.jsp";
+	private static final String profilePage = "profile.jsp";
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -44,7 +45,7 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 		{
 			// invocata servlet senza essersi autenticato
 			// reindirizzo alla pagina not_found
-			response.sendRedirect("notfound.jsp");
+			response.sendRedirect(notFoundPage);
 			return;
 		}
 		//Prendo i parametri passati alla servlet
@@ -62,10 +63,8 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 		if(!cname || !ccognome || !cusername || !cpassword)
 		{
 			// errore nell'inserimento dei dati da parte dell'utente
-			// mandiamo l'errore alla jsp 
-			String url = "profile.jsp"; // url della jsp
 			request.setAttribute("errore", "FORMATO_DATI_ERRATI");
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
 			dispatcher.forward(request, response);
 			return;
 		}
@@ -79,6 +78,16 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 		AutoreManagement autoreDM = new AutoreManagement(pool);
 		try
 		{
+			Utente utente = userDM.doRetrieveByKey(emailSession.substring(1));
+			if(utente.getUsername().equals(username) && utente.getCognome().equals(cognome) && utente.getNome().equals(nome) && utente.getPassword().equals(password))
+			{
+				// errore nell'inserimento dei dati da parte dell'utente
+				request.setAttribute("errore", "MODIFICHE_ASSENTI");
+				RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
+				dispatcher.forward(request, response);
+				return;
+			}	
+			//Se l'username è diverso da quello della sessione(lo sta modificando), cerco se è già presenre
 			if(!username.equals(request.getSession().getAttribute("Username")))
 			{
 				ArrayList<Utente> utenti =  (ArrayList<Utente>) userDM.doRetrieveAll("username");
@@ -151,9 +160,8 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 					response.addCookie(usernameCookie);
 				}
 			}
-			String url = "profile.jsp"; // url della jsp
 			request.setAttribute("success", "MODIFICA_SUCCESS");
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
 			dispatcher.forward(request, response);
 		}
 		catch(Exception e)
@@ -167,9 +175,8 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 				// Dati già presenti
 				request.setAttribute("errore", "FORMATO_DATI_ERRATI");
 			}
-			String url = "profile.jsp"; // url della jsp
 			// mandiamo l'errore alla jsp 
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
 			dispatcher.forward(request, response);
 		}
 	}

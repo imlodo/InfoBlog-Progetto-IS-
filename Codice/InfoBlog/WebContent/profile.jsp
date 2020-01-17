@@ -4,6 +4,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="css/profile.css">
 <link rel="stylesheet" type="text/css" href="css/util.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -46,14 +67,20 @@
 					if(error.equals("FORMATO_DATI_ERRATI"))
 					{
 		%>
-						<label class="errorLabel">Formato dati errato, riprova!</label>
+						<div class="errorLabel"><label>Formato dati errato, riprova!</label></div>
 		<%
 					}
 					if(error.equals("DATI_PRESENTI"))
 					{
 		%>
-						<label class="errorLabel">Username o email presente!</label>
+						<div class="errorLabel"><label>Username o email presente!</label></div>
 	 	<%
+					}
+					if(error.equals("MODIFICHE_ASSENTI"))
+					{
+		%>
+						<div class="errorLabel"><label>Modifiche Assenti</label></div>
+		<%
 					}
 					
 				}
@@ -62,8 +89,8 @@
 				{
 					if(success.equals("MODIFICA_SUCCESS"))
 					{
-		%>
-						<label class="errorLabel">Dati modificati con successo!</label>
+		%>				
+						<div class="successLabel"><label>Dati modificati con successo!</label></div>
 		<%
 					}
 					
@@ -89,7 +116,7 @@
 
 					<div class="wrap-input100-reg validate-input" data-validate = "L'username è richiesta">
 						<span class="label-input100-reg">Username</span>
-						<input id="username" class="input100-reg" name="username" value=<%=username %> disabled>
+						<input type="text" id="username" class="input100-reg" name="username" value=<%=username %> disabled>
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -117,4 +144,6 @@
 		</div>
 </body>
 <script src="javascript/profile.js"></script>
+
+
 </html>
