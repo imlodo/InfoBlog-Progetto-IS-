@@ -9,6 +9,8 @@ public class Evento
 	private int idEvento;
 	private Autore autore;  // sostituire con la classe;
 
+	public Evento() {}
+	
 	public Evento(String via, String città, String nome, String argomento, LocalDate data, int idEvento,Autore autore)
 	{
 		super();
@@ -20,7 +22,18 @@ public class Evento
 		this.idEvento = idEvento;
 		this.autore = autore;
 	}
-	public Evento(){}
+	
+	
+	public Evento(String via, String città, String nome, String argomento, LocalDate data,Autore autore)
+	{
+		this.via = via;
+		this.città = città;
+		this.nome = nome;
+		this.argomento = argomento;
+		this.data = data;
+
+		this.autore = autore;
+	}
 	
 	public int getIdEvento() {
 		return idEvento;
