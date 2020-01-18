@@ -30,7 +30,7 @@ public class LogoutControl extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		///invalidate the session if exists
-		HttpSession session = request.getSession(false);
+		HttpSession session = request.getSession();
 		synchronized(session) 
 		{
 			//response.setContentType("text/html");
@@ -79,7 +79,7 @@ public class LogoutControl extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
