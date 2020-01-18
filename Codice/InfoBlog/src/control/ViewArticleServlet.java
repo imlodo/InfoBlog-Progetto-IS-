@@ -61,6 +61,7 @@ public class ViewArticleServlet extends HttpServlet {
 		{
 			if(utils.Utils.checkTitolo(titolo))
 			{
+				
 				try
 				{	
 					Integer.parseInt(id);
@@ -70,6 +71,7 @@ public class ViewArticleServlet extends HttpServlet {
 						request.setAttribute("Errore","Paramentri errati");
 						RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
 						requestDispatcher.forward(request, response);
+						return;
 					}
 					else
 					{
@@ -78,6 +80,7 @@ public class ViewArticleServlet extends HttpServlet {
 							request.setAttribute("Errore","Paramentro titolo errato");
 							RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
 							requestDispatcher.forward(request, response);
+							return;
 						}
 						else 
 						{
@@ -104,14 +107,19 @@ public class ViewArticleServlet extends HttpServlet {
 							if(request.getSession().getAttribute("Autore")!=null)
 							{
 								ratingArticolo=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articolo.getId()));
-								System.out.println(ratingArticolo.get(0).getNumeroStelle());
 								if(ratingArticolo!=null && ratingArticolo.size()>0)
 									request.setAttribute("RatingArticolo", ratingArticolo);
 								else
 									request.setAttribute("VotoRatingArticolo","nessun rating");
 							}
-
-
+							if(request.getSession().getAttribute("Autore")==null)
+							{
+								ratingArticolo=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articolo.getId()));
+								if(ratingArticolo.size()>0)
+									request.setAttribute("RatingArticolo", ratingArticolo);
+								else
+									request.setAttribute("VotoRatingArticolo","nessun rating");
+							}
 							RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
 							requestDispatcher.forward(request, response);
 						}
