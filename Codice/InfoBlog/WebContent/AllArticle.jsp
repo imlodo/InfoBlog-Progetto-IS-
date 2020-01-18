@@ -47,15 +47,17 @@
 						<p style="display: inline-block;width: 210px;"><%=articoli.get(i).getTitolo() %></p>
 						<p style="display: inline-block;width: 167px;"><%=articoli.get(i).getData() %></p>
 						<p style="display: inline-block;width: 140px;margin-left: 8%;"><%=articoli.get(i).getCategoria()%></p>
-						<%if(request.getAttribute("Nocommenti")!=null) 
-						{%>
-						<p style="display: inline-block;width: 50px;margin-left: -4%;text-align: center;color: black;">/</p>
-						<p style="display: inline-block;width: 175px;margin-left: 7%;">/</p>
+						<%if(request.getAttribute("Nocommenti")==null) 
+						{
+						%>
+						<p style="display: inline-block;width: 50px;margin-left: 4%;text-align: center;color: black;">/</p>
+						<p style="display: inline-block;width: 175px;margin-left: 11%;">/</p>
 						<%}
 						else
 						{
 							if(ratingCollettivo.get(i).size()>0)
-						{ %>
+							{ 
+						%>
 						<p style="display: inline-block;width: 175px;margin-left: 7%;"><%=ratingCollettivo.get(i).get(0).getNumeroStelle() %></p>
 						<%
 						}
@@ -65,17 +67,17 @@
 						<p style="display: inline-block;width: 175px;margin-left: 7%;">0</p>
 						<%}%>
 							<p style="display: inline-block;width: 50px;margin-left:-4%;text-align: center;color: black;"><%=commenti.get(i).size() %></p>
-						<% if(request.getSession().getAttribute("Moderatore")==null) 
+						<% }if(request.getSession().getAttribute("Moderatore")==null) 
 						{%>
 						<button style="border-radius: 19px; width: 90px; height: 40px; background:#1583cc; margin-left: 3%;"><a href="ViewArticleServlet?id=<%=articoli.get(i).getId()%>&Titolo=<%=articoli.get(i).getTitolo() %>" style="color: black; text-decoration: none;">Visualizza</a></button>
-						<%} %>
-						<%
+					
+						<%}
 						if(request.getSession().getAttribute("Moderatore")!=null) 
 						{
 						%>
 						<button style="border-radius: 19px; width: 90px; height: 40px; margin-left:1%; background:#1583cc;"><a href="ViewArticleServlet?id=<%=articoli.get(i).getId() %>&Titolo=<%=articoli.get(i).getTitolo() %>" style="color: black; text-decoration: none;">Moderazione</a></button>
-						<%} %>
 						<%
+						} 
 						if(request.getSession().getAttribute("Autore")!=null) 
 						{%>
 						<button style="border-radius: 19px; width: 90px; height: 40px; margin-left:1%; background:#1583cc;"><a href="ModificaArticoloControl?action=richiestaModifica&idArticolo=<%=articoli.get(i).getId()%>" style="color: black; text-decoration: none;">Modifica</a></button>
@@ -110,9 +112,6 @@
 						}
 						%>
 				</article>
-				<%		
-					}
-					 %>
 			
 			<%
 			}%>

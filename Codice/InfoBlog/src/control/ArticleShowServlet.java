@@ -68,8 +68,8 @@ public class ArticleShowServlet extends HttpServlet {
 					articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("m:"+mod.getCategoria_moderazione());
 					if(articoli!=null && articoli.size()>0)
 					{
-						request.setAttribute("Nocommenti",0);
-						request.setAttribute("Norating", 0);
+						request.setAttribute("Nocommenti",null);
+						request.setAttribute("Norating", null);
 						request.setAttribute("articoli",articoli);
 					}
 					else
