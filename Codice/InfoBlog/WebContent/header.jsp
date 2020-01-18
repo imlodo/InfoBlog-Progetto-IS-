@@ -80,6 +80,7 @@
 			if(email.substring(0, 1).equals("u"))
 			{
 	%>
+		<input type="hidden" id="mailUtente" value="<%=request.getSession().getAttribute("Utente")%>">
 			<div class="menuBarUtente">
   			<a href="homepage.jsp" class="itemMenuUtente">Homepage</a>
   			<a href="ArticleShowServlet?esplora=e" class="itemMenuUtente">Esplora</a>
@@ -99,6 +100,7 @@
 			if(email.substring(0, 1).equals("a"))
 			{
 	%>
+			<input type="hidden" id="mailAutore" value="<%=request.getSession().getAttribute("Autore")%>">
 			<div class="menuBarAutore">
   			<a href="homepage.jsp" class="itemMenuAutore">Homepage</a>
   			<a href="profile.jsp" class="itemMenuAutore">AreaPersonale</a>

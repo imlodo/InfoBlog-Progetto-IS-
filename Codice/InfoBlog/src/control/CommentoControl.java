@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.bean.Articolo;
 import model.bean.Commento;
 import model.bean.Utente;
+import model.manager.ArticoloManagement;
 import model.manager.CommentoManagment;
 import storage.DriverManagerConnectionPool;
 import utils.Utils;
@@ -61,15 +62,18 @@ public class CommentoControl extends HttpServlet {
 		//Qui controllo se il commento esiste, se esiste faccio l'update, altrimenti faccio il save.
 		DriverManagerConnectionPool pool = new DriverManagerConnectionPool();
 		CommentoManagment commentoDM = new CommentoManagment(pool);
+		ArticoloManagement article=new ArticoloManagement(pool);
+		
 		try
 		{
+			Articolo articolo=article.doRetrieveByKey(idArticolo);
 			Commento test = commentoDM.doRetrieveByKey(idArticolo+" "+emailSession.substring(1));
 			if(test != null)
 			{
 				if(test.getContenuto().contentEquals(commento))
 				{
 					request.setAttribute("errore","nessuna modifica");
-					dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
+					dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 					dispatcher.forward(request, response);
 					return;
 				}
@@ -79,7 +83,7 @@ public class CommentoControl extends HttpServlet {
 				test.setArticolo(tmp);
 				commentoDM.doUpdate(test);
 				request.setAttribute("successo","commento modificato");
-				dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
+				dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 				dispatcher.forward(request, response);
 			}
 			else
@@ -92,7 +96,7 @@ public class CommentoControl extends HttpServlet {
 				nuovo.setArticolo(tmp);
 				commentoDM.doSave(nuovo);
 				request.setAttribute("successo","commento pubblicato");
-				dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
+				dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 				dispatcher.forward(request, response);
 			}
 		}

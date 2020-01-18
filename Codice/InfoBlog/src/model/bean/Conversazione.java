@@ -33,7 +33,7 @@ public class Conversazione
 		return "Conversazione [messaggi=" + messaggi + ", convCon=" + convCon + "]";
 	}
 	
-	public static Conversazione createConversazione(ArrayList<Messagio> mex,int inizio,int fine)
+	/*public static Conversazione createConversazione(ArrayList<Messagio> mex,int inizio,int fine)
 	{
 		Conversazione conv=new Conversazione();
 		conv.setConvCon(mex.get(inizio).getMittente());
@@ -41,5 +41,5 @@ public class Conversazione
 		for(;inizio<fine;inizio++)
 			conv.setMessaggi(mex.get(inizio));
 		return conv;
-	}
+	}*/
 }

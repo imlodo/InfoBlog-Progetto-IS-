@@ -18,6 +18,8 @@
 </head>
 <body>
 <%
+if(request.getSession().getAttribute("Moderatore")==null)
+{
 	ArrayList<String> contatti=(ArrayList<String>)request.getAttribute("contatti");
 	ArrayList<Conversazione> conv=(ArrayList<Conversazione>)request.getSession().getAttribute("chat");
 	ArrayList<String> idForClass=new ArrayList<String>();
@@ -38,7 +40,7 @@
 %>
 
 <%
-if(contatti.size()>0)
+if(request.getAttribute("Vuoto")==null && contatti!=null && contatti.size()>0)
 {	
 %>
 <input type="hidden" id="proprietario" value="<%=proprietarioChat%>">
@@ -116,7 +118,7 @@ if(contatti.size()>0)
 	            	<button type="submit" name="learn" value="myimage" onclick="richiestaAjax()" style="height: 40px;width: 40px;background: white;border: none;">
   						 <img src="icone/image.PNG" style="height: 40px;width: 42px;">
 					</button>
-
+					<input type="text" id="errore" value="Formato Errato" style="display: none; height: 13px; text-align: center; margin-top: 2%; display: none;">
             </div>
         </div>
     </div>
@@ -137,16 +139,22 @@ if(contatti.size()>0)
 			<span class="zeroConversazionespan">Non ci sono conversazioni.</span> 
 		</div>
 		<%}
-		} %>
-		<a href="homepage.jsp">Go to Home</a>
+		}
+	}
+	else
+	{
+		response.sendRedirect("notfound.jsp");
+	}%>
+		<button style=" margin-left: 47%;color: black; background:gray; border-radius: 35px;"><a href="homepage.jsp" style="color: black; text-decoration: none;">Go to Home</a></button>
 </body>
-<script>
+<script type="text/javascript">
 
 if(document.getElementById('primo')!=null)
 {
 	var a=document.getElementById('primo').value
 	document.querySelector('.chat[data-chat='+a+']').classList.add('active-chat')
 	document.querySelector('.person[data-chat='+a+']').classList.add('active')
+	
 	
 	let friends = {
 	    list: document.querySelector('ul.people'),
@@ -201,8 +209,20 @@ if(document.getElementById('primo')!=null)
 		var testo=$("#testoDelMessaggio").val()
 		var proprietarioChat=$("#proprietario").val()
 		var destinatario=$(".active-chat").children("#destinatarioConversazione").val()
-		$("#testoDelMessaggio").val("");
 		
+		var letters= /[a-zA-Z0-9 #&<>~;$^%{}?][^~^]{1,700}$/;
+		if (!testo.match(letters)) 
+		{
+			$(".write").css("border-color","red")
+			$("#errore").css("display","inline");
+			
+		} 
+		else {
+			$("#errore").css("display","none");
+			$(".write").css("border","1px solid var(--light)")
+			$("#testoDelMessaggio").val("")
+			
+			
 		$.ajax({
 			url: 'UpdateMessage',
 			type: 'GET',
@@ -257,6 +277,7 @@ if(document.getElementById('primo')!=null)
 			}
 		});
 		return false;
+		}
 	}
 }
 </script>

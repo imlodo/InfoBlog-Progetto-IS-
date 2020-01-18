@@ -3,7 +3,6 @@ package control;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,22 +12,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
+
 import model.bean.Messagio;
 import model.manager.MessaggioManagment;
 import storage.DriverManagerConnectionPool;
 
 /**
- * Servlet implementation class UpdateMessage
+ * Servlet implementation class InviaMessaggioControl
  */
-@WebServlet("/UpdateMessage")
-public class UpdateMessage extends HttpServlet {
+@WebServlet("/InviaMessaggioControl")
+public class InviaMessaggioControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public UpdateMessage() {
+	public InviaMessaggioControl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -43,69 +42,66 @@ public class UpdateMessage extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
-	{
-		if(request.getSession().getAttribute("Moderatore")==null)
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getSession().getAttribute("Utente")!=null)
 		{
-			Gson g = new Gson();
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			MessaggioManagment DAOMessaggio=new MessaggioManagment(new DriverManagerConnectionPool());
-			Messagio mex=new Messagio();
-
-			String testo=request.getParameter("text");
-			String proprietario=request.getParameter("prop");
-			String destinatario=request.getParameter("dex");
-			
-			
-			if(!utils.Utils.checkEmail(proprietario))
+			String email=request.getParameter("autore");
+			String me=request.getParameter("email");
+			String contenuto=request.getParameter("contenuto");
+			if(!utils.Utils.checkEmail(me))
 			{
-				System.out.println("no prop");
 				request.setAttribute("errore", "Accesso negato");
 				RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
 				requestDispatcher.forward(request, response);
 				return;
 			}
-			if(!utils.Utils.checkEmail(destinatario))
+			if(!utils.Utils.checkEmail(email))
 			{
-				System.out.println("no dest");
+				request.setAttribute("errore", "Accesso negato");
+				RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
+				requestDispatcher.forward(request, response);
+				return;
+			}
+			if(!request.getSession().getAttribute("Utente").equals(me))
+			{
 				request.setAttribute("errore", "Accesso negato");
 				RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
 				requestDispatcher.forward(request, response);
 				return;
 			}
 			
-			String regexp="[a-zA-Z0-9 #&<>\\\"~;$^%{}?][^~^]{1,700}$";
+			
+			String regexp = "[a-zA-Z0-9 #&<>~;$^%{}?][^~^]{1,700}$";
 			Pattern pt = Pattern.compile(regexp);
-			Matcher mt = pt.matcher(testo);
+			Matcher mt = pt.matcher(contenuto);
 			boolean resultmatchContenuto = mt.matches();
+			
 			if(!resultmatchContenuto)
 			{
-				request.setAttribute("contenuto",testo);
-				request.setAttribute("emailAutore", destinatario);
+				request.setAttribute("contenuto",contenuto);
+				request.setAttribute("emailAutore", email);
 				request.setAttribute("ErroreFormato", "contunuto formato errato");
-				RequestDispatcher requestDispatcher=request.getRequestDispatcher("Chat");
+				RequestDispatcher requestDispatcher=request.getRequestDispatcher("ModuloContatta.jsp");
 				requestDispatcher.forward(request, response);
 				return;
 			}
 			
+			MessaggioManagment DAOMessaggio=new MessaggioManagment(new DriverManagerConnectionPool());
+			Messagio mex=new Messagio();
 			
-			mex.setContenuto(testo);
-			mex.setMittente(proprietario);
-			mex.setDestinatario(destinatario);
+			mex.setContenuto(contenuto);
 			mex.setData(LocalDateTime.now());
-			if(request.getSession().getAttribute("Utente")!=null)
-				mex.setTipologia("messaggio");
-			else
-				mex.setTipologia("risposta");
+			mex.setDestinatario(email);
+			mex.setMittente(me);
+			mex.setTipologia("messaggio");
 			try
 			{
 				DAOMessaggio.doSave(mex);
-				ArrayList<Messagio> newMex=new ArrayList<Messagio>();
-				newMex=(ArrayList<Messagio>) DAOMessaggio.doRetrieveAll(mex.getMittente()+" "+mex.getDestinatario());
-				response.getWriter().write(g.toJson(newMex));
-			} 
-			catch (SQLException e) 
+				request.setAttribute("Successo", "Messaggio inviato");
+				RequestDispatcher requestDispatcher=request.getRequestDispatcher("PageAutoreServlet?email="+email);
+				requestDispatcher.forward(request, response);
+			}
+			catch(SQLException e)
 			{
 				e.printStackTrace();
 			}
@@ -113,8 +109,10 @@ public class UpdateMessage extends HttpServlet {
 		else
 		{
 			request.setAttribute("errore", "Accesso negato");
-			response.sendRedirect("notfound.jsp");
+			RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
+			requestDispatcher.forward(request, response);
 		}
-	}
 
+	}
 }
+

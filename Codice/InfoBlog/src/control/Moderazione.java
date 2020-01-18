@@ -54,6 +54,8 @@ public class Moderazione extends HttpServlet {
 			{
 				try
 				{
+					Integer.parseInt(idArticolo);
+
 					article=DAOArticolo.doRetrieveByKey(idArticolo);
 					if(article!=null)
 					{

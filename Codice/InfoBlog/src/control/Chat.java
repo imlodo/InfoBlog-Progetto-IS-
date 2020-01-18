@@ -42,102 +42,132 @@ public class Chat extends HttpServlet {
 		ArrayList<Conversazione> conv=new ArrayList<Conversazione>();
 		MessaggioManagment DAOMessaggio=new MessaggioManagment(new DriverManagerConnectionPool());
 		String url="chat.jsp";
-
-		synchronized (session)
+		if(session.getAttribute("Moderatore")==null && (session.getAttribute("Autore")!=null) || session.getAttribute("Utente")!=null)
 		{
-			if(session.getAttribute("Autore")!=null)
+			synchronized (session)
 			{
-				String autore=(String) session.getAttribute("Autore");
-				contatti=ConversazioniManagment.getUtenti("R:"+autore);
-
-				try 
+				if(session.getAttribute("Autore")!=null)
 				{
-					for(int i=0;i<contatti.size();i++)
-					{
-						ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(autore+" "+contatti.get(i));
-						Conversazione cconv=new Conversazione();
-						for(int j=0;j<messaggi.size();j++)
-						{
-							cconv.setMessaggi(messaggi.get(j));
-						}
-						conv.add(cconv);
-					}
+					String autore=(String) session.getAttribute("Autore");
+					contatti=ConversazioniManagment.getUtenti("R:"+autore);
 
-					if(conv.size()>0)
+					if(contatti.size()>0)
 					{
-						if(!conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getMittente().equals(autore) && conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getStato().equals("inviato"))
+						try 
 						{
-							System.out.println("sto qua");
-							conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).setTipologia("messaggio");
-							DAOMessaggio.doUpdate(conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1));
-							conv.remove(0);
-							ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(autore+" "+contatti.get(0));
-							Conversazione cconv=new Conversazione();
-							for(int j=0;j<messaggi.size();j++)
+
+							for(int i=0;i<contatti.size();i++)
 							{
-								cconv.setMessaggi(messaggi.get(j));
+								ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(autore+" "+contatti.get(i));
+								Conversazione cconv=new Conversazione();
+								for(int j=0;j<messaggi.size();j++)
+								{
+									cconv.setMessaggi(messaggi.get(j));
+								}
+								conv.add(cconv);
 							}
-							conv.add(0,cconv);
-						}
-					}
 
-					session.setAttribute("chat",conv);
-					request.setAttribute("contatti", contatti);
-					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-					dispatcher.forward(request, response);
-					return;
-				}
-				catch (SQLException e) 
-				{
-					e.printStackTrace();
-				}
-			}
-			else
-			{
-				String utente=(String) session.getAttribute("Utente");
-				contatti=ConversazioniManagment.getUtenti("M:"+utente);
-
-				try 
-				{
-					for(int i=0;i<contatti.size();i++)
-					{
-						ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(utente+" "+contatti.get(i));
-						Conversazione cconv=new Conversazione();
-						for(int j=0;j<messaggi.size();j++)
-						{
-							cconv.setMessaggi(messaggi.get(j));
-						}
-						conv.add(cconv);
-					}
-
-					if(conv.size()>0)
-					{
-						if(!conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getMittente().equals(utente) && conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getStato().equals("inviato"))
-						{
-							conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).setTipologia("risposta");
-							DAOMessaggio.doUpdate(conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1));
-
-							conv.remove(0);
-							ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(utente+" "+contatti.get(0));
-							Conversazione cconv=new Conversazione();
-							for(int j=0;j<messaggi.size();j++)
+							if(conv.size()>0)
 							{
-								cconv.setMessaggi(messaggi.get(j));
+								if(!conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getMittente().equals(autore) && conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getStato().equals("inviato"))
+								{
+									conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).setTipologia("messaggio");
+									DAOMessaggio.doUpdate(conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1));
+									conv.remove(0);
+									ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(autore+" "+contatti.get(0));
+									Conversazione cconv=new Conversazione();
+									for(int j=0;j<messaggi.size();j++)
+									{
+										cconv.setMessaggi(messaggi.get(j));
+									}
+									conv.add(0,cconv);
+								}
 							}
-							conv.add(0,cconv);
+
+							session.setAttribute("chat",conv);
+							request.setAttribute("contatti", contatti);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							dispatcher.forward(request, response);
+							return;
+						}
+						catch (SQLException e) 
+						{
+							e.printStackTrace();
 						}
 					}
-					session.setAttribute("chat",conv);
-					request.setAttribute("contatti", contatti);
-					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-					dispatcher.forward(request, response);
+					else
+					{
+						request.setAttribute("Vuoto", "Nessuna conversazione");
+						session.setAttribute("chat",conv);
+						request.setAttribute("contatti", contatti);
+						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+						dispatcher.forward(request, response);
+						return;
+					}
 				}
-				catch (SQLException e) 
+				else
 				{
-					e.printStackTrace();
+					String utente=(String) session.getAttribute("Utente");
+					contatti=ConversazioniManagment.getUtenti("M:"+utente);
+
+					if(contatti.size()>0)
+					{
+						try 
+						{
+							for(int i=0;i<contatti.size();i++)
+							{
+								ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(utente+" "+contatti.get(i));
+								Conversazione cconv=new Conversazione();
+								for(int j=0;j<messaggi.size();j++)
+								{
+									cconv.setMessaggi(messaggi.get(j));
+								}
+								conv.add(cconv);
+							}
+
+							if(conv.size()>0)
+							{
+								if(!conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getMittente().equals(utente) && conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).getStato().equals("inviato"))
+								{
+									conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1).setTipologia("risposta");
+									DAOMessaggio.doUpdate(conv.get(0).getMessaggi().get(conv.get(0).getMessaggi().size()-1));
+
+									conv.remove(0);
+									ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(utente+" "+contatti.get(0));
+									Conversazione cconv=new Conversazione();
+									for(int j=0;j<messaggi.size();j++)
+									{
+										cconv.setMessaggi(messaggi.get(j));
+									}
+									conv.add(0,cconv);
+								}
+							}
+							session.setAttribute("chat",conv);
+							request.setAttribute("contatti", contatti);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							dispatcher.forward(request, response);
+						}
+						catch (SQLException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+					else
+					{
+						request.setAttribute("Vuoto", "Nessuna conversazione");
+						session.setAttribute("chat",conv);
+						request.setAttribute("contatti", contatti);
+						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+						dispatcher.forward(request, response);
+						return;
+					}
 				}
 			}
 		}
+		else
+		{
+			request.setAttribute("errore", "Accesso negato");
+			response.sendRedirect("notfound.jsp");
+		}
 	}
-
 }

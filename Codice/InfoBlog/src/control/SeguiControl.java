@@ -71,13 +71,13 @@ public class SeguiControl extends HttpServlet {
 							{
 								DAOSegui.doSave(seguace);
 								request.setAttribute("segui","operazione effettuata");
-								RequestDispatcher requestDispatcher=request.getRequestDispatcher("PaginaAutore.jsp");
+								RequestDispatcher requestDispatcher=request.getRequestDispatcher("PageAutoreServlet?email="+emailAutore);
 								requestDispatcher.forward(request, response);
 							}
 							else
 							{
 								request.setAttribute("errore","Operazione gia registrata");
-								RequestDispatcher requestDispatcher=request.getRequestDispatcher("PaginaAutore.jsp");
+								RequestDispatcher requestDispatcher=request.getRequestDispatcher("PageAutoreServlet?email="+emailAutore);
 								requestDispatcher.forward(request, response);
 							}
 						}
@@ -85,7 +85,7 @@ public class SeguiControl extends HttpServlet {
 						{
 							DAOSegui.doSave(seguace);
 							request.setAttribute("segui","operazione effettuata");
-							RequestDispatcher requestDispatcher=request.getRequestDispatcher("PaginaAutore.jsp");
+							RequestDispatcher requestDispatcher=request.getRequestDispatcher("PageAutoreServlet?email="+emailAutore);
 							requestDispatcher.forward(request, response);
 						}
 					} 
@@ -95,7 +95,6 @@ public class SeguiControl extends HttpServlet {
 						RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
 						requestDispatcher.forward(request, response);
 					}
-
 				}
 			}
 		}

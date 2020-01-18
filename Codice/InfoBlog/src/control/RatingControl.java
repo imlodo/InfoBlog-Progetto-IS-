@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.bean.Articolo;
 import model.bean.Rating;
 import model.bean.Utente;
+import model.manager.ArticoloManagement;
 import model.manager.RatingManagement;
 import storage.DriverManagerConnectionPool;
 import utils.Utils;
@@ -66,8 +67,12 @@ public class RatingControl extends HttpServlet {
 		//Qui controllo se il commento esiste, se esiste faccio l'update, altrimenti faccio il save.
 		DriverManagerConnectionPool pool = new DriverManagerConnectionPool();
 		RatingManagement ratingDM = new RatingManagement(pool);
+		ArticoloManagement article=new ArticoloManagement(pool);
+		
+		
 		try
 		{
+			Articolo articolo=article.doRetrieveByKey(idArticolo);
 			Rating test = ratingDM.doRetrieveByKey(idArticolo+" "+emailSession.substring(1));
 			if(test != null)
 			{
@@ -75,7 +80,7 @@ public class RatingControl extends HttpServlet {
 				if(test.getNumeroStelle() == numeroStelleF)
 				{
 					request.setAttribute("errore","nessuna modifica");
-					dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
+					dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 					dispatcher.forward(request, response);
 					return;
 				}
@@ -87,7 +92,7 @@ public class RatingControl extends HttpServlet {
 				test.setUtente(new Utente(emailSession.substring(1),"","","",""));
 				ratingDM.doUpdate(test);
 				request.setAttribute("successo","rating modificato");
-				dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
+				dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 				dispatcher.forward(request, response);
 			}
 			else
@@ -101,7 +106,7 @@ public class RatingControl extends HttpServlet {
 				nuovo.setArticolo(tmp);
 				ratingDM.doSave(nuovo);
 				request.setAttribute("successo","rating inserito");
-				dispatcher = request.getRequestDispatcher("SingleArticle.jsp");
+				dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 				dispatcher.forward(request, response);
 			}
 		}

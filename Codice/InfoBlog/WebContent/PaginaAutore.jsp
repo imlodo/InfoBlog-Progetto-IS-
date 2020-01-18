@@ -3,20 +3,58 @@
 <%@page import="model.bean.Articolo"%>
 <%@page import="model.bean.Commento"%>
 <%@page import="model.bean.Rating"%>
+<%@page import="model.bean.Autore"%>
 <%@page import="java.util.ArrayList"%>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Articoli</title>
-		<link href="style.css" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="css/AllArticle.css">
-		<script src="javascript/jquery-3.4.1.min.js"></script>
-	</head>
-	
-	<body>
-	<%@ include file="header.jsp" %>
+<head>
+<meta charset="ISO-8859-1">
+<title>Pagina Autore</title>
+<link rel="stylesheet" type="text/css" href="css/AllArticle.css">
+<link rel="stylesheet" type="text/css" href="css/paginaAutore.css">
+<script src="javascript/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<%if(request.getSession().getAttribute("Utente")!=null){ %>
+ <input type="hidden" id="mailUtente" value="<%=request.getSession().getAttribute("Utente")%>">
+ <%}
+if(request.getSession().getAttribute("Autore")!=null){ 
+ %>
+ <input type="hidden" id="mailAutore" value="<%=request.getSession().getAttribute("Autore")%>">
+ <%} %>
+ <%@ include file="header.jsp" %>
+ <%
+ 	Autore autore=(Autore)request.getAttribute("autore");
+ %>
+ 
+<div class="content-profile-page">
+   <div class="profile-user-page card">
+      <div class="img-user-profile">
+        <img class="profile-bgHome" src="icone/sfondoAutore.jpg" />
+        <img class="avatar" src="icone/imageAutore.png" alt="FotoDefault"/>
+           </div>
+           <form action="SeguiControl" method="Post" enctype="application/x-www-form-urlencoded">
+           <input type="hidden" name="emailAutore" value="<%=((Autore)request.getAttribute("autore")).getEmail()%>">
+          	<button type="submit">Segui</a></button>
+          </form>
+          <div class="user-profile-data">
+            <h1><%=autore.getCognome()+"  "+autore.getNome() %></h1>
+          </div>
+       <ul class="data-user">
+       <%
+		if(request.getAttribute("Vuoto")==null)
+		{
+			ArrayList<Articolo> articoli=(ArrayList<Articolo>)request.getAttribute("articoli");
+		%>
+        <li><a><strong><%=articoli.size()%></strong><span>Posts</span></a></li>
+        <%}
+        else{%>
+         <li><a><strong>0</strong><span>Posts</span></a></li>
+        <%} %>
+         <li><a href="ModuloServlet?email=<%=autore.getEmail() %>" style="text-decoration: none;"><strong>Vai</strong><span>Contatta</span></a></li>
+       </ul>
+      </div>
+    </div>  
 		<%
 		if(request.getAttribute("Vuoto")==null)
 		{
@@ -119,6 +157,7 @@
 			</div>
 		</section>
 		<%}
+			
 			}
 			else{
 				%>
@@ -126,6 +165,7 @@
 				<h1>Articoli Assenti</h1>
 				</section>
 			<%}%>
-			
+    
+    
 </body>
 </html>

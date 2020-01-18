@@ -2,6 +2,8 @@ package control;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.bean.Articolo;
+import model.bean.Commento;
+import model.bean.Rating;
 import model.manager.ArticoloManagement;
+import model.manager.CommentoManagment;
+import model.manager.RatingManagement;
 import storage.DriverManagerConnectionPool;
 
 /**
@@ -45,6 +51,11 @@ public class ViewArticleServlet extends HttpServlet {
 		Articolo articolo=null;
 		String url="SingleArticle.jsp";
 		String titolo=request.getParameter("Titolo");
+		CommentoManagment DAOCommento=new CommentoManagment(new DriverManagerConnectionPool());
+		ArrayList<Commento> commenti;
+		ArrayList<Rating> ratingArticolo;
+		Rating rating;
+		RatingManagement DAORating=new RatingManagement(new DriverManagerConnectionPool());
 
 		if(id!=null && titolo!=null)
 		{
@@ -62,9 +73,48 @@ public class ViewArticleServlet extends HttpServlet {
 					}
 					else
 					{
-						request.setAttribute("articolo",articolo);
-						RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
-						requestDispatcher.forward(request, response);
+						if(!articolo.getTitolo().equals(titolo))
+						{
+							request.setAttribute("Errore","Paramentro titolo errato");
+							RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
+							requestDispatcher.forward(request, response);
+						}
+						else 
+						{
+							request.setAttribute("articolo",articolo);
+
+							commenti=(ArrayList<Commento>) DAOCommento.doRetrieveAll(String.valueOf(articolo.getId()));
+							if(commenti.size()==0)
+								request.setAttribute("Vuoto", "non ci sono commenti");
+							else
+								request.setAttribute("commenti", commenti);
+							if(request.getSession().getAttribute("Utente")!=null)
+							{
+								rating=DAORating.doRetrieveByKey(articolo.getId()+" "+request.getSession().getAttribute("Utente"));
+								ratingArticolo=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articolo.getId()));
+								if(rating!=null)
+									request.setAttribute("ratingUtente",rating);
+								else
+									request.setAttribute("VotoRatingUtente","non hai inserito rating");
+								if(ratingArticolo.size()>0)
+									request.setAttribute("RatingArticolo", ratingArticolo);
+								else
+									request.setAttribute("VotoRatingArticolo","nessun rating");
+							}
+							if(request.getSession().getAttribute("Autore")!=null)
+							{
+								ratingArticolo=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articolo.getId()));
+								System.out.println(ratingArticolo.get(0).getNumeroStelle());
+								if(ratingArticolo!=null && ratingArticolo.size()>0)
+									request.setAttribute("RatingArticolo", ratingArticolo);
+								else
+									request.setAttribute("VotoRatingArticolo","nessun rating");
+							}
+
+
+							RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
+							requestDispatcher.forward(request, response);
+						}
 					}
 				}
 				catch (NumberFormatException e) 
@@ -85,6 +135,6 @@ public class ViewArticleServlet extends HttpServlet {
 				requestDispatcher.forward(request, response);
 			}
 		}
-		
+
 	}
 }

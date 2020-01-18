@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import model.bean.Rating;
 import storage.DriverManagerConnectionPool;
@@ -56,8 +57,36 @@ public class RatingManagement implements ItemModel<Rating,String>
 
 	@Override
 	public Collection<Rating> doRetrieveAll(String order) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		String query="SELECT avg(numeroStelle) as stelle FROM rating WHERE id=?";
+	    ArrayList<Rating> rat=new ArrayList<Rating>();
+	    Rating rating;
+	    
+	    try
+	    {
+	        conn=forConnection.getConnection();
+	        statement=conn.prepareStatement(query);
+	        statement.setString(1,order);
+	        set=statement.executeQuery();
+	        while(set.next())
+	        {
+	            rating=new Rating();
+	            rating.setNumeroStelle(set.getFloat(("stelle")));
+	            rat.add(rating);
+	        }
+	    }
+	    finally
+	    {
+	        try
+	        {
+	            if(statement!=null)
+	                statement.close();
+	        }
+	        finally
+	        {
+	            forConnection.releaseConnection(conn);
+	        }
+	    }
+	    return rat;
 	}
 
 	@Override

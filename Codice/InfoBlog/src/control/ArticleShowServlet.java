@@ -13,10 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.bean.Articolo;
+import model.bean.Commento;
 import model.bean.Moderatore;
+import model.bean.Rating;
 import model.bean.Seguace;
 import model.manager.ArticoloManagement;
+import model.manager.CommentoManagment;
 import model.manager.ModeratoreManagement;
+import model.manager.RatingManagement;
 import model.manager.SeguiManagement;
 import storage.DriverManagerConnectionPool;
 
@@ -44,8 +48,13 @@ public class ArticleShowServlet extends HttpServlet {
 		ArticoloManagement DAOArticolo=new ArticoloManagement(new DriverManagerConnectionPool());
 		ArrayList<Articolo> articoli=new ArrayList<Articolo>();
 		HttpSession ssn=request.getSession();
-
-
+		CommentoManagment DAOCommento=new CommentoManagment(new DriverManagerConnectionPool());
+		ArrayList<Commento> commenti;
+		ArrayList<ArrayList<Commento>> commentiArticoli= new ArrayList<ArrayList<Commento>>();
+		ArrayList<Rating> rating;
+		ArrayList<ArrayList<Rating>> ratingCollettivo=new ArrayList<ArrayList<Rating>>();
+		RatingManagement DAORating=new RatingManagement(new DriverManagerConnectionPool());
+		
 		synchronized (ssn) 
 		{
 			if(ssn.getAttribute("Moderatore")!=null)
@@ -58,10 +67,13 @@ public class ArticleShowServlet extends HttpServlet {
 					Moderatore mod=dAOModeratoreManagement.doRetrieveByKey(email);
 					articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("m:"+mod.getCategoria_moderazione());
 					if(articoli!=null && articoli.size()>0)
+					{
+						request.setAttribute("Nocommenti",0);
+						request.setAttribute("Norating", 0);
 						request.setAttribute("articoli",articoli);
+					}
 					else
 						request.setAttribute("Vuoto","Non hai pubblicato articoli");
-					System.out.println(articoli.size());
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
 					requestDispatcher.forward(request, response);
 				}
@@ -78,7 +90,18 @@ public class ArticleShowServlet extends HttpServlet {
 					{
 						articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("a:"+email);
 						if(articoli!=null && articoli.size()>0)
+						{
 							request.setAttribute("articoli",articoli);
+							for(int i=0;i<articoli.size();i++)
+							{
+								commenti=(ArrayList<Commento>) DAOCommento.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+								commentiArticoli.add(commenti);
+								rating=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+								ratingCollettivo.add(rating);
+							}
+							request.setAttribute("commenti",commentiArticoli);
+							request.setAttribute("rating",ratingCollettivo);
+						}
 						else
 							request.setAttribute("Vuoto","Non hai pubblicato articoli");
 						RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
@@ -97,7 +120,18 @@ public class ArticleShowServlet extends HttpServlet {
 						{
 							articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("");
 							if(articoli!=null && articoli.size()>0)
+							{
 								request.setAttribute("articoli",articoli);
+								for(int i=0;i<articoli.size();i++)
+								{
+									commenti=(ArrayList<Commento>) DAOCommento.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+									commentiArticoli.add(commenti);
+									rating=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+									ratingCollettivo.add(rating);
+								}
+								request.setAttribute("commenti",commentiArticoli);
+								request.setAttribute("rating",ratingCollettivo);
+							}
 							else
 								request.setAttribute("Vuoto","Non ci sono articoli");
 							RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
@@ -110,16 +144,25 @@ public class ArticleShowServlet extends HttpServlet {
 					}
 					else
 					{
-						System.out.println("utente presente");
 						String paramentro=request.getParameter("esplora");
 						if(paramentro!=null)
 						{
-							System.out.println("sezione esplora");
 							try
 							{
 								articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("e:");
 								if(articoli!=null && articoli.size()>0)
+								{
 									request.setAttribute("articoli",articoli);
+									for(int i=0;i<articoli.size();i++)
+									{
+										commenti=(ArrayList<Commento>) DAOCommento.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+										commentiArticoli.add(commenti);
+										rating=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+										ratingCollettivo.add(rating);
+									}
+									request.setAttribute("commenti",commentiArticoli);
+									request.setAttribute("rating",ratingCollettivo);
+								}
 								else
 									request.setAttribute("Vuoto","Non ci sono articoli");
 								RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
@@ -132,7 +175,6 @@ public class ArticleShowServlet extends HttpServlet {
 						}
 						else
 						{
-							System.out.println("tentiamo i segui");
 							SeguiManagement seguiManagement=new SeguiManagement(new DriverManagerConnectionPool());
 							ArrayList<Seguace> seguaci=new ArrayList<Seguace>();
 
@@ -142,7 +184,6 @@ public class ArticleShowServlet extends HttpServlet {
 								ArrayList<Articolo> articoliSpecifici=new ArrayList<Articolo>();
 								if(seguaci!=null && seguaci.size()>0)
 								{
-									System.out.println("siamo nei segui");
 									for(int i=0;i<seguaci.size();i++)
 									{
 										articoliSpecifici=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("a:"+seguaci.get(i).getAutore());
@@ -152,7 +193,18 @@ public class ArticleShowServlet extends HttpServlet {
 
 									}
 									if(articoli!=null && articoli.size()>0)
+									{
 										request.setAttribute("articoli",articoli);
+										for(int i=0;i<articoli.size();i++)
+										{
+											commenti=(ArrayList<Commento>) DAOCommento.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+											commentiArticoli.add(commenti);
+											rating=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+											ratingCollettivo.add(rating);
+										}
+										request.setAttribute("commenti",commentiArticoli);
+										request.setAttribute("rating",ratingCollettivo);
+									}
 									else
 										request.setAttribute("Vuoto","Non ci sono articoli");
 									RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
@@ -160,12 +212,22 @@ public class ArticleShowServlet extends HttpServlet {
 								}
 								else
 								{
-									System.out.println("nulla seguei");
 									try
 									{
 										articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("");
 										if(articoli!=null && articoli.size()>0)
+										{
 											request.setAttribute("articoli",articoli);
+											for(int i=0;i<articoli.size();i++)
+											{
+												commenti=(ArrayList<Commento>) DAOCommento.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+												commentiArticoli.add(commenti);
+												rating=(ArrayList<Rating>) DAORating.doRetrieveAll(String.valueOf(articoli.get(i).getId()));
+												ratingCollettivo.add(rating);
+											}
+											request.setAttribute("commenti",commentiArticoli);
+											request.setAttribute("rating",ratingCollettivo);
+										}
 										else
 											request.setAttribute("Vuoto","Non ci sono articoli");
 										RequestDispatcher requestDispatcher=request.getRequestDispatcher(url);
