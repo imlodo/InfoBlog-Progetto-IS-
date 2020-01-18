@@ -83,9 +83,11 @@ if(articolo!=null)
       <%}else
       {%>
       <button style="margin-left: 9%; height: 55%; width: 6%; border-radius: 47%;" disabled><%=((ArrayList<Rating>)request.getAttribute("RatingArticolo")).get(0).getNumeroStelle()%></button>
-      <%} %>
+      <%}
+      	if(request.getSession().getAttribute("Utente")!=null){
+      %>
        <input type="submit" value="Rating"/>
-       <%
+       <%}
        if(request.getSession().getAttribute("Utente")!=null)
        {
        	if(request.getAttribute("VotoRatingUtente")==null)
