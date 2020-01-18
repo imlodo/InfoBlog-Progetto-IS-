@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -20,13 +21,24 @@ import storage.DriverManagerConnectionPool;
 public class UtenteManagementTest 
 {
 	Utente utente2=new Utente("lauro.francesco47@gmail.com","password","Francesco","Lauro","Ento00");
-	Utente utente1=new Utente("lauro.antonio@gmail.com","Provadasa2","Nicola","Siciliano","Sele45");
+	Utente utente1=new Utente("mockissto12@gmail.com","Provadasa2","Nicola","Siciliano","Sele45");
 	UserManagement DAOUtente=new UserManagement(new DriverManagerConnectionPool());
 	
 	@After
 	public void setUp() throws SQLException
 	{
 		String query="insert into utente value(\"lauro.francesco47@gmail.com\",\"Provadasa2\",\"Nicola\",\"Siciliano\",\"Sele45\")";
+		DriverManagerConnectionPool pool=new DriverManagerConnectionPool();
+		Connection con=pool.getConnection();
+		Statement statement=con.createStatement();
+		statement.executeUpdate(query);
+		statement.close();
+		pool.releaseConnection(con);
+	}
+	@Before
+	public void delete() throws SQLException
+	{
+		String query="delete from utente where email=\"lauro.francesco47@gmail.com\"";
 		DriverManagerConnectionPool pool=new DriverManagerConnectionPool();
 		Connection con=pool.getConnection();
 		Statement statement=con.createStatement();
