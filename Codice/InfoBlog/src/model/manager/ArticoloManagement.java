@@ -197,6 +197,47 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 		}
 	}
 
+	public Collection<Articolo> doRetrieveByTitolo(String text) throws SQLException
+	{
+		Collection<Articolo> articoli = new ArrayList<Articolo>();
+		String selectSQL = "SELECT * FROM articolo WHERE titolo LIKE ?";
+		AutoreManagement DAOAutore=new AutoreManagement(forConnection); 
+		
+		try
+		{
+			conn = forConnection.getConnection();
+			statement = conn.prepareStatement(selectSQL);
+			statement.setString(1, "%"+text+"%");
+			
+			ResultSet rs = statement.executeQuery();
+			
+			while(rs.next())
+			{
+				Articolo articolo = new Articolo();
+				articolo.setTitolo(rs.getString("Titolo"));
+				articolo.setId(rs.getInt("id"));
+				articolo.setCategoria(rs.getString("categoria"));
+				articolo.setStato(rs.getString("stato"));
+				articolo.setData(rs.getDate("dataPubblicazione").toLocalDate());
+				articolo.setAutore(DAOAutore.doRetrieveByKey(rs.getString("scrittore")));
+				articoli.add(articolo);
+			}
+		}
+		finally
+		{
+			try
+			{
+				if(statement != null)
+					statement.close();
+			}
+			finally
+			{
+				forConnection.releaseConnection(conn);
+			}
+		}
+		return articoli;
+	}
+	
 	@Override
 	public boolean doDelete(Articolo item) throws SQLException
 	{

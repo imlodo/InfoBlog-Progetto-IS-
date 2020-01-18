@@ -1,14 +1,19 @@
 @charset "ISO-8859-1";
 
-#titolo{
+.titolo{
 	font-family: 'Roboto', sans-serif;
 	text-align:center;
 	font-size:30px;
 	margin-top:10px;
 }
-#trovati{
+.trovati{
 	font-family: 'Roboto', sans-serif;
 	font-size:28px;
+	padding-left:18px;
+}
+.titoloFiltraggio{
+	font-family: 'Roboto', sans-serif;
+	font-size::18px;	
 	padding-left:18px;
 }
 #areaListaDati{
@@ -21,6 +26,7 @@
   display:block;
   padding-top:20px;
   padding-bottom:20px;
+  padding-left:0px;
   margin-left: 25px;
   margin-right: 25px;
 }
@@ -59,4 +65,21 @@
 .fof{
 	display:block;
 	width:160px;
+}
+#areaFiltraggio{
+	font-family: 'Roboto', sans-serif;
+	display:block;
+	border-style:solid;
+	padding-bottom:30px;
+	margin-left:18px;
+	margin-right:18px;
+}
+.filtroRicerca{
+	display:inline-block;
+	margin-left:70px;
+	font-size:13px;
+}
+.testo-ricerca{
+	font-family: 'Roboto Slab', serif;
+	font-size:14px;
 }
