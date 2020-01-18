@@ -8,6 +8,7 @@
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="css/showAllEvent.css"> 
 <title>Eventi</title>
+<script src="javascript/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -99,7 +100,16 @@
 				}
 			}
 		}
-	}
+		else
+		{
+		%>	
+			<div class="row" style="padding-top: 3%;padding-left: 44%;padding-right: 33%;">
+  				<div class="small-9 columns small-centered">
+  				<h1>Non ci sono eventi</h1>
+  				</div>
+  				</div>
+	<%}		
+		}
 	else
 	{
 		response.sendRedirect("notfound.jsp");

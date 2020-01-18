@@ -43,25 +43,24 @@ public class EventModifyServlet extends HttpServlet {
 			String argomentoPrecedente=request.getParameter("event-argumentPrecedente");
 			LocalDate dataPrecedente=LocalDate.parse(request.getParameter("dataEventoPrecedente").replace("/", "-"));
 			
-
-			String regexp = "^[A-Z][a-z][^#!@&<>\\[\\]\"~;$^%{}?{0-9}]{2,50}$";
+			String regexp = "[A-Z][a-zA-Z][^#&@<>~;$^%{}?{0-9}]{4,30}$";
 			Pattern pt = Pattern.compile(regexp);
 			Matcher mt = pt.matcher(via);
 			boolean resultmatchvia = mt.matches();
 
-			regexp="[A-Z][a-zA-Z][^#&@<>\"~;$^%{}?{0-9}]{2,30}";
+			regexp="[A-Z][a-zA-Z][^#&<>@~;$^%{}?{0-9}]{4,30}$";
 			pt = Pattern.compile(regexp);
 			mt = pt.matcher(città);
 			boolean resultmatchCittà = mt.matches();
-
-			regexp="^[A-Z][a-z][^#!@&<>\\[\\]\\\"~;$^%{}?{0-9}]{2,50}$";
+			
+			regexp="^[A-Z][a-z][^#!@&<>\\[\\]~;$^%{}?{0-9}]{0,50}$";
 			pt = Pattern.compile(regexp);
 			mt = pt.matcher(nome);
 			boolean resultmatchNome = mt.matches();
 
-			regexp="[a-zA-Z0-9#&<>\\\"~;$^%{}?][^~^]{4,500}$";
+			regexp="[a-zA-Z0-9#&<>~;$^%{}?][^~^]{4,500}$";
 			pt = Pattern.compile(regexp);
-			mt = pt.matcher(nome);
+			mt = pt.matcher(argomento);
 			boolean resultmatchArgomento = mt.matches();
 
 			try

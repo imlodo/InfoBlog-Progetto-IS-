@@ -197,7 +197,7 @@ public class Utils
 		{
 			return false;
 		}
-		String regexp = "^[A-Za-z0-9]{8,300}+$";
+		String regexp = "^[A-Za-z0-9]{8,300}$";
 		// in javascript vanno inserite tra /regexrp/ in java NO
 		Pattern pt = Pattern.compile(regexp);
 		Matcher mt = pt.matcher(text);

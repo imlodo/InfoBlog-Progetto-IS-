@@ -16,6 +16,25 @@
 <link rel="stylesheet" type="text/css" href="css/rating.css">
 <script src="javascript/jquery-3.4.1.min.js"></script>
 </head>
+<script>
+function validaContenuto() 
+{
+	var letters= /^[A-Za-z0-9]{8,300}$/;
+	
+	if (!$("#message").val().match(letters)) 
+	{
+		$("#message").css("border-color","red")
+		$("#erroreJs").css("display","inline");
+		$("#erroreJs").css("border-color","red");
+		$("#erroreJs").css("background","#ff8989");
+		return false;
+	} 
+	else
+	{
+		return true;
+	}
+}
+</script>
 <body>
 <%@ include file="header.jsp" %>
 <%
@@ -151,9 +170,10 @@ if(request.getSession().getAttribute("Utente")!=null){ %>
 <%} %>
 <% if(request.getSession().getAttribute("Utente")!=null){%>
 <label><h2 style="margin-left: 28%;">Lascia un commento:</h2></label>
-<form class="dot" id="enquiry" action="CommentoControl">
+<form class="dot" id="enquiry" action="CommentoControl" onsubmit="if(validaContenuto()==false){return false;}">
 	<input type="hidden" name="idArticolo" value="<%=articolo.getId()%>">
   <textarea maxlength="300" name="commento" id="message" placeholder="Add your comment!"></textarea>
+  <input type="text" style="display: none; height: 35px; width: 281px;" id="erroreJs" value="Lunghezza min.8 caratteri,no caratteri speciali">
   <input type="submit" value="Add Comment">
 </form>
 

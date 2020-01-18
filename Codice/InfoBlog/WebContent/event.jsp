@@ -17,6 +17,48 @@ $(document).ready(function(){
 	});
 });
 
+function controlla() 
+{
+	var titolo=$("#eventTitleInput").val();
+	var via=$("#via").val();
+	var citta=$("#citta").val();
+	var argomento=$("#eventDescriptionInput").val();
+	
+	var regexpTitotolo =/^[A-Z][a-z][^#!@&<>\[\]~;$^%{}?{0-9}]{0,50}$/;
+	var resultTitolo=titolo.match(regexpTitotolo)	
+	var regexpVia=/[A-Z][a-zA-Z][^#&@<>~;$^%{}?{0-9}]{4,30}$/;
+	var resultVia=via.match(regexpVia)
+	var regexpCitta=/[A-Z][a-zA-Z][^#&<>@~;$^%{}?{0-9}]{4,30}$/
+	var resultCitta=citta.match(regexpCitta)
+	var regexpArgomento=/[a-zA-Z0-9#&<>~;$^%{}?][^~^]{4,500}$/ 
+	var resultArgomento=argomento.match(regexpArgomento)
+	
+	if(!resultTitolo)
+	{
+		$("#erroreJs").css("display","inline");
+		$("#erroreJs").val("Titolo:Lunghezza min. 2 caratteri.No caratteri speciali.Prima maiuscola")
+		return false;
+	}
+	if(!resultVia)
+	{
+		$("#erroreJs").css("display","inline");
+		$("#erroreJs").val("Via:Lunghezza min. 4 caratteri.No caratteri speciali.Prima lettera maiuscola")
+		return false;
+	}
+	if(!resultCitta)
+	{
+		$("#erroreJs").css("display","inline");
+		$("#erroreJs").val("Città:Lunghezza min. 4 caratteri.No caratteri speciali.Prima lettera maiuscola")
+		return false;
+	}
+	if(!resultArgomento)
+	{
+		$("#erroreJs").css("display","inline");
+		$("#erroreJs").val("Argomento:Lunghezza min. 4 caratteri.Solo alcuni caratteri speciali")
+		return false;
+	}
+	return true;
+}
 </script>
 </head>
 <body>
@@ -36,8 +78,9 @@ $(document).ready(function(){
   if(request.getAttribute("errore")!=null)
   {
   %>
+  <input type="text" id="erroreJs" readonly="readonly" style="color:#b94a48; background:#efd5d4; border-color:#d59392; text-align: center; display: none;">
   <input type="text" id="erroreRegistrazione" value="<%=request.getAttribute("errore") %>" readonly="readonly" style="color:#b94a48; background:#efd5d4; border-color:#d59392; text-align: center;">
-    <form method="POST" action="EventInsertServlet" enctype="application/x-www-form-urlencoded" style="display: inline;">
+    <form method="POST" action="EventInsertServlet" enctype="application/x-www-form-urlencoded" style="display: inline;"  onsubmit="if(controlla()==false){return false;}">
     <label>Event Date</label>
     <input type="text" name="dataEvento" id="eventDate" value="<%=request.getAttribute("data") %>">
     <label>Event Title</label>
@@ -52,7 +95,8 @@ $(document).ready(function(){
     <button type="reset" id="cancelAddEvent">Cancel</button>
   </form>
   <%}else{%>
-   <form method="POST" action="EventInsertServlet" enctype="application/x-www-form-urlencoded" style="display: inline;">
+  <input type="text" id="erroreJs" readonly="readonly" style="color:#b94a48; background:#efd5d4; border-color:#d59392; text-align: center; display: none;">
+   <form method="POST" action="EventInsertServlet" enctype="application/x-www-form-urlencoded" style="display: inline;" onsubmit="if(controlla()==false){return false;}">
     <label>Event Date</label>
     <input type="text" name="dataEvento" id="eventDate">
     <label>Event Title</label>
