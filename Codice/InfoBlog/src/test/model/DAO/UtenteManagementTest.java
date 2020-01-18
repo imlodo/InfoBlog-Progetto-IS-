@@ -69,7 +69,7 @@ public class UtenteManagementTest
 	@Test
 	public void doUpdate() throws SQLException
 	{
-		DAOUtente.doUpdate(utente1);
+		DAOUtente.doUpdate(utente2);
 	}
 	@Test 
 	public void doDelete() throws SQLException
