@@ -4,8 +4,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.junit.After;
 import org.junit.Test;
+
+
+
 import model.bean.Utente;
 import model.manager.UserManagement;
 import storage.DriverManagerConnectionPool;
@@ -14,6 +22,18 @@ public class UtenteManagementTest
 	Utente utente2=new Utente("lauro.francesco47@gmail.com","password","Francesco","Lauro","Ento00");
 	Utente utente1=new Utente("lauro.antonio@gmail.com","Provadasa2","Nicola","Siciliano","Sele45");
 	UserManagement DAOUtente=new UserManagement(new DriverManagerConnectionPool());
+	
+	@After
+	public void setUp() throws SQLException
+	{
+		String query="insert into utente value(\"lauro.francesco47@gmail.com\",\"Provadasa2\",\"Nicola\",\"Siciliano\",\"Sele45\")";
+		DriverManagerConnectionPool pool=new DriverManagerConnectionPool();
+		Connection con=pool.getConnection();
+		Statement statement=con.createStatement();
+		statement.executeUpdate(query);
+		statement.close();
+		pool.releaseConnection(con);
+	}
 	
 	@Test
 	public void doSaveSucces() throws SQLException
