@@ -71,8 +71,7 @@ if(articolo!=null)
       <button style="margin-left: 1%; height: 55%; width: 3%; border-radius: 47%;" disabled><%=((ArrayList<Rating>)request.getAttribute("RatingArticolo")).get(0).getNumeroStelle()%></button>
       <%} %> </span>
 	</div>
-<%	}
-if(request.getSession().getAttribute("Utente")!=null){ %>
+<%	} %>
 <form class="rating-stars" action="RatingControl?idArticolo=<%=articolo.getId()%>" method="post">
   
     <div class="rating-stars__wrapper" style="margin-right: 36%; height: 80px;">
@@ -87,6 +86,8 @@ if(request.getSession().getAttribute("Utente")!=null){ %>
       <%} %>
        <input type="submit" value="Rating"/>
        <%
+       if(request.getSession().getAttribute("Utente")!=null)
+       {
        	if(request.getAttribute("VotoRatingUtente")==null)
        	{
        		Rating rt=(Rating)request.getAttribute("ratingUtente");
