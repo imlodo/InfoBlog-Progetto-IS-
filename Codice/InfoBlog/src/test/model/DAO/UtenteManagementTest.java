@@ -4,13 +4,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import java.sql.SQLException;
 import org.junit.Test;
 import model.bean.Utente;
 import model.manager.UserManagement;
 import storage.DriverManagerConnectionPool;
-public class AutoreManagementTest 
+public class UtenteManagementTest 
 {
 	Utente utente2=new Utente("lauro.francesco47@gmail.com","password","Francesco","Lauro","Ento00");
 	Utente utente1=new Utente("lauro.antonio@gmail.com","Provadasa2","Nicola","Siciliano","Sele45");
