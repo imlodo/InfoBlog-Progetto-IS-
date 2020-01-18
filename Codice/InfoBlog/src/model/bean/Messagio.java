@@ -10,6 +10,24 @@ public class Messagio
 	private String tipologia;
 	private String stato;
 	private LocalDateTime data;
+
+
+
+	public Messagio(String contenuto, int idMessaggio, String mittente, String destinatario, String tipologia,
+			String stato, LocalDateTime data)
+	{
+		this.contenuto = contenuto;
+		this.idMessaggio = idMessaggio;
+		this.mittente = mittente;
+		this.destinatario = destinatario;
+		this.tipologia = tipologia;
+		this.stato = stato;
+		this.data = data;
+	}
+	public Messagio()
+	{
+		this.contenuto = "";
+	}
 	
 	public String getStato() {
 		return stato;
@@ -17,7 +35,7 @@ public class Messagio
 	public void setStato(String stato) {
 		this.stato = stato;
 	}
-		
+
 	public LocalDateTime getData() {
 		return data;
 	}
@@ -42,10 +60,7 @@ public class Messagio
 	public void setDestinatario(String destinatario) {
 		this.destinatario = destinatario;
 	}
-	public Messagio()
-	{
-		this.contenuto = "";
-	}
+
 	public Messagio(String contenuto)
 	{
 		this.contenuto = contenuto;

@@ -7,6 +7,8 @@ public class Conversazione
 	private ArrayList<Messagio> messaggi;
 	private String convCon;
 	
+	
+	
 	public Conversazione()
 	{
 		messaggi=new ArrayList<Messagio>();

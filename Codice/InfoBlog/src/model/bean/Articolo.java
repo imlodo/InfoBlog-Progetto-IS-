@@ -26,6 +26,19 @@ public class Articolo
 
 
 
+	public Articolo(String titolo, String contenuto, String categoria, String stato, LocalDate data, int id,
+			Autore autore, Moderatore moderatore) {
+		super();
+		this.titolo = titolo;
+		this.contenuto = contenuto;
+		this.categoria = categoria;
+		this.stato = stato;
+		this.data = data;
+		this.id = id;
+		this.autore = autore;
+		this.moderatore = moderatore;
+	}
+
 	public String getTitolo() {
 		return titolo;
 	}

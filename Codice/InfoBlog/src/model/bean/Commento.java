@@ -8,6 +8,14 @@ public class Commento {
 	public Commento()
 	{}
 
+	
+	public Commento(String contenuto, Articolo articolo, Utente utente) {
+		this.contenuto = contenuto;
+		this.articolo = articolo;
+		this.utente = utente;
+	}
+
+
 	public String getContenuto() 
 	{
 		return contenuto;

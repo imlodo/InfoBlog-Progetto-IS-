@@ -8,6 +8,15 @@ public class Rating
 	
 	public Rating()
 	{}
+	
+
+	public Rating(float numeroStelle, Articolo articolo, Utente utente) {
+		super();
+		this.numeroStelle = numeroStelle;
+		this.articolo = articolo;
+		this.utente = utente;
+	}
+
 
 	public float getNumeroStelle() {
 		return numeroStelle;

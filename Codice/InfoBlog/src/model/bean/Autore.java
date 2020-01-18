@@ -70,12 +70,4 @@ public class Autore
 	{
 		this.username = username;
 	}
-	
-	public String toString()
-	{
-		return this.getClass().getSimpleName() + "[email = " + email + ", password = " + password +
-				", nome = " + nome + ", cognome = " + cognome + ", username = " + username + "]";
-		
-	}
-	
 }
