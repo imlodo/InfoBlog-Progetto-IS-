@@ -27,7 +27,7 @@ public class UserManagement implements ItemModel<Utente, String>
 						"SELECT * "  
 						+"FROM utente " 
 						+"WHERE email = ? ;";
-		Utente utente;
+		Utente utente=null;
 		try
 		{
 			connection = pool.getConnection();
@@ -36,10 +36,11 @@ public class UserManagement implements ItemModel<Utente, String>
 			preparedStatement.setString(1, email);
 
 			//System.out.println("doRetrieveAll: " + preparedStatement.toString());
-			utente = new Utente();
+			
 			ResultSet rs = preparedStatement.executeQuery();
 			while(rs.next())
 			{
+				utente = new Utente();
 				utente.setEmail(rs.getString("email"));
 				utente.setPassword(rs.getString("password"));
 				utente.setNome(rs.getString("nome"));
@@ -133,12 +134,13 @@ public class UserManagement implements ItemModel<Utente, String>
 			preparedStatement.setString(3, utente.getNome());
 			preparedStatement.setString(4, utente.getCognome());
 			preparedStatement.setString(5, utente.getUsername());
-
+			
 			//System.out.println("doSave: " + preparedStatement.toString());
 			preparedStatement.executeUpdate();
-
+			
 			//Solo in questo momento la modifica viene resa visibile a tutti
 			connection.commit();
+			
 		}
 		finally
 		{
@@ -175,10 +177,9 @@ public class UserManagement implements ItemModel<Utente, String>
 			preparedStatement.setString(3, utente.getCognome());
 			preparedStatement.setString(4, utente.getUsername());
 			preparedStatement.setString(5, utente.getEmail());
-
+			
 			//System.out.println("doUpdate: " + preparedStatement.toString());
 			preparedStatement.executeUpdate();
-
 			//Solo in questo momento la modifica viene resa visibile a tutti
 			connection.commit();
 		}
