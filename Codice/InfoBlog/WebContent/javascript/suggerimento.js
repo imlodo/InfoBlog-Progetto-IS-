@@ -156,7 +156,7 @@ $(document).ready(function()
 	      $("#suggestMenu").append(a);
 	      
 	      /*for each item in the array...*/
-	      for (i = 0; i < 5; i++) 
+	      for (i = 0; i < 10; i++) 
 	      {
 	    	if(arr[i] != null)
 	    	{
@@ -180,14 +180,14 @@ $(document).ready(function()
 		          a.appendChild(b);
 		        }
 	    	}
-	    	var x = $("#myInputautocomplete-list")[0];
-	    	if(x != null)
-	    	{
-	    		if(x.childElementCount <= 0)
-		    	{
-		    		$("#myInputautocomplete-list").remove();
-		    	}
-	    	}
+	      }
+	      var x = $("#myInputautocomplete-list")[0];
+	      if(x != null)
+	      {
+	    	if(x.childElementCount <= 0)
+		    {
+		    	$("#myInputautocomplete-list").remove();
+		    }
 	      }
 	  });
 	  /*execute a function presses a key on the keyboard:*/

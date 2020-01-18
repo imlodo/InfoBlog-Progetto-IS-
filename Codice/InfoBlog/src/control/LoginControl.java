@@ -68,7 +68,6 @@ public class LoginControl extends HttpServlet
 			//Se era giusto il tipo utente lo setto.
 			if(Utils.controlTypeUser(typeUser))
 				request.setAttribute("checked", typeUser+"Check");
-			
 			// errore nell'inserimento dei dati da parte dell'utente, mandiamo l'errore alla jsp 
 			request.setAttribute("errore", "FORMATO_DATI_ERRATO");
 			RequestDispatcher dispatcher = request.getRequestDispatcher(loginPage);
