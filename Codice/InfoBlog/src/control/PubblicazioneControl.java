@@ -1,11 +1,9 @@
 package control;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
 import model.bean.Allegato;
 import model.bean.Articolo;
 import model.bean.Autore;
@@ -34,7 +31,8 @@ import utils.Utils;
 @MultipartConfig()
 public class PubblicazioneControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private static final String notFoundPage = "notfound.jsp";
+    private static final String pubPage = "richiestapubblicazione.jsp";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,7 +52,7 @@ public class PubblicazioneControl extends HttpServlet {
 		{
 			// invocata servlet senza essersi autenticato
 			// reindirizzo alla pagina not_found
-			response.sendRedirect("notfound.jsp");
+			response.sendRedirect(notFoundPage);
 			return;
 		}
 		
@@ -72,10 +70,8 @@ public class PubblicazioneControl extends HttpServlet {
 		
 		if(!Utils.checkTitolo(titoloArticolo) || !Utils.checkContenuto(contenutoArticolo) || !Utils.checkCategoria(categoriaArticolo))
 		{
-			// mandiamo l'errore alla jsp 
-			String url = "richiestapubblicazione.jsp"; // url della jsp
 			request.setAttribute("errore", "FORMATO_DATI_ERRATO");
-			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+			RequestDispatcher dispatcher = request.getRequestDispatcher(pubPage);
 			dispatcher.forward(request, response);
 			return;
 		}
@@ -89,19 +85,15 @@ public class PubblicazioneControl extends HttpServlet {
 			{
 				if(art.getTitolo().equals(titoloArticolo))
 				{
-					// mandiamo l'errore alla jsp 
-					String url = "richiestapubblicazione.jsp"; // url della jsp
 					request.setAttribute("errore", "TITOLO_PRESENTE");
-					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+					RequestDispatcher dispatcher = request.getRequestDispatcher(pubPage);
 					dispatcher.forward(request, response);
 					return;
 				}
 				if(art.getContenuto().contentEquals(contenutoArticolo))
 				{
-					// mandiamo l'errore alla jsp 
-					String url = "richiestapubblicazione.jsp"; // url della jsp
 					request.setAttribute("errore", "CONTENUTO_ARTICOLO_PRESENTE");
-					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+					RequestDispatcher dispatcher = request.getRequestDispatcher(pubPage);
 					dispatcher.forward(request, response);
 					return;
 				}
@@ -109,7 +101,6 @@ public class PubblicazioneControl extends HttpServlet {
 		}
 		catch (SQLException e1)
 		{
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -124,10 +115,8 @@ public class PubblicazioneControl extends HttpServlet {
 				
 				if(!Utils.checkFormato(name))
 				{
-					// mandiamo l'errore alla jsp 
-					String url = "richiestapubblicazione.jsp"; // url della jsp
 					request.setAttribute("errore", "FORMATO_ALLEGATI_ERRATO");
-					RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+					RequestDispatcher dispatcher = request.getRequestDispatcher(pubPage);
 					dispatcher.forward(request, response);
 					return;
 				}
@@ -168,10 +157,9 @@ public class PubblicazioneControl extends HttpServlet {
 				if(errorUpload != null)
 				{
 					articoloDM.doDelete(articoloSalvato);
-					// mandiamo l'errore alla jsp 
-					String url = "richiestapubblicazione.jsp"; // url della jsp
+					// mandiamo l'errore alla jsp
 					request.setAttribute("errore", errorUpload);
-					dispatcher = request.getRequestDispatcher(url);
+					dispatcher = request.getRequestDispatcher(pubPage);
 					dispatcher.forward(request, response);
 					return;
 				}
@@ -201,26 +189,23 @@ public class PubblicazioneControl extends HttpServlet {
 						dispatcher.include(request, response);
 					}
 					// mandiamo l'errore alla jsp 
-					String url = "richiestapubblicazione.jsp"; // url della jsp
 					request.setAttribute("errore", "NESSUN_MODERATORE_ESISTENTE");
-					dispatcher = request.getRequestDispatcher(url);
+					dispatcher = request.getRequestDispatcher(pubPage);
 					dispatcher.forward(request, response);
 					return;
 				}
 				
 				
 				// forward tutto è andato bene!
-				String url = "VisualizzaArticoliControl"; // url della jsp
-				dispatcher = request.getRequestDispatcher(url);
+				dispatcher = request.getRequestDispatcher("ArticleShowServlet");
 				dispatcher.forward(request, response);
 				return;
 			}
 			else
 			{
 				// mandiamo l'errore alla jsp 
-				String url = "richiestapubblicazione.jsp"; // url della jsp
 				request.setAttribute("errore", "ERRORE_DB");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+				RequestDispatcher dispatcher = request.getRequestDispatcher(pubPage);
 				dispatcher.forward(request, response);
 				return;
 			}

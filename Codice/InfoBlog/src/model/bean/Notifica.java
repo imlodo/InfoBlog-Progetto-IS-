@@ -26,6 +26,16 @@ public class Notifica {
 		this.emailModeratore=emailModeratore;
 	}
 	
+	
+	
+	public Notifica(int id, String contenuto, Stato stato, String emailAutore, String emailModeratore) {
+		this.id = id;
+		this.contenuto = contenuto;
+		this.stato = stato;
+		this.emailAutore = emailAutore;
+		this.emailModeratore = emailModeratore;
+	}
+
 	/**
 	 * Restituisce l'id associato alla notifica
 	 * @return id int, l'id associato alla notifica

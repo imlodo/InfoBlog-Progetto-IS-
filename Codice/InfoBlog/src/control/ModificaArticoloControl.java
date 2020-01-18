@@ -25,11 +25,13 @@ import utils.Utils;
 @MultipartConfig
 public class ModificaArticoloControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private static final String notFoundPage = "notfound.jsp";
+	private static final String modificaPage = "modificaArticolo.jsp";
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ModificaArticoloControl() {
+	public ModificaArticoloControl() 
+	{
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,7 +47,7 @@ public class ModificaArticoloControl extends HttpServlet {
 		{
 			// invocata servlet senza essersi autenticato
 			// reindirizzo alla pagina not_found
-			response.sendRedirect("notfound.jsp");
+			response.sendRedirect(notFoundPage);
 			return;
 		}
 		
@@ -73,17 +75,15 @@ public class ModificaArticoloControl extends HttpServlet {
 				if(articolo.getAutore() != null)
 				{	if(articolo.getAutore().getEmail().equals(emailSession.substring(1)))
 					{
-						String url = "modificaArticolo.jsp"; // url della jsp
-						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+						RequestDispatcher dispatcher = request.getRequestDispatcher(modificaPage);
 						dispatcher.forward(request, response);
 						return;
 					}
 					else
 					{
 						// mandiamo l'errore alla jsp 
-						String url = "notfound.jsp"; // url della jsp
 						request.setAttribute("errore", "ERRORE_ID");
-						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+						RequestDispatcher dispatcher = request.getRequestDispatcher(notFoundPage);
 						dispatcher.forward(request, response);
 						return;
 					}	
@@ -111,9 +111,8 @@ public class ModificaArticoloControl extends HttpServlet {
 						if(errorDelete != null)
 						{
 							// mandiamo l'errore alla jsp 
-							String url = "modificaArticolo.jsp"; // url della jsp
 							request.setAttribute("errore", errorDelete);
-							dispatcher = request.getRequestDispatcher(url);
+							dispatcher = request.getRequestDispatcher(modificaPage);
 							dispatcher.forward(request, response);
 							return;
 						}
@@ -132,9 +131,8 @@ public class ModificaArticoloControl extends HttpServlet {
 						if(!Utils.checkFormato(name))
 						{
 							// mandiamo l'errore alla jsp 
-							String url = "modificaArticolo.jsp"; // url della jsp
 							request.setAttribute("errore", "FORMATO_ALLEGATI_ERRATO");
-							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(modificaPage);
 							dispatcher.forward(request, response);
 							return;
 						}
@@ -153,16 +151,15 @@ public class ModificaArticoloControl extends HttpServlet {
 				if(errorUpload != null)
 				{
 					// mandiamo l'errore alla jsp 
-					String url = "modificaArticolo.jsp"; // url della jsp
 					request.setAttribute("errore", errorUpload);
-					dispatcher = request.getRequestDispatcher(url);
+					dispatcher = request.getRequestDispatcher(modificaPage);
 					dispatcher.forward(request, response);
 					return;
 				}
 				
 				if((int) request.getAttribute("successUpload") > 0)
 				{
-					System.out.print((int) request.getAttribute("successUpload"));
+//					System.out.print((int) request.getAttribute("successUpload"));
 					modificato = true;
 				}
 				
@@ -193,9 +190,8 @@ public class ModificaArticoloControl extends HttpServlet {
 							articolo.setModeratore(null);
 							articoloDM.doUpdate(articolo);
 							// mandiamo l'errore alla jsp 
-							String url = "modificaArticolo.jsp"; // url della jsp
 							request.setAttribute("errore", "NESSUN_ALLEGATO");
-							dispatcher = request.getRequestDispatcher(url);
+							dispatcher = request.getRequestDispatcher(modificaPage);
 							dispatcher.forward(request, response);
 							return;
 						}
@@ -223,7 +219,7 @@ public class ModificaArticoloControl extends HttpServlet {
 								notificaDM.doSave(notifica);
 						}
 						//Inutile inviare la notifica è già stata inviata precedentemente.
-						String url = "VisualizzaArticoliControl"; // url del control visualizza
+						String url = "ArticleShowServlet"; // url del control visualizza
 						dispatcher = request.getRequestDispatcher(url);
 						dispatcher.forward(request, response);
 						return;
@@ -237,9 +233,8 @@ public class ModificaArticoloControl extends HttpServlet {
 				else
 				{
 					// mandiamo l'errore alla jsp 
-					String url = "modificaArticolo.jsp"; // url della jsp
 					request.setAttribute("errore", "MODIFICHE_ASSENTI");
-					dispatcher = request.getRequestDispatcher(url);
+					dispatcher = request.getRequestDispatcher(modificaPage);
 					dispatcher.forward(request, response);
 					return;
 				}

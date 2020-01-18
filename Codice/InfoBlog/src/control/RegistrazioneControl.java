@@ -27,6 +27,7 @@ public class RegistrazioneControl extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
 	private static final String regPage = "registrazione.jsp";
+	private static final String notFoundPage = "notfound.jsp";
 	
     public RegistrazioneControl() 
     {
@@ -46,6 +47,11 @@ public class RegistrazioneControl extends HttpServlet
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		if(!(Utils.checkLogin(request.getSession(), request.getCookies()) == null))
+		{
+			response.sendRedirect(notFoundPage);
+			return;
+		}
 		//Prendo i parametri passati alla servlet
 		String nome = request.getParameter("nome");
 		String cognome = request.getParameter("cognome");
@@ -77,6 +83,7 @@ public class RegistrazioneControl extends HttpServlet
 			request.setAttribute("errore", "FORMATO_DATI_ERRATI");
 			RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
 			dispatcher.forward(request, response);
+			return;
 		}
 		
 		//Se tutti i controlli precedenti sono stati superati, si può provare a registrare l'account.

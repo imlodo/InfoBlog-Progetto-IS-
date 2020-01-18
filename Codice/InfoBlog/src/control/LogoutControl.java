@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/LogoutControl")
 public class LogoutControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String homePage = "homepage.jsp";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -71,7 +72,7 @@ public class LogoutControl extends HttpServlet {
 				session.invalidate();
 			}
 			//no encoding because we have invalidated the session
-			response.sendRedirect("homepage.jsp");
+			response.sendRedirect(homePage);
 		}
 	}
 

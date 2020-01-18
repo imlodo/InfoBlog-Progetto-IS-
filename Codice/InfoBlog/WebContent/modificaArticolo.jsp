@@ -1,6 +1,6 @@
 <%@page import="model.bean.Articolo"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,6 @@
 <link rel="stylesheet" type="text/css" href="css/richiestaPubblicazione.css">
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="css/Allegato.css">
 </head>
 <body>
 
@@ -17,10 +16,10 @@
 	
 %>
 <jsp:include page="header.jsp"></jsp:include>
-<div class='titoloContainer'>
+	<div class='containerArea'>
+	<div class='titoloContainer'>
 		<label>Modifica Articolo</label>
 	</div>
-	<div class='containerArea'>
 		<form class='formRichiestaPubblicazione' action='ModificaArticoloControl' enctype="multipart/form-data" method='POST'>
 		<%
 			Articolo articolo = (Articolo) request.getAttribute("articolo");
@@ -40,6 +39,7 @@
 					case "FILE_ALLEGATO_PRESENTE" : errorView="File allegato presente";break;
 					case "NESSUN_MODERATORE_ESISTENTE" : errorView="Non esiste un moderatore per la categoria selezionata!";break;
 					case "MODIFICHE_ASSENTI" : errorView="Modifiche Assenti";break;
+					case "NESSUN_ALLEGATO" : errorView="Attenzione nessun allegato presente: gli articoli in questo stato non vengono moderati";break;
 				}
 		%>
 				<div class='area'>
@@ -95,24 +95,27 @@
   					<option value="machineLearning">Machine Learning</option>
   				</select>
 			</div>
-			<div id="allegatoBlock">
-		<p style="padding-left:10px;display:inline;">Lista allegati dell'articolo</p>
-		<div style="padding-top:1%;">
-			<input id='idArticolo' type="hidden" name="id" value=<%=articolo.getId() %>>
-			<input id="files" type='file' name="files[]" accept="application/pdf,application/msword" multiple required>
+			<input id='idArticolo' type="hidden" name="idArticolo" value=<%=articolo.getId() %>>
+			<div class='areaAllegati'>
+				<div class="title"><label>Sezione Allegati</label></div>
+			<div class='inputFile'>
+			<label for="files" class="custom-file-upload">
+    			<i class="fa fa-cloud-upload"></i> Seleziona uno o più file
+				</label>
+			<input id="files" type='file' name="file[]" accept="application/pdf,application/msword" multiple required>
 			<br>
+			<div id="selectedFiles"></div>
 			<label>Seleziona gli allegati da cancellare: </label>
-		</div>
-		<div id="listaAllegati"></div>
-		</div>
+			<div id="listaAllegati"></div>
+			</div>
+			</div>
 			<div class='areaSubmit'>
-				<input type='button' onclick='checkSubmit()' value='Invia modifiche'/>
+				<input type='button' onclick='precheckSubmit()' value='Invia modifiche'/>
 			</div>
 		</form>
 	</div>
 </body>
 <script type="text/javascript" src="javascript/caricaAllegato.js"></script>
-<!-- <script type="text/javascript" src="javascript/modificaArticolo.js"></script> -->
 <script>
 $(document).ready(function()
 {
@@ -120,17 +123,11 @@ $(document).ready(function()
 	$(".selectCategoria").val(categoria);
 
 });
-function checkSubmit()
+function precheckSubmit()
 {
-	if($("#listaAllegati")[0].childElementCount > 0 || $("#files")[0].files.length > 0)
-	{
-		$("#files").attr("required", "false");
-		$(".formRichiestaPubblicazione").submit();
-	}
-	else
-	{
-		$("#files").attr("required", "true");
-	}
+	
+	checkSubmit();
 }
 </script>
+<script src="javascript/richiestapubblicazione.js" charset="UTF-8"></script>
 </html>

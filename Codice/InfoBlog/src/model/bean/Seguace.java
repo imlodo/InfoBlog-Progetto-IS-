@@ -4,7 +4,14 @@ public class Seguace
 {
 	private String autore;
 	private String utente;
+	public Seguace() 
+	{}
 	
+	public Seguace(String autore, String utente) 
+	{
+		this.autore = autore;
+		this.utente = utente;
+	}
 	public String getAutore() {
 		return autore;
 	}

@@ -14,12 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
 import com.google.gson.Gson;
-
 import model.bean.Allegato;
 import model.manager.AllegatoManagement;
 import storage.DriverManagerConnectionPool;
+import utils.Utils;
 
 /**
  * Servlet implementation class CaricaAllegatoControl
@@ -29,6 +28,7 @@ import storage.DriverManagerConnectionPool;
 public class CaricaAllegatoControl extends HttpServlet 
 {
 	private static final long serialVersionUID = 1L;
+    private static final String notFoundPage = "notfound.jsp";
        
     public CaricaAllegatoControl() 
     {
@@ -36,48 +36,37 @@ public class CaricaAllegatoControl extends HttpServlet
         // TODO Auto-generated constructor stub
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@SuppressWarnings("unchecked")
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
+		String email = Utils.checkLogin(request.getSession(), request.getCookies());
+		if(email != null)
+		{
+			if(email.substring(0,1).equals("a")){}
+			else
+			{
+				//Errore 
+				response.sendRedirect(notFoundPage);
+				return;
+			}
+		}
+		else
+		{
+			//Errore 
+			response.sendRedirect(notFoundPage);
+			return;
+		}
+		
 		DriverManagerConnectionPool dm=new DriverManagerConnectionPool();
 		AllegatoManagement allMan=new AllegatoManagement(dm);
-	
 		//path della cartella degli allegati del server
 		File uploadsDir = new File(getServletContext().getInitParameter("allegati"));
-		System.out.println(uploadsDir.toString());
+//		System.out.println(uploadsDir.toString());
+		
 		//dati dell'allegato
-//		Part fileAllegato=request.getPart("file");
 		ArrayList<Part> files = null;
 		String idArticolo = null;
-//		String idArticolo = request.getParameter("id");
-//		if(idArticolo != null)
-//		{
-//			//Prendo i file
-//			files = (ArrayList<Part>) request.getParts();
-//			ArrayList<Part> fileDaCaricare = new ArrayList<Part>();
-//			for(Part el : files)
-//			{
-//				String name = el.getSubmittedFileName();
-//				if(name != null)
-//				{
-//					
-//					if(!Utils.checkFormato(name))
-//					{
-//						// mandiamo l'errore alla jsp 
-//						String url = "modificaArticolo.jsp"; // url della jsp
-//						request.setAttribute("errore", "FORMATO_ALLEGATI_ERRATO");
-//						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-//						dispatcher.forward(request, response);
-//						return;
-//					}
-//					//è un file pdf, word o wordx, posso caricarlo
-//					fileDaCaricare.add(el);
-//				}	
-//			}
-//			files = fileDaCaricare;
-//		}
-//		else
-//		{
 		files = (ArrayList<Part>) request.getAttribute("files");
-//		}
 		ArrayList<Allegato> allegatiSave = new ArrayList<Allegato>();
 		int allegatiCaricati = 0;
 		try 
@@ -87,47 +76,51 @@ public class CaricaAllegatoControl extends HttpServlet
 				for(Part el : files)
 				{
 					if(idArticolo == null)
-			    		idArticolo = String.valueOf(request.getAttribute("id"));
+						idArticolo = String.valueOf(request.getAttribute("id"));
 					
 					//path dell'allegato
 				    String fileName = Paths.get(el.getSubmittedFileName()).getFileName().toString();
-					System.out.println(fileName);
+//					System.out.println(fileName);
 				    
-				    	Allegato nuovoAll=new Allegato();
-				    	nuovoAll.setPercorsoFile(new File(uploadsDir,fileName).toString());
-				    	nuovoAll.setId(Integer.parseInt(idArticolo));
+				    Allegato nuovoAll=new Allegato();
+				    nuovoAll.setPercorsoFile(new File(uploadsDir,fileName).toString());
+				    nuovoAll.setId(Integer.parseInt(idArticolo));
 				    	
-				    	allMan.doSave(nuovoAll);
-						if(!uploadsDir.exists()) {
-					    	uploadsDir.mkdir();
-					    	System.out.println("cartella creata");
-					    }
-					    
-						File file=new File(nuovoAll.getPercorsoFile());
+					if(!uploadsDir.exists()) {
+					    uploadsDir.mkdir();
+//					    System.out.println("cartella creata");
+					}
+					
+					File file=new File(nuovoAll.getPercorsoFile());
 						
-						Gson gson=new Gson();
+					Gson gson=new Gson();
 						
-						response.setContentType("application/json");
+					response.setContentType("application/json");
 						
-						if(file.delete()) 
-						{
-							System.out.println("cancellato"+file.getAbsolutePath());
-							String result=gson.toJson("si");
-							response.getWriter().print(result);
-							System.out.println(result);
+					if(file.delete()) 
+					{
+//						System.out.println("cancellato"+file.getAbsolutePath());
+						String result=gson.toJson("si");
+						response.getWriter().print(result);
+//						System.out.println(result);
 							
-						}
-						else {
-							System.out.println("non cancellato"+file.getAbsolutePath());
-							String result=gson.toJson("no");
-							response.getWriter().print(result);
-						}
-					    InputStream fileContent=el.getInputStream();
-					    Files.copy(fileContent, new File(uploadsDir,fileName).toPath());
-					    allegatiSave.add(nuovoAll);
-					    allegatiCaricati+=1;
-				  }
+					}
+					else {
+//						System.out.println("non cancellato"+file.getAbsolutePath());
+						String result=gson.toJson("no");
+						response.getWriter().print(result);
+					}
+					InputStream fileContent=el.getInputStream();
+					Files.copy(fileContent, new File(uploadsDir,fileName).toPath());
+					allMan.doSave(nuovoAll);
+					allegatiSave.add(nuovoAll);
+					allegatiCaricati+=1;
+				}
 				request.setAttribute("successUpload", allegatiCaricati);
+			}
+			else
+			{
+				response.sendRedirect(notFoundPage);
 			}
 		}
 		catch (SQLException | FileAlreadyExistsException e) 
@@ -146,14 +139,14 @@ public class CaricaAllegatoControl extends HttpServlet
 					
 					if(file.delete()) 
 					{
-						System.out.println("cancellato"+file.getAbsolutePath());
+//						System.out.println("cancellato"+file.getAbsolutePath());
 						String result=gson.toJson("si");
 						response.getWriter().print(result);
 						System.out.println(result);
 						
 					}
 					else {
-						System.out.println("non cancellato"+file.getAbsolutePath());
+//						System.out.println("non cancellato"+file.getAbsolutePath());
 						String result=gson.toJson("no");
 						response.getWriter().print(result);
 					}

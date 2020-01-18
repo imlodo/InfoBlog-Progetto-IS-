@@ -73,7 +73,7 @@
 					if(error.equals("DATI_PRESENTI"))
 					{
 		%>
-						<div class="errorLabel"><label>Username o email presente!</label></div>
+						<div class="errorLabel"><label>Username presente!</label></div>
 	 	<%
 					}
 					if(error.equals("MODIFICHE_ASSENTI"))

@@ -1,12 +1,10 @@
 package model.manager;
-
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import model.bean.Allegato;
 import storage.DriverManagerConnectionPool;
 
