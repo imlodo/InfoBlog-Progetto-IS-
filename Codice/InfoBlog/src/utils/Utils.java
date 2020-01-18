@@ -154,7 +154,7 @@ public class Utils
 	{
 		if(text == null)
 			return false;
-		String regexp = "^[A-Za-z]{4,50}$";
+		String regexp = "[A-Z][a-zA-Z0-9][^#@&<>\\\"~;$^%{}?]{4,50}$";
 		// in javascript vanno inserite tra /regexrp/ in java NO
 		Pattern pt = Pattern.compile(regexp);
 		Matcher mt = pt.matcher(text);
@@ -166,7 +166,7 @@ public class Utils
 	{
 		if(text == null)
 			return false;
-		String regexp = "^[a-zA-Z0-9 #.:(),!@&<>'’\\è\\é\\ù\\ò\\\"~;$^%{}?]{200,15000}$";
+		String regexp = "[a-zA-Z0-9 #.:(),!@&<>'ï¿½\\ï¿½\\ï¿½\\ï¿½\\ï¿½\\\"~;$^%{}?]{200,15000}$";
 		// in javascript vanno inserite tra /regexrp/ in java NO
 		Pattern pt = Pattern.compile(regexp);
 		Matcher mt = pt.matcher(text);
@@ -270,7 +270,7 @@ public class Utils
 				});
 				int numeroArticoli = articoli.size();
 				moderatori.remove(0);
-				//Cerco il moderatore con il numero di articoli moderati per quella categoria più piccolo
+				//Cerco il moderatore con il numero di articoli moderati per quella categoria piï¿½ piccolo
 				for(Moderatore mod : moderatori)
 				{
 					articoli = (ArrayList<Articolo>) articoloDM.doRetrieveAll("");

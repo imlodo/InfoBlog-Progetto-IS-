@@ -1,3 +1,4 @@
+<%@page import="utils.Utils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -6,15 +7,21 @@
 <meta charset="ISO-8859-1">
 <title>Richiesta Pubblicazione Articolo</title>
 <link rel="stylesheet" type="text/css" href="css/richiestaPubblicazione.css">
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
+<script src="javascript/jquery-3.4.1.min.js"></script>
 </head>
 <body>
+<%	
+	//Controllo che è un autore che vuole pubblicare l'articolo
+	String log = Utils.checkLogin(request.getSession(), request.getCookies());
+	log = log == null ? "" : log.substring(0,1);
+	if(!log.equals("a"))
+		response.sendRedirect("/InfoBlog/");
+%>
 <jsp:include page="header.jsp"></jsp:include>
-	<div class='titoloContainer'>
-		<label>Richiesta di pubblicazione articolo</label>
-	</div>
 	<div class='containerArea'>
+		<div class='titoloContainer'>
+			<label>Richiesta di pubblicazione articolo</label>
+		</div>
 		<form class='formRichiestaPubblicazione' action='PubblicazioneControl' enctype="multipart/form-data" method='POST'>
 		<%
 			String titolo = (String) request.getAttribute("titolo");
@@ -46,13 +53,13 @@
 				if(titolo != null)
 				{
 				%>
-					<input type='text' name='titolo' placeholder="titolo articolo..." value=<%=titolo %> required>
+					<input type='text' name='titolo' placeholder="titolo articolo..." value="<%=titolo %>" autocomplete='off' required>
 				<%
 				}
 				else
 				{
 				%>
-					<input type='text' name='titolo' placeholder="titolo articolo..." required>
+					<input type='text' name='titolo' placeholder="titolo articolo..."  autocomplete='off' required>
 				<%	
 				}
 				%>
@@ -63,13 +70,13 @@
 				if(contenuto != null)
 				{
 				%>
-					<textarea  name='contenuto' style='resize:none;' placeholder="contenuto..." required><%=contenuto%></textarea>
+					<textarea  name='contenuto' style='resize:none;' placeholder="contenuto..." autocomplete='off' required><%=contenuto%></textarea>
 				<%
 				}
 				else
 				{
 				%>
-					<textarea  name='contenuto' style='resize:none;' placeholder="contenuto..." required></textarea>
+					<textarea  name='contenuto' style='resize:none;' placeholder="contenuto..." autocomplete='off' required></textarea>
 				<%	
 				}
 				%>
@@ -89,14 +96,18 @@
 			</div>
 			<div class='areaAllegati'>
 				<div class="title"><label>Sezione Allegati</label></div>
-				<input type="file" id="files" name="file[]" multiple required />
+				<div class='inputFile'>
+				<label for="files" class="custom-file-upload">
+    			<i class="fa fa-cloud-upload"></i> Seleziona uno o più file
+				</label>
+				<input type="file" id="files" name="file[]" multiple accept="application/pdf,application/msword" required /></div>
 				<div id="selectedFiles"></div>
 			</div>
 			<div class='areaSubmit'>
-				<input type='submit' value='Invia richiesta pubblicazione'/>
+				<input type='button' onclick='checkSubmit()' value='Invia richiesta pubblicazione'/>
 			</div>
 		</form>
 	</div>
 </body>
-<script src="javascript/richiestapubblicazione.js"></script>
+<script src="javascript/richiestapubblicazione.js" charset="UTF-8"></script>
 </html>

@@ -27,14 +27,6 @@
 	padding-right:30px;
 }
 
-.item:focus {
-    outline: 1px solid blue;
-}
-
-.item:hover{
-	background-color: MediumSeaGreen;
-}
-
 .immagine{
 	border-radius:40%;
 	width:50px;

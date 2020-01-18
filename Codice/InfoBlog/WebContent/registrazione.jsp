@@ -1,3 +1,4 @@
+<%@page import="utils.Utils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -29,6 +30,8 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
 </head>
+<%if(Utils.checkLogin(request.getSession(), request.getCookies()) != null)
+	response.sendRedirect("/InfoBlog/"); %>
 <body style="background-color: #999999;">
 	
 	<div class="limiter">

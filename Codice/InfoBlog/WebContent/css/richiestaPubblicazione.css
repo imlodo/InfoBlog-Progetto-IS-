@@ -1,14 +1,83 @@
-.containerArea
-{
-	width: 70%;
-    height: auto;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 10px;
-    border: 2px solid black;
-    margin-bottom:20px;
+#listaAllegati{
+	paddin-top:4%;
+	padding-top:2%;
+	height: 100px;
+  	overflow-y: scroll;
 }
 
+.item{
+	float:left;
+	text-align:center;
+	padding-right:30px;
+}
+
+.immagine{
+	border-radius:40%;
+	width:50px;
+	height:30px;
+	padding-right:10px;	
+}
+
+.nome{
+	text-align:bottom;
+}
+
+*
+{
+	font-family:sans-serif;
+}
+
+.containerArea
+{
+	width:65%;
+	height: auto;
+    margin: 10px auto;
+    text-align: center;
+    padding-top: 10px;
+    background: #e0eeff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.containerArea input[type=button] 
+{
+      background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    cursor:pointer;
+}
+
+.containerArea input[type=file]
+{
+	display:none;
+}
+.custom-file-upload {
+	margin-top:5px;
+	margin-bottom:5px;
+	font-family:sans-serif;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    cursor:pointer;
+}
+.containerArea input[type=button]:hover 
+{
+      background-color: #75b7cd;
+}
+.custom-file-upload:hover
+{
+	background-color: #99df9c;
+}
 .titoloContainer
 {
 	margin-top:10px;
@@ -41,6 +110,8 @@
 {
 	width: 95%;
     text-align: center;
+    border: none;
+    height: 30px;
 }
 
 .area textarea
@@ -48,22 +119,88 @@
 	width: 95%;
 	height: 300px;
     text-align: center;
+   	border:none;
+   	resize:none;
 }
 
 .areaAllegati
 {
-    text-align: center;
-    margin-bottom:10px;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 }
 
+.inputFile
+{
+	/* border-top: 2px solid red;
+    border-left: 2px solid red;
+    border-right: 2px solid red; */
+    background:white;
+	width:95%;
+	padding-top: 5px;
+}
 .areaAllegati input
 {
-	border: 2px solid red;
-	width:95%;
 }
 
 .areaSubmit
 {
 	text-align:center;
+}
+
+#selectedFiles
+{
+	width: 95%;
+    /* border-bottom: 2px solid red;
+    border-left: 2px solid red;
+    border-right: 2px solid red; */
+        padding-bottom: 5px;
+        background:white;
+}
+
+#errorImgTitolo
+{
+	width:18px;
+	cursor:pointer;
+}
+.errorTitle
+{
+	display: inline-flex;
+    position: relative;
+    bottom: 30px;
+    font-size: 10px;
+    width: 80%;
+    background: white;
+    padding: 10px;
+    color: red;
+    border: 1px solid red;
+}
+
+.errorContenuto
+{
+	display: inline-flex;
+    position: relative;
+    bottom: 30px;
+    font-size: 10px;
+    width: 80%;
+    background: white;
+    padding: 10px;
+    color: red;
+    border: 1px solid red;
+}
+
+.errorLabel
+{
+	color:red;
 	margin-bottom:10px;
+}
+
+@media (max-width: 692px) 
+{
+
+	#errorImgTitolo
+	{
+	}
 }

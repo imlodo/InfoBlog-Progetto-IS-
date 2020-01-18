@@ -78,15 +78,6 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 		AutoreManagement autoreDM = new AutoreManagement(pool);
 		try
 		{
-			Utente utente = userDM.doRetrieveByKey(emailSession.substring(1));
-			if(utente.getUsername().equals(username) && utente.getCognome().equals(cognome) && utente.getNome().equals(nome) && utente.getPassword().equals(password))
-			{
-				// errore nell'inserimento dei dati da parte dell'utente
-				request.setAttribute("errore", "MODIFICHE_ASSENTI");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
-				dispatcher.forward(request, response);
-				return;
-			}	
 			//Se l'username è diverso da quello della sessione(lo sta modificando), cerco se è già presenre
 			if(!username.equals(request.getSession().getAttribute("Username")))
 			{
@@ -118,46 +109,79 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 				}
 			}
 			HttpSession session = request.getSession();
-			if(emailSession.substring(0,1).equals("u"))
+			
+			switch(emailSession.substring(0,1))
 			{
-				Utente user = new Utente(emailSession.substring(1),password,nome,cognome,username);
-				userDM.doUpdate(user);
-				synchronized(session) 
+				case "u": 
 				{
-					//Risetto la sessione e cookie
-					session.setAttribute("Username", user.getUsername());
-					Cookie usernameCookie = new Cookie("Username", user.getUsername());
-					response.addCookie(usernameCookie);
+					Utente utente = userDM.doRetrieveByKey(emailSession.substring(1));
+					if(utente.getUsername().equals(username) && utente.getCognome().equals(cognome) && utente.getNome().equals(nome) && utente.getPassword().equals(password))
+					{
+						// errore nell'inserimento dei dati da parte dell'utente
+						request.setAttribute("errore", "MODIFICHE_ASSENTI");
+						RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
+						dispatcher.forward(request, response);
+						return;
+					}
+					Utente user = new Utente(emailSession.substring(1),password,nome,cognome,username);
+					userDM.doUpdate(user);
+					synchronized(session) 
+					{
+						//Risetto la sessione e cookie
+						session.setAttribute("Username", user.getUsername());
+						Cookie usernameCookie = new Cookie("Username", user.getUsername());
+						response.addCookie(usernameCookie);
+					}
+					break;
 				}
-			}
-			if(emailSession.substring(0,1).equals("a"))
-			{
-				Autore autore = new Autore(emailSession.substring(1),password,nome,cognome,username);
-				autoreDM.doUpdate(autore);
-				synchronized(session) 
+				case "a": 
 				{
-					//Risetto la sessione e cookie
-					session.setAttribute("Username", autore.getUsername());
-					Cookie usernameCookie = new Cookie("Username", autore.getUsername());
-					response.addCookie(usernameCookie);
+					Autore autore = autoreDM.doRetrieveByKey(emailSession.substring(1));
+					if(autore.getUsername().equals(username) && autore.getCognome().equals(cognome) && autore.getNome().equals(nome) && autore.getPassword().equals(password))
+					{
+						// errore nell'inserimento dei dati da parte dell'utente
+						request.setAttribute("errore", "MODIFICHE_ASSENTI");
+						RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
+						dispatcher.forward(request, response);
+						return;
+					}
+					autore = new Autore(emailSession.substring(1),password,nome,cognome,username);
+					autoreDM.doUpdate(autore);
+					synchronized(session) 
+					{
+						//Risetto la sessione e cookie
+						session.setAttribute("Username", autore.getUsername());
+						Cookie usernameCookie = new Cookie("Username", autore.getUsername());
+						response.addCookie(usernameCookie);
+					}
+					break;
 				}
-				
-			}
-			if(emailSession.substring(0,1).equals("m"))
-			{
-				//Serve per non far modificare la categoria
-				Moderatore mod = moderatoreDM.doRetrieveByKey(emailSession.substring(1));
-				mod.setNome(nome);
-				mod.setCognome(cognome);
-				mod.setUsername(username);
-				mod.setPassword(password);
-				moderatoreDM.doUpdate(mod);
-				synchronized(session) 
+				case "m": 
 				{
-					//Risetto la sessione e cookie
-					session.setAttribute("Username", mod.getUsername());
-					Cookie usernameCookie = new Cookie("Username", mod.getUsername());
-					response.addCookie(usernameCookie);
+					Moderatore mod = moderatoreDM.doRetrieveByKey(emailSession.substring(1));
+					if(mod.getUsername().equals(username) && mod.getCognome().equals(cognome) && mod.getNome().equals(nome) && mod.getPassword().equals(password))
+					{
+						// errore nell'inserimento dei dati da parte dell'utente
+						request.setAttribute("errore", "MODIFICHE_ASSENTI");
+						RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);
+						dispatcher.forward(request, response);
+						return;
+					}
+					//Serve per non far modificare la categoria
+					mod = moderatoreDM.doRetrieveByKey(emailSession.substring(1));
+					mod.setNome(nome);
+					mod.setCognome(cognome);
+					mod.setUsername(username);
+					mod.setPassword(password);
+					moderatoreDM.doUpdate(mod);
+					synchronized(session) 
+					{
+						//Risetto la sessione e cookie
+						session.setAttribute("Username", mod.getUsername());
+						Cookie usernameCookie = new Cookie("Username", mod.getUsername());
+						response.addCookie(usernameCookie);
+					}
+					break;
 				}
 			}
 			request.setAttribute("success", "MODIFICA_SUCCESS");
@@ -166,14 +190,18 @@ public class ModificaDatiPersonaliControl extends HttpServlet {
 		}
 		catch(Exception e)
 		{
-			if(e.getMessage().equals("existUsername"))
+			if(e.getMessage() != null)
 			{
-				request.setAttribute("errore", "DATI_PRESENTI");
-			}
-			else
-			{
-				// Dati già presenti
-				request.setAttribute("errore", "FORMATO_DATI_ERRATI");
+				System.out.println(e.getMessage());
+				if(e.getMessage().equals("existUsername"))
+				{
+					request.setAttribute("errore", "DATI_PRESENTI");
+				}
+				else
+				{
+					// Dati già presenti
+					request.setAttribute("errore", "FORMATO_DATI_ERRATI");
+				}
 			}
 			// mandiamo l'errore alla jsp 
 			RequestDispatcher dispatcher = request.getRequestDispatcher(profilePage);

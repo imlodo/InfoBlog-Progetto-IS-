@@ -33,7 +33,6 @@ public class ScaricaAllegatoControl extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//String pathAllegato=request.getParameter("path");
 		
 		DriverManagerConnectionPool dm=new DriverManagerConnectionPool();
 		AllegatoManagement allMan=new AllegatoManagement(dm);

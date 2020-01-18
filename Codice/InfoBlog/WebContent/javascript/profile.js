@@ -21,7 +21,6 @@ function changeView()
 	username=$("#username").val();
 	password=$("#password").val();
 	controllaDati();
-	
 	$(".fixButton").remove();
 	p = $(".data").detach();
 	$("<form class='formModificaDati' action='ModificaDatiPersonaliControl' method='POST'>").insertAfter($(".topTitle"));
@@ -33,6 +32,16 @@ function changeView()
 	$("#email").prop("disabled",true);
 	$("#categoria").prop("disabled",true);
 	$("#password").prop( "type", "text" );
+	
+	$('input[type="text"]').keyup(function() 
+	{
+		controllaDati();
+	});
+	$(".formModificaDati").keypress(function(e) {
+		  if (e.which == 13) {
+		    controlSubmit();
+		  }
+	});
 }
 
 function cancel()
