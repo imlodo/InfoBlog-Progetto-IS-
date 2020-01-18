@@ -49,13 +49,14 @@ public class verificaMessaggi extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
-		if(tipologia.equals("risposta"))
-			contatti=ConversazioniManagment.getUtenti("R:"+email);
-		else
-			contatti=ConversazioniManagment.getUtenti("M:"+email);
-
+		
 		try 
 		{
+			if(tipologia.equals("risposta"))
+				contatti=ConversazioniManagment.getUtenti("R:"+email);
+			else
+				contatti=ConversazioniManagment.getUtenti("M:"+email);
+
 			for(int i=0;i<contatti.size();i++)
 			{
 				ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(email+" "+contatti.get(i));

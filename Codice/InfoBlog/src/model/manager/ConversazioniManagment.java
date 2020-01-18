@@ -9,13 +9,13 @@ import storage.DriverManagerConnectionPool;
 
 public class ConversazioniManagment 
 {	
-	public static ArrayList<String> getUtenti(String idUtente) 
+	public static ArrayList<String> getUtenti(String idUtente) throws SQLException 
 	{
 		ArrayList<String> nomi=new ArrayList<String>();
 		String query="";
-		DriverManagerConnectionPool forConnection= null;
-		Connection conn= null;
-		PreparedStatement statement = null;
+		DriverManagerConnectionPool forConnection=null;
+		Connection conn=null;
+		PreparedStatement statement=null;
 		ResultSet set;
 		
 		if(idUtente.indexOf("M:")!=-1)
@@ -37,31 +37,19 @@ public class ConversazioniManagment
 			set=statement.executeQuery();
 			while(set.next())	
 				nomi.add(set.getString(1));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		finally
 		{
 			try
 			{
 				if(statement!=null)
 					statement.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 			finally
 			{
-				try {
-					forConnection.releaseConnection(conn);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				forConnection.releaseConnection(conn);
 			}
-		}		
+		}	
 		return nomi;
-	}
-	
+	}	
 }

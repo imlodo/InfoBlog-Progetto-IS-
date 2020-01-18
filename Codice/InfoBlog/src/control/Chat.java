@@ -49,13 +49,14 @@ public class Chat extends HttpServlet {
 				if(session.getAttribute("Autore")!=null)
 				{
 					String autore=(String) session.getAttribute("Autore");
-					contatti=ConversazioniManagment.getUtenti("R:"+autore);
 
-					if(contatti.size()>0)
+
+
+					try 
 					{
-						try 
+						if(contatti.size()>0)
 						{
-
+							contatti=ConversazioniManagment.getUtenti("R:"+autore);
 							for(int i=0;i<contatti.size();i++)
 							{
 								ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(autore+" "+contatti.get(i));
@@ -90,29 +91,32 @@ public class Chat extends HttpServlet {
 							dispatcher.forward(request, response);
 							return;
 						}
-						catch (SQLException e) 
+						else
 						{
-							e.printStackTrace();
+							request.setAttribute("Vuoto", "Nessuna conversazione");
+							session.setAttribute("chat",conv);
+							request.setAttribute("contatti", contatti);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							dispatcher.forward(request, response);
+							return;
 						}
 					}
-					else
+					catch (SQLException e) 
 					{
-						request.setAttribute("Vuoto", "Nessuna conversazione");
-						session.setAttribute("chat",conv);
-						request.setAttribute("contatti", contatti);
-						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-						dispatcher.forward(request, response);
-						return;
+						e.printStackTrace();
 					}
+
 				}
 				else
 				{
 					String utente=(String) session.getAttribute("Utente");
-					contatti=ConversazioniManagment.getUtenti("M:"+utente);
 
-					if(contatti.size()>0)
+
+
+					try 
 					{
-						try 
+						contatti=ConversazioniManagment.getUtenti("M:"+utente);
+						if(contatti.size()>0)
 						{
 							for(int i=0;i<contatti.size();i++)
 							{
@@ -147,20 +151,22 @@ public class Chat extends HttpServlet {
 							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 							dispatcher.forward(request, response);
 						}
-						catch (SQLException e) 
+
+						else
 						{
-							e.printStackTrace();
+							request.setAttribute("Vuoto", "Nessuna conversazione");
+							session.setAttribute("chat",conv);
+							request.setAttribute("contatti", contatti);
+							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
+							dispatcher.forward(request, response);
+							return;
 						}
 					}
-					else
+					catch (SQLException e) 
 					{
-						request.setAttribute("Vuoto", "Nessuna conversazione");
-						session.setAttribute("chat",conv);
-						request.setAttribute("contatti", contatti);
-						RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-						dispatcher.forward(request, response);
-						return;
+						e.printStackTrace();
 					}
+
 				}
 			}
 		}
