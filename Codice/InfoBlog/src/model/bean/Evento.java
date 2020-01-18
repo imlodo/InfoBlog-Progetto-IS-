@@ -8,33 +8,27 @@ public class Evento
 	private LocalDate data;
 	private int idEvento;
 	private Autore autore;  // sostituire con la classe;
-	
-	public Evento(String via, String città, String nome, String argomento, LocalDate data,Autore autore)
+
+	public Evento(String via, String città, String nome, String argomento, LocalDate data, int idEvento,Autore autore)
 	{
+		super();
 		this.via = via;
 		this.città = città;
 		this.nome = nome;
 		this.argomento = argomento;
 		this.data = data;
-		this.autore=autore;
-		this.idEvento=0;
+		this.idEvento = idEvento;
+		this.autore = autore;
 	}
+	public Evento(){}
+	
 	public int getIdEvento() {
 		return idEvento;
 	}
 	public void setIdEvento(int idEvento) {
 		this.idEvento = idEvento;
 	}
-	public Evento()
-	{
-		via="";
-		città="";
-		nome="";
-		argomento="";
-		data=null;
-		autore=null;
-		idEvento=0;
-	}
+
 	public String getVia() 
 	{
 		return via;
@@ -80,10 +74,5 @@ public class Evento
 	}
 	public void setAutore(Autore autore) {
 		this.autore = autore;
-	}
-	@Override
-	public String toString() {
-		return "Evento [via=" + via + ", città=" + città + ", nome=" + nome + ", argomento=" + argomento + ", data="
-				+ data + ", idEvento=" + idEvento + ", autore=" + autore + "]";
 	}
 }
