@@ -49,14 +49,11 @@ public class Chat extends HttpServlet {
 				if(session.getAttribute("Autore")!=null)
 				{
 					String autore=(String) session.getAttribute("Autore");
-
-
-
 					try 
 					{
+						contatti=ConversazioniManagment.getUtenti("R:"+autore);
 						if(contatti.size()>0)
 						{
-							contatti=ConversazioniManagment.getUtenti("R:"+autore);
 							for(int i=0;i<contatti.size();i++)
 							{
 								ArrayList<Messagio> messaggi=(ArrayList<Messagio>)DAOMessaggio.doRetrieveAll(autore+" "+contatti.get(i));
@@ -105,13 +102,10 @@ public class Chat extends HttpServlet {
 					{
 						e.printStackTrace();
 					}
-
 				}
 				else
 				{
 					String utente=(String) session.getAttribute("Utente");
-
-
 
 					try 
 					{
@@ -151,7 +145,6 @@ public class Chat extends HttpServlet {
 							RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 							dispatcher.forward(request, response);
 						}
-
 						else
 						{
 							request.setAttribute("Vuoto", "Nessuna conversazione");
