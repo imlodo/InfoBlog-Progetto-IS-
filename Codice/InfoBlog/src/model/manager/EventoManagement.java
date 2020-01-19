@@ -12,7 +12,11 @@ import model.bean.Autore;
 import model.bean.Evento;
 import storage.DriverManagerConnectionPool;
 import java.time.LocalDate;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative agli eventi
+ * 
+ */
 public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 {
 	private DriverManagerConnectionPool forConnection;
@@ -29,7 +33,11 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 	{
 		forConnection=pool;
 	}
-	
+	/**
+	 * Metodo per recuperare un evento tramite il suo identidicatico
+	 * @param item_value ArrayList<String>, l'identificativo dell'evento secondo il seguente formato data via citta e id
+	 * @return event Evento, l'oggetto che rappresenta l'evento cercato
+	 */
 	@Override
 	public Evento doRetrieveByKey(ArrayList<String> item_value) throws SQLException 
 	{
@@ -43,7 +51,6 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 			for(int i=0;i<item_value.size();i++)
 				statement.setString(i+1,item_value.get(i));
 			set=statement.executeQuery();
-		
 			while(set.next())
 			{
 				event=new Evento();
@@ -72,7 +79,11 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 		}
 		return event;	
 	}
-
+	/**
+	 * Metodo per recuperare un insieme di eventi
+	 * @param order String, contiene il criterio di recupero
+	 * @return events ArrayList<Evento> , l'oggetto che rappresenta gli eventi cercati
+	 */
 	@Override
 	public Collection<Evento> doRetrieveAll(String order) throws SQLException
 	{
@@ -119,7 +130,11 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 		}
 		return events;	
 	}
-
+	/**
+	 * Metodo per memorizzare la informazioni su un evento
+	 * @param item Evento : l'evento da memorizzare
+	 * 
+	 */
 	@Override
 	public void doSave(Evento item) throws SQLException
 	{
@@ -152,7 +167,11 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per aggiornare le informazioni su un evento
+	 * @param item Evento : evento contenente le informazioni aggiornate che verranno memorizzate
+	 * 
+	 */
 	@Override
 	public void doUpdate(Evento item) throws SQLException
 	{
@@ -184,7 +203,11 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per cancellare un evento
+	 * @param item Evento : evento da cancellare
+	 * @return flag : rappresenta l'esito della cancellazione
+	 */
 	@Override
 	public boolean doDelete(Evento item) throws SQLException 
 	{
@@ -215,5 +238,46 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 			}
 		}
 		return flag;
+	}
+	
+	public Evento doRetrieveByKey2(ArrayList<String> item_value) throws SQLException 
+	{
+		Evento event=null;
+		String query="SELECT * FROM evento WHERE data=? AND via=? AND città=? ";
+		try
+		{
+			conn=forConnection.getConnection();
+			statement=conn.prepareStatement(query);
+			
+			for(int i=0;i<item_value.size();i++)
+				statement.setString(i+1,item_value.get(i));
+			set=statement.executeQuery();
+			while(set.next())
+			{
+				event=new Evento();
+				
+				event.setData(LocalDate.parse(set.getString("data")));
+				event.setArgomento(set.getString("argomento"));
+				event.setNome(set.getString("nome"));
+				event.setVia(set.getString("via"));
+				event.setCittà(set.getString("città"));
+				Autore scrittore=new AutoreManagement(new DriverManagerConnectionPool()).doRetrieveByKey(set.getString("email"));
+				event.setAutore(scrittore);
+				event.setIdEvento(set.getInt("id"));
+			}	
+		}
+		finally
+		{
+			try
+			{
+				if(statement!=null)
+					statement.close();
+			}
+			finally
+			{
+				forConnection.releaseConnection(conn);
+			}
+		}
+		return event;	
 	}
 }

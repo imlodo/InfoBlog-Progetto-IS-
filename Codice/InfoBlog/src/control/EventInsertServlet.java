@@ -30,7 +30,7 @@ public class EventInsertServlet extends HttpServlet
 		doPost(request, response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		if(request.getSession().getAttribute("Autore")!=null)
 		{
@@ -158,7 +158,7 @@ public class EventInsertServlet extends HttpServlet
 				parametri.add(request.getParameter("dataEvento"));
 				parametri.add(via);
 				parametri.add(città);
-				Evento event2=DAOEvento.doRetrieveByKey(parametri);
+				Evento event2=DAOEvento.doRetrieveByKey2(parametri);
 				if(event2==null)
 				{
 					DAOEvento.doSave(event);

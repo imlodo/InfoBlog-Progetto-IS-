@@ -8,7 +8,12 @@ import java.util.Collection;
 
 import model.bean.Autore;
 import storage.DriverManagerConnectionPool;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative agli autore
+ * 
+ *
+ */
 public class AutoreManagement implements ItemModel<Autore, String>
 {
 	private DriverManagerConnectionPool pool;
@@ -16,7 +21,12 @@ public class AutoreManagement implements ItemModel<Autore, String>
 	{
 		this.pool = pool;
 	}
-
+	
+	/**
+	 * Metodo per recuperare le informazioni di un autore
+	 * @param email String , email dell'autore
+	 * @return  autore Autore l'oggetto rappresenta l'autore ricercato
+	 */
 	@Override
 	public Autore doRetrieveByKey(String email) throws SQLException
 	{
@@ -61,7 +71,11 @@ public class AutoreManagement implements ItemModel<Autore, String>
 		}
 		return autore;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni di più autori
+	 * @param email String , email dell'autore
+	 * @return  autori Collection<Autore> l'oggetto rappresenta l'insieme degli autori ricercati
+	 */
 	@Override
 	public Collection<Autore> doRetrieveAll(String order) throws SQLException
 	{
@@ -111,7 +125,11 @@ public class AutoreManagement implements ItemModel<Autore, String>
 
 		return autori;
 	}
-
+	/**
+	 * Metodo per memorizzare le informazione di un autore
+	 * @param autore Autore autore da memorizzare
+	 *
+	 */
 	@Override
 	public void doSave(Autore autore) throws SQLException
 	{
@@ -154,7 +172,11 @@ public class AutoreManagement implements ItemModel<Autore, String>
 		}
 		
 	}
-
+	/**
+	 * Metodo per aggiornare le informazione di un autore
+	 * @param autore Autore autore contenente le informazioni aggiornate che verranno memorizzate
+	 *
+	 */
 	@Override
 	public void doUpdate(Autore autore) throws SQLException
 	{
@@ -195,6 +217,11 @@ public class AutoreManagement implements ItemModel<Autore, String>
 			}
 		}
 	}
+	/**
+	 * Metodo per cancellare le informazione di un autore
+	 * @param autore Autore autore contenente le informazioni che devono essere cancellate
+	 * 
+	 */
 
 	@Override
 	public boolean doDelete(Autore autore) throws SQLException

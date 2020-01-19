@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import model.bean.Messagio;
 import storage.DriverManagerConnectionPool;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative ai messaggi
+ * 
+ *
+ */
 public class MessaggioManagment implements ItemModel<Messagio, String>{
 
 	private DriverManagerConnectionPool forConnection;
@@ -21,7 +26,11 @@ public class MessaggioManagment implements ItemModel<Messagio, String>{
 	{
 		forConnection=pool;
 	}
-
+	/**
+	 * Metodo per recuperare un Messaggio tramite mittente e destinatario 
+	 * @param item_value String, chiave di ricerca tramite il seguente formato emailUtente emailAutore
+	 * @return mess Messagio, l'oggetto che rappresenta il messaggio cercato
+	 */
 	@Override
 	public Messagio doRetrieveByKey(String item_value) throws SQLException {
 		String query="SELECT *\r\n" + 
@@ -65,7 +74,11 @@ public class MessaggioManagment implements ItemModel<Messagio, String>{
 		}
 		return mess;
 	}
-
+	/**
+	 * Metodo per recuperare un insieme di Messaggi tramite mittente e destinatario 
+	 * @param item_value String, chiave di ricerca tramite il seguente formato emailUtente emailAutore
+	 * @return mess Messagio, l'oggetto che rappresenta il messaggio cercato
+	 */
 	@Override
 	public Collection<Messagio> doRetrieveAll(String order) throws SQLException {
 		String query="SELECT *"

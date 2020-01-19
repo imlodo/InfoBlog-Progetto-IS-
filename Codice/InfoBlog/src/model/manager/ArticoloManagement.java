@@ -9,7 +9,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import model.bean.Articolo;
 import storage.DriverManagerConnectionPool;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative all'articolo
+ * 
+ *
+ */
 public class ArticoloManagement implements ItemModel<Articolo,String>
 {
 	private DriverManagerConnectionPool forConnection;
@@ -17,11 +22,19 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 	private ResultSet set;
 	private PreparedStatement statement;
 
+	/**
+	 * Costruttore
+	 * @param pool DriverManagerConnectionPool
+	 */
 	public ArticoloManagement(DriverManagerConnectionPool pool)
 	{
 		forConnection=pool;
 	}
-
+	/**
+	 * Metodo per recuperare un articolo tramite il suo identidicatico
+	 * @param item_value String, l'identificativo dell'articolo
+	 * @return article Articolo, l'oggetto che rappresenta l'articolo cercato
+	 */
 	@Override
 	public Articolo doRetrieveByKey(String item_value) throws SQLException {
 		Articolo article=null;
@@ -65,7 +78,16 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 		}
 		return article;
 	}
-
+	/**
+	 * Metodo per recuperare gli articoli articoli mediate le seguenti convenzioni:
+	 * a:email autore ottieni tutti gli articoli di un dato autore
+	 * m:categoriaModerazione per ottenere gli articoli da moderare per una categoria
+	 * u: per visualizzare gli articoli pubblicati
+	 * e: per visualizzare gli articoli recentemente pubblicati
+	 * Stringa vuora per visualizare tutti gli articoli
+	 * @param order String, contiene il criterio di recupero
+	 * @return articles Collection<Articolo> , l'oggetto che rappresenta gli articoli cercati
+	 */
 	@Override
 	public Collection<Articolo> doRetrieveAll(String order) throws SQLException 
 	{
@@ -127,7 +149,11 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 		}
 		return articles;
 	}
-
+	/**
+	 * Metodo per memorizzare la informazioni sull'articolo
+	 * @param item Articolo : articolo da memorizzare
+	 * 
+	 */
 	@Override
 	public void doSave(Articolo item) throws SQLException 
 	{
@@ -160,7 +186,11 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per aggiornare le informazioni sull'articolo
+	 * @param item Articolo : articolo contenente le informazioni aggiornate che verranno memorizzate
+	 * 
+	 */
 	@Override
 	public void doUpdate(Articolo item) throws SQLException 
 	{
@@ -197,7 +227,11 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per recuperare gli articoli in base al titolo
+	 * @param text String : titolo dell'articolo
+	 * 
+	 */
 	public Collection<Articolo> doRetrieveByTitolo(String text) throws SQLException
 	{
 		Collection<Articolo> articoli = new ArrayList<Articolo>();
@@ -238,7 +272,11 @@ public class ArticoloManagement implements ItemModel<Articolo,String>
 		}
 		return articoli;
 	}
-	
+	/**
+	 * Metodo per cancellare un articolo
+	 * @param item Articolo : articolo da cancellare
+	 * @return flag : rappresenta l'esito della cancellazione
+	 */
 	@Override
 	public boolean doDelete(Articolo item) throws SQLException
 	{

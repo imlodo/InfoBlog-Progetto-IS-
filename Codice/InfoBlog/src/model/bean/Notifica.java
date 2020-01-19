@@ -27,7 +27,13 @@ public class Notifica {
 	}
 	
 	
-	
+	/**
+	 * Costruttore notifica che prende come parametri il contenuto della notifica, email dell'autore e del moderatore
+	 * @param contenuto String, il contenuto della notifica, esito della moderazione
+	 * @param emailAutore String, l'email dell'autore
+	 * @param emailModeratore String, l'email del moderatore
+	 * @param id Identificativo della notifica
+	 */
 	public Notifica(int id, String contenuto, Stato stato, String emailAutore, String emailModeratore) {
 		this.id = id;
 		this.contenuto = contenuto;
