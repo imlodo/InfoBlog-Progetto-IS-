@@ -39,11 +39,13 @@ public class SingleEventShowServlet extends HttpServlet {
 			String data=request.getParameter("data");
 			String via=request.getParameter("via");
 			String citta=request.getParameter("citta");
-			
+		
 			LocalDate date;
 			
 			if(data!=null && via!=null && citta!=null)
 			{
+				
+				
 				String regexp = "^[A-Z][a-z][^#!@&<>\\[\\]\"~;$^%{}?{0-9}]{2,50}$";
 				Pattern pt = Pattern.compile(regexp);
 				Matcher mt = pt.matcher(via);
@@ -66,7 +68,7 @@ public class SingleEventShowServlet extends HttpServlet {
 					return;
 				}
 				
-				if(date.compareTo(LocalDate.now())>0)
+				if(!(date.compareTo(LocalDate.now())>0))
 				{
 					request.setAttribute("errore","Data passata");
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
@@ -92,6 +94,7 @@ public class SingleEventShowServlet extends HttpServlet {
 				parametri.add(data);
 				parametri.add(via);
 				parametri.add(citta);
+				parametri.add(request.getParameter("id"));
 				try 
 				{
 					event=DAOEvento.doRetrieveByKey(parametri);

@@ -27,7 +27,7 @@ public class AutoreManagement implements ItemModel<Autore, String>
 						"SELECT * "  
 						+"FROM autore " 
 						+"WHERE email = ? ;";
-		Autore autore;
+		Autore autore=null;
 		try
 		{
 			connection = pool.getConnection();

@@ -66,7 +66,7 @@ public class RatingManagement implements ItemModel<Rating,String>
 	        conn=forConnection.getConnection();
 	        statement=conn.prepareStatement(query);
 	        statement.setString(1,order);
-	        set=statement.executeQuery();
+	        ResultSet set=statement.executeQuery();
 	        while(set.next())
 	        {
 	            rating=new Rating();

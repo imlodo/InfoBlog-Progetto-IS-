@@ -1,3 +1,4 @@
+
 package control;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,18 +21,19 @@ import storage.DriverManagerConnectionPool;
 @WebServlet("/ViewForModifyEvent")
 public class ViewForModifyEvent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-  
-    public ViewForModifyEvent() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+
+	public ViewForModifyEvent() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	{
 		if(request.getSession().getAttribute("Moderatore")==null)
 		{
 			EventoManagement DAOEvento=new EventoManagement(new DriverManagerConnectionPool());
@@ -54,31 +56,33 @@ public class ViewForModifyEvent extends HttpServlet {
 				pt = Pattern.compile(regexp);
 				mt = pt.matcher(citta);
 				boolean resultmatchCittà = mt.matches();
-				
+
 				try
 				{
 					LocalDate.parse(data);
 				}
 				catch (DateTimeParseException  e) 
 				{
-					System.out.println(data);
+					System.out.println("data errata");
 					request.setAttribute("errore","Formato data Errato");
 					request.setAttribute("citta", request.getParameter("citta"));
 					request.setAttribute("data", request.getParameter("dataEvento"));
 					request.setAttribute("via", request.getParameter("via"));
 					request.setAttribute("argomento",request.getParameter("event-argument"));
 					request.setAttribute("titoloEvento",request.getParameter("event-title"));
+					request.setAttribute("id",request.getParameter("id"));
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher("event.jsp");
 					requestDispatcher.forward(request, response);
 					return;
 				}
-				
-				
+
+
 				boolean flag=LocalDate.parse(data).compareTo(LocalDate.now())>0;
-				
-				
+
+
 				if(!flag)
 				{
+					request.setAttribute("id",request.getParameter("id"));
 					request.setAttribute("errore","Data passata");
 					request.setAttribute("citta", request.getParameter("citta"));
 					request.setAttribute("data", request.getParameter("dataEvento"));
@@ -89,7 +93,7 @@ public class ViewForModifyEvent extends HttpServlet {
 					requestDispatcher.forward(request, response);
 					return;
 				}
-				
+
 				if(!resultmatchCittà)
 				{
 					request.setAttribute("errore","formato città errata");
@@ -104,10 +108,11 @@ public class ViewForModifyEvent extends HttpServlet {
 					requestDispatcher.forward(request, response);
 					return;
 				}	
-				
+
 				parametri.add(data);
 				parametri.add(via);
 				parametri.add(citta);
+				parametri.add(request.getParameter("id"));
 				try 
 				{
 					event=DAOEvento.doRetrieveByKey(parametri);
@@ -137,5 +142,4 @@ public class ViewForModifyEvent extends HttpServlet {
 			response.sendRedirect("notfound.jsp");
 		}	
 	}
-
 }

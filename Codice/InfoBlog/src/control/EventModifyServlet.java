@@ -69,6 +69,7 @@ public class EventModifyServlet extends HttpServlet {
 			}
 			catch (DateTimeParseException  e) 
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","Formato data errato");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -84,6 +85,7 @@ public class EventModifyServlet extends HttpServlet {
 			
 			if(!resultmatchArgomento)
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","Formato argomento non valido");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -97,6 +99,7 @@ public class EventModifyServlet extends HttpServlet {
 
 			if(!resultmatchNome)
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","Formato titolo non valido");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -111,6 +114,7 @@ public class EventModifyServlet extends HttpServlet {
 
 			if(!flag)
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","Data passata");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -124,6 +128,7 @@ public class EventModifyServlet extends HttpServlet {
 
 			if(!resultmatchCitt‡)
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","formato citt‡ errata");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -136,6 +141,7 @@ public class EventModifyServlet extends HttpServlet {
 			}
 			if(!resultmatchvia)
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","formato via errata");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -148,6 +154,7 @@ public class EventModifyServlet extends HttpServlet {
 			}		
 			if(nome.equals(nomePrecedente) && data.equals(dataPrecedente) && argomento.equals(argomentoPrecedente) && via.equals(viaPrecedente) && citt‡.equals(citt‡Precedente))
 			{
+				request.setAttribute("id", request.getParameter("id"));
 				request.setAttribute("errore","Modifiche assenti");
 				request.setAttribute("citta", request.getParameter("citta"));
 				request.setAttribute("data", request.getParameter("dataEvento"));
@@ -162,17 +169,18 @@ public class EventModifyServlet extends HttpServlet {
 			try
 			{
 				Autore scrittore=new AutoreManagement(new DriverManagerConnectionPool()).doRetrieveByKey((String)request.getSession().getAttribute("Autore"));
-				Evento event=new Evento(via,citt‡,nome,argomento,data,scrittore);
+				Evento event=new Evento(via,citt‡,nome,argomento,data,Integer.parseInt(request.getParameter("id")),scrittore);
 
 				EventoManagement DAOEvento=new EventoManagement(new DriverManagerConnectionPool());
 				ArrayList<String> parametri=new ArrayList<String>();
 				parametri.add(request.getParameter("dataEvento"));
 				parametri.add(via);
 				parametri.add(citt‡);
+				parametri.add(request.getParameter("id"));
 				Evento event2=DAOEvento.doRetrieveByKey(parametri);
 				if(event2==null)
 				{
-					/****/
+					
 					DAOEvento.doUpdate(event);
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher("EventShowServlet");
 					requestDispatcher.forward(request, response);

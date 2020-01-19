@@ -22,7 +22,7 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 	private String doDeleteQuery="DELETE FROM evento WHERE data=? AND via=? AND città=? AND id=?";
 	private String doUpdateQuery="UPDATE evento SET data=?,via=?,città=?,nome=?,argomento=? WHERE id=?";
 	private String doSaveQuery="INSERT INTO evento(data,via,città,nome,argomento,email) VALUES (?,?,?,?,?,?) ";
-	private String doRetrieveByKeyQuery="SELECT * FROM evento WHERE data=? AND via=? AND città=?";
+	private String doRetrieveByKeyQuery="SELECT * FROM evento WHERE data=? AND via=? AND città=? AND id=?";
 	private String doRetrieveAllQuery="SELECT * FROM evento WHERE data>=\""+String.valueOf(java.time.LocalDate.now())+"\"";
 	
 	public EventoManagement(DriverManagerConnectionPool pool)
@@ -43,12 +43,13 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 			for(int i=0;i<item_value.size();i++)
 				statement.setString(i+1,item_value.get(i));
 			set=statement.executeQuery();
+		
 			while(set.next())
 			{
 				event=new Evento();
 				
 				event.setData(LocalDate.parse(set.getString("data")));
-				event.setArgomento("argomento");
+				event.setArgomento(set.getString("argomento"));
 				event.setNome(set.getString("nome"));
 				event.setVia(set.getString("via"));
 				event.setCittà(set.getString("città"));
@@ -94,7 +95,7 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 				Evento event=new Evento();
 				
 				event.setData(LocalDate.parse(set.getString("data")));
-				event.setArgomento("argomento");
+				event.setArgomento(set.getString("argomento"));
 				event.setNome(set.getString("nome"));
 				event.setVia(set.getString("via"));
 				event.setCittà(set.getString("città"));
@@ -122,10 +123,12 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 	@Override
 	public void doSave(Evento item) throws SQLException
 	{
+		
 		try
 		{
 			conn=forConnection.getConnection();
 			statement=conn.prepareStatement(doSaveQuery);
+			
 			
 			statement.setString(1,String.valueOf(item.getData()));
 			statement.setString(2,item.getVia());
@@ -155,9 +158,10 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 	{
 		try
 		{
+			
 			conn=forConnection.getConnection();
 			statement=conn.prepareStatement(doUpdateQuery);
-			
+
 			statement.setString(1,String.valueOf(item.getData()));
 			statement.setString(2,item.getVia());
 			statement.setString(3,item.getCittà());

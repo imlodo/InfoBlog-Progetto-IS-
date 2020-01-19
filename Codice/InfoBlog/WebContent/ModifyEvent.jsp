@@ -83,7 +83,7 @@ function controlla()
   %>
  <input type="text" id="erroreJs" readonly="readonly" style="color:#b94a48; background:#efd5d4; border-color:#d59392; text-align: center; display: none;">
   <input type="text" id="erroreRegistrazione" value="<%=request.getAttribute("errore") %>" readonly="readonly" style="color:#b94a48; background:#efd5d4; border-color:#d59392; text-align: center;">  
-    <form method="POST" action="EventModifyServlet" enctype="application/x-www-form-urlencoded" style="display: inline;"  onsubmit="if(controlla()==false){return false;}">
+    <form method="POST" action="EventModifyServlet?id=<%=request.getAttribute("id")%>" enctype="application/x-www-form-urlencoded" style="display: inline;"  onsubmit="if(controlla()==false){return false;}">
     <label>Event Date</label>
     <input type="text" name="dataEvento" id="eventDate" value="<%=request.getAttribute("data")%>">
     <input type="hidden" name="dataEventoPrecedente" value="<%=request.getAttribute("data")%>" >
@@ -103,9 +103,10 @@ function controlla()
   </form>
   <%}else{
   		Evento evento=(Evento)request.getAttribute("evento");
+  		System.out.println("jsp value: "+evento.getIdEvento());
   %>
     <input type="text" id="erroreJs" readonly="readonly" style="color:#b94a48; background:#efd5d4; border-color:#d59392; text-align: center; display: none;">
-   <form method="POST" action="EventModifyServlet" enctype="application/x-www-form-urlencoded" style="display: inline;"  onsubmit="if(controlla()==false){return false;}">>
+   <form method="POST" action="EventModifyServlet?id=<%=evento.getIdEvento()%>" enctype="application/x-www-form-urlencoded" style="display: inline;"  onsubmit="if(controlla()==false){return false;}">
     <label>Event Date</label>
     <input type="text" name="dataEvento" id="eventDate" value="<%=evento.getData()%>">
     <input type="hidden" name="dataEventoPrecedente" value="<%=evento.getData()%>">

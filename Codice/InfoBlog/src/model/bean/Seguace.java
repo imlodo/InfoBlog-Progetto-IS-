@@ -28,6 +28,4 @@ public class Seguace
 	public String toString() {
 		return "Seguace [autore=" + autore + ", utente=" + utente + "]";
 	}
-	
-	
 }

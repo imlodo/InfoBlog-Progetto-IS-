@@ -62,7 +62,7 @@ public class EventShowServlet extends HttpServlet {
 						response.sendRedirect("notfound.jsp");
 					}
 					else
-						if((ssn.getAttribute("Utente")!=null | ssn.getAttribute("Utente")==null) && ssn.getAttribute("Moderatore")!=null)
+						if((ssn.getAttribute("Utente")!=null | ssn.getAttribute("Utente")==null) && ssn.getAttribute("Moderatore")==null)
 						{
 							ArrayList<Evento> eventi=(ArrayList<Evento>) DAOEvento.doRetrieveAll("");
 							if(eventi.size()>0)

@@ -10,6 +10,8 @@ public class Articolo
 	private Autore autore;
 	private Moderatore moderatore;
 	
+
+
 	public Articolo()
 	{
 		

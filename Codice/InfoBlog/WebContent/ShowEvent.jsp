@@ -20,7 +20,6 @@
 		{
 			for(int i=0;i<eventi.size();i++)
 			{
-				System.out.println(eventi.size());
 				if(i==0)
 				{
 %>
@@ -46,11 +45,11 @@
          	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="EventCancelServlet?idEvento=<%=eventi.get(i).getIdEvento()%>&data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>" style="color:black; text-decoration: none;">Elimina</a></button>
         </div>
          <div class="event-desc" style="padding-top: 3%; padding-left: 11%;">
-         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="ViewForModifyEvent?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>" style="color:black; text-decoration: none;">Modifica</a></button>
+         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="ViewForModifyEvent?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>&id=<%=eventi.get(i).getIdEvento()%>" style="color:black; text-decoration: none;">Modifica</a></button>
         </div>
         <%} %>
         <div class="event-desc" style="padding-top: 3%; padding-left: 14%;">
-         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="SingleEventShowServlet?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>" style="color:black; text-decoration: none;">Visualizza</a></button>
+         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="SingleEventShowServlet?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>&id=<%=eventi.get(i).getIdEvento()%>" style="color:black; text-decoration: none;">Visualizza</a></button>
         </div>
         <input type="hidden" name="id" value="<%=eventi.get(i).getIdEvento()%>">
       </article>
@@ -85,11 +84,11 @@
          	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="EventCancelServlet?idEvento=<%=eventi.get(i).getIdEvento()%>&data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>" style="color:black; text-decoration: none;">Elimina</a></button>
          </div>
          <div class="event-desc" style="padding-top: 3%; padding-left: 11%;">
-         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="ViewForModifyEvent?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>" style="color:black; text-decoration: none;">Modifica</a></button>
+         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="ViewForModifyEvent?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>&id=<%=eventi.get(i).getIdEvento()%>" style="color:black; text-decoration: none;">Modifica</a></button>
         </div>
         <%} %>
 		 <div class="event-desc" style="padding-top: 3%; padding-left: 14%;">
-         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="SingleEventShowServlet?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>" style="color:black; text-decoration: none;">Visualizza</a></button>
+         	<button style="background:#1583cc; border-radius: 16px; height: 35px; width: 100px;"><a href="SingleEventShowServlet?data=<%=eventi.get(i).getData()%>&via=<%=eventi.get(i).getVia()%>&citta=<%=eventi.get(i).getCittà()%>&id=<%=eventi.get(i).getIdEvento()%>" style="color:black; text-decoration: none;">Visualizza</a></button>
         </div>
       </article>
 	<br>

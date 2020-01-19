@@ -24,7 +24,6 @@ public class SeguiManagement implements ItemModel<Seguace, String>
 	
 	@Override
 	public Seguace doRetrieveByKey(String item_value) throws SQLException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
