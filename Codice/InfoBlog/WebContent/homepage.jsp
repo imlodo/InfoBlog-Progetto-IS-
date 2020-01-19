@@ -31,11 +31,12 @@
 	<%
 		if(articoli != null)
 		{
-			int max = 30;
+			int max = 0;
 			for(Articolo a:articoli)
 			{
 				if(max == 30)
    					break;
+				max +=1;
    	%>			
    				<div class='subContainer'>
 					<table>
