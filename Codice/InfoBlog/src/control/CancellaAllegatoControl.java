@@ -59,11 +59,15 @@ public class CancellaAllegatoControl extends HttpServlet {
 				String id = request.getParameter("id");
 				if(id !=  null)
 				{	
-					allegato=new Allegato(getServletContext().getInitParameter("allegati")+"\\"+request.getParameter("path"),
+					String pathContext = "C:\\users\\public";
+					String path = request.getParameter("path");
+					System.out.println(pathContext);
+					allegato=new Allegato(pathContext+"\\"+path,
 							Integer.parseInt(id));
 				}
 				else
 				{
+					request.setAttribute("errore", "idError");
 					//Errore 
 					response.sendRedirect(notFoundPage);
 					return;
@@ -81,6 +85,7 @@ public class CancellaAllegatoControl extends HttpServlet {
 			}
 			if(!found)
 			{
+				request.setAttribute("found", found);
 				//Errore si sta provando a cancellare un allegato non proprio
 				response.sendRedirect(notFoundPage);
 				return;
@@ -93,25 +98,27 @@ public class CancellaAllegatoControl extends HttpServlet {
 			
 			response.setContentType("application/json");
 
+			manAll.doDelete(allegato);
 			if(file.delete()) {
 //				System.out.println("cancellato"+file.getAbsolutePath());
 				String result=gson.toJson("si");
+				request.setAttribute("result", "si");
 				response.getWriter().print(result);
 //				System.out.println(result);
 			}
 			else {
 //				System.out.println("non cancellato"+file.getAbsolutePath());
 				String result=gson.toJson("no");
+				request.setAttribute("result", "no");
 				response.getWriter().print(result);
 			}
-			manAll.doDelete(allegato);
 		}catch (SQLException e) {
 			request.setAttribute("errore", e.getMessage());
 			return;
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 

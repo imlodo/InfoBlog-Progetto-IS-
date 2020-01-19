@@ -39,7 +39,7 @@ public class verificaMessaggi extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email=request.getParameter("email");
 		String tipologia=request.getParameter("tipologia");
 		boolean flag=false;
@@ -66,6 +66,7 @@ public class verificaMessaggi extends HttpServlet {
 					break;
 				}
 			}
+			request.setAttribute("verifica", "successo");
 			response.getWriter().write(g.toJson(String.valueOf(flag)));
 		}
 		catch (SQLException e) 

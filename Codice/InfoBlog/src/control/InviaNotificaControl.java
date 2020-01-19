@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.bean.Notifica;
 import model.manager.NotificaManagement;
 import storage.DriverManagerConnectionPool;
+import utils.Utils;
 
 /**
  * Servlet implementation class NotificaControl
@@ -19,30 +20,42 @@ import storage.DriverManagerConnectionPool;
 @WebServlet("/InviaNotificaControl")
 public class InviaNotificaControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public InviaNotificaControl() {
-        super();
-    }
+
+	public InviaNotificaControl() {
+		super();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		//Controllo se l'utente è loggato ed è un autore
+		String emailSession = Utils.checkLogin(request.getSession(), request.getCookies());
+		if(emailSession == null || emailSession.subSequence(0, 1).equals("u"))
+		{
+			// invocata servlet senza essersi autenticato
+			// reindirizzo alla pagina not_found
+			request.setAttribute("errore", "permessoNegato");
+			response.sendRedirect("notfound.jsp");
+			return;
+		}
 		DriverManagerConnectionPool dm=new DriverManagerConnectionPool();
 		NotificaManagement notMan=new NotificaManagement(dm);
-	
+
 		try {
 			Notifica notifica=new Notifica();
 			notifica.setContenuto(request.getParameter("contenuto"));
 			notifica.setModeratoreEmail(request.getParameter("emailModeratore"));
 			notifica.setAutoreEmail(request.getParameter("emailAutore"));
-			
+
 			notMan.doSave(notifica);
-			
-		    response.sendRedirect(request.getContextPath()+"/login.jsp");
+			response.sendRedirect("homepage.jsp");
 		}catch(SQLException e) {
 			e.printStackTrace();
+			request.setAttribute("errore", "errorDB");
+			response.sendRedirect("notfound.jsp");
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 }
