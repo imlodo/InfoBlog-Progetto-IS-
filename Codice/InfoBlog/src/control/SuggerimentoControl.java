@@ -98,6 +98,7 @@ public class SuggerimentoControl extends HttpServlet {
         try 
         {
             out.println(jsonData);
+            request.setAttribute("success", "ok");
         } 
         finally 
         {
@@ -108,7 +109,7 @@ public class SuggerimentoControl extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
