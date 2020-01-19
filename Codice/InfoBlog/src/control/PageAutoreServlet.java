@@ -46,7 +46,7 @@ public class PageAutoreServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		if(request.getSession().getAttribute("Moderatore")!=null)
 		{
@@ -64,6 +64,7 @@ public class PageAutoreServlet extends HttpServlet {
 					request.setAttribute("errore", "Errore, email errata");
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher("notfound.jsp");
 					requestDispatcher.forward(request, response);
+					return;
 				}
 				AutoreManagement DAOAutore=new AutoreManagement(new DriverManagerConnectionPool());
 				ArticoloManagement DAOArticolo=new ArticoloManagement(new DriverManagerConnectionPool());

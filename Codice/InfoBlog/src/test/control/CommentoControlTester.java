@@ -54,7 +54,7 @@ public class CommentoControlTester extends Mockito
 	}
 	
 	@Test
-    public void testModeratoreRedirectNotFound() throws Exception 
+    public void testRedirectNotFound() throws Exception 
 	{   
         when(request.getSession()).thenReturn(session);
         when(request.getRequestDispatcher("notfound.jsp")).thenReturn(dispatcher);

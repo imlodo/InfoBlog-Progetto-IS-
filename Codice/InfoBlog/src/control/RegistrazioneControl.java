@@ -44,7 +44,7 @@ public class RegistrazioneControl extends HttpServlet
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		if(!(Utils.checkLogin(request.getSession(), request.getCookies()) == null))
 		{
@@ -60,12 +60,18 @@ public class RegistrazioneControl extends HttpServlet
 		String type = request.getParameter("typeUser");
 
 		//Setto i parametri passati per non perdere lo stato in caso di errore
-		request.setAttribute("nome", nome);
-		request.setAttribute("cognome", cognome);
-		request.setAttribute("email", email);
-		request.setAttribute("username", username);
-		request.setAttribute("password", password);
-		request.setAttribute("checked", type+"Check");
+		if(nome != null)
+			request.setAttribute("nome", nome);
+		if(cognome != null)
+			request.setAttribute("cognome", cognome);
+		if(email != null)
+			request.setAttribute("email", email);
+		if(username != null)
+			request.setAttribute("username", username);
+		if(password != null)
+			request.setAttribute("password", password);
+		if(type != null)
+			request.setAttribute("checked", type+"Check");
 
 		//Serve a controllare i parametri passati alla servlet
 		boolean cname = Utils.checkName(nome);
@@ -104,7 +110,7 @@ public class RegistrazioneControl extends HttpServlet
 				m = moderatoreDM.doRetrieveByKey(email);
 				a = autoreDM.doRetrieveByKey(email);
 				boolean found = false;
-				if((m!= null) || (u != null) || (a != null)) 
+				if((m.getEmail()!= null) || (u != null) || (a.getEmail() != null)) 
 				{
 					found = true;
 				}
@@ -136,7 +142,6 @@ public class RegistrazioneControl extends HttpServlet
 							found=true;
 						}
 					}
-					System.out.println(found);
 				}
 				if(found)
 				{
@@ -198,6 +203,7 @@ public class RegistrazioneControl extends HttpServlet
 								"</table>"+
 								"<p class='link'><a href='/InfoBlog/'>Torna alla HomePage</a><a href='/InfoBlog/login.jsp'>Vai al login</a></p></div>"+
 						"</div>");
+				request.setAttribute("success", "ok");
 			}break;
 
 			case "Autore":
@@ -238,6 +244,7 @@ public class RegistrazioneControl extends HttpServlet
 								"</table>"+
 								"<p class='link'><a href='/InfoBlog/'>Torna alla HomePage</a><a href='/InfoBlog/login.jsp'>Vai al login</a></p></div>"+
 						"</div>");
+				request.setAttribute("success", "ok");
 			}break;
 			}
 
