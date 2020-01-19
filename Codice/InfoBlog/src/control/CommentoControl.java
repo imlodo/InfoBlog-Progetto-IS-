@@ -85,6 +85,7 @@ public class CommentoControl extends HttpServlet {
 				request.setAttribute("successo","commento modificato");
 				dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 				dispatcher.forward(request, response);
+				return;
 			}
 			else
 			{
@@ -98,6 +99,7 @@ public class CommentoControl extends HttpServlet {
 				request.setAttribute("successo","commento pubblicato");
 				dispatcher = request.getRequestDispatcher("ViewArticleServlet?id="+idArticolo+"&Titolo="+articolo.getTitolo());
 				dispatcher.forward(request, response);
+				return;
 			}
 		}
 		catch (SQLException e)
@@ -110,7 +112,7 @@ public class CommentoControl extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

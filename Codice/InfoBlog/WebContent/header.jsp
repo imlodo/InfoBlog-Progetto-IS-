@@ -85,6 +85,7 @@
   			<a href="homepage.jsp" class="itemMenuUtente">Homepage</a>
   			<a href="ArticleShowServlet?esplora=e" class="itemMenuUtente">Esplora</a>
   			<a href="profile.jsp" class="itemMenuUtente">AreaPersonale</a>
+  			<a href="EventShowServlet" class="itemMenuAutore">Visualizza Eventi</a>
   			<form class = "formRicercaUtente" method="post">
   				<input id="myInput" type="text" class="searchBarUtente"  autocomplete="off" placeholder="Search..">
   				<select class="selectBarUtente">
@@ -114,14 +115,6 @@
   				<label class="numeroNotifiche">0</label>
   			</a>
 			</div>
-			<!-- <form class = "formRicercaAutore" action="RicercaControl" method="post">
-  				<input type="text" class="searchBarAutore" placeholder="Search..">
-  				<select class="selectBarAutore">
-  					<option value="autore">Autore</option>
-  					<option value="articolo">Articolo</option>
-  				</select>
-  				<button type="submit" class="searchButtonAutore"><i class="fa fa-search"></i></button>
-  			</form> -->
 	<%
 			}
 			if(email.substring(0, 1).equals("m"))
@@ -131,20 +124,11 @@
   			<a href="homepage.jsp" class="itemMenuModeratore">Homepage</a>
   			<a href="profile.jsp" class="itemMenuModeratore">AreaPersonale</a>
   			<a href="ArticleShowServlet" class="itemMenuModeratore">PannelloModerazione</a>
-  			<a href="areamoderapubblicazione.jsp" class="itemMenuModeratore">SezionePubblicazioni</a>
   			<a href="#" class="itemMenuModeratoreIcon" id="itemNotificheMod">
   				<img class="notificaIconModeratore" src="icone/iconNotifica.svg" onclick="">
   				<label class="numeroNotifiche">0</label>
   			</a>
 			</div>
-			<!-- <form class = "formRicercaModeratore" action="RicercaControl" method="post">
-  				<input type="text" class="searchBarModeratore" placeholder="Search..">
-  				<select class="selectBarModeratore">
-  					<option value="autore">Autore</option>
-  					<option value="articolo">Articolo</option>
-  				</select>
-  				<button type="submit" class="searchButtonModeratore"><i class="fa fa-search"></i></button>
-  			</form> -->
 	<%
 						
 			}
