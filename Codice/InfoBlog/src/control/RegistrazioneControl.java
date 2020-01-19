@@ -169,6 +169,8 @@ public class RegistrazioneControl extends HttpServlet
 				managerUser.doSave(user);
 				//Se tutto è andato a buon fine Visualizzo un messaggio di successo registrazione
 				ServletOutputStream out = response.getOutputStream();
+				response.setContentType("text/html");
+				out.println("<link rel='stylesheet' type='text/css' href='" + request.getContextPath() +  "/css/successoRegistrazione.css' />");
 				out.print(
 						"<div class='container'>"+
 								"<div class='subContainer'>"+
