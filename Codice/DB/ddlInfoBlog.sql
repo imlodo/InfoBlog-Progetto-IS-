@@ -51,7 +51,7 @@ Titolo varchar(50) not null,
 id int auto_increment,
 categoria varchar(20) not null,
 contenuto varchar(15000) not null,
-stato enum('daPubblicare','inModerazione','sottoModerazione','Pubblicato') not null default 'daPubblicare',
+stato enum('daPubblicare','inModerazione','respinto','Pubblicato') not null default 'daPubblicare',
 dataPubblicazione date,
 scrittore varchar(50),
 foreign key (scrittore) references autore(email)
