@@ -22,7 +22,7 @@ public class EventoManagementTest
 	Autore autoreEsistente=new Autore("lauro.francesco1@gmail.com","Alpaca20#","Mario","Baldi","Font0");
 	Evento eventoEsistente=new Evento("Fontata","Pagani","Parliamo di ricorsione","ricorsione e robe varie",LocalDate.parse("2020-10-12"),1,autoreEsistente);
 	Evento eventoEsistente2=new Evento("Umberto","Londra","Parliamo di cos","cose e robe varie",LocalDate.parse("2020-10-25"),2,autoreEsistente);
-	Evento eventoNuovo=new Evento("Umberto","Nocera","Parliamo di algoritmi","algoritmi e robe varie",LocalDate.parse("2020-10-13"),2,autoreEsistente);
+	Evento eventoNuovo=new Evento("Umberto","Nocera","Parliamo di algoritmi","algoritmi e robe varie",LocalDate.parse("2020-10-13"),3,autoreEsistente);
 	EventoManagement DAOEvento=new EventoManagement(new DriverManagerConnectionPool());
 	
 	
@@ -33,6 +33,7 @@ public class EventoManagementTest
 		paramentri.add(String.valueOf(eventoEsistente.getData()));
 		paramentri.add(eventoEsistente.getVia());
 		paramentri.add(eventoEsistente.getCittà());
+		paramentri.add(String.valueOf(eventoEsistente.getIdEvento()));
 		assertNotNull(DAOEvento.doRetrieveByKey(paramentri));
 	}
 	@Test
@@ -42,6 +43,7 @@ public class EventoManagementTest
 		paramentri.add("2018-12-20");
 		paramentri.add("Novia");
 		paramentri.add("nonCisiamo");
+		paramentri.add("250");
 		assertNull(DAOEvento.doRetrieveByKey(paramentri));
 	}
 	@Test
@@ -67,6 +69,7 @@ public class EventoManagementTest
 		paramentri.add(String.valueOf(eventoNuovo.getData()));
 		paramentri.add(eventoNuovo.getVia());
 		paramentri.add(eventoNuovo.getCittà());
+		paramentri.add(String.valueOf(eventoNuovo.getIdEvento()));
 		assertNotNull(DAOEvento.doRetrieveByKey(paramentri));
 	}
 	@Test
@@ -78,6 +81,7 @@ public class EventoManagementTest
 		paramentri.add(String.valueOf(eventoEsistente.getData()));
 		paramentri.add(eventoEsistente.getVia());
 		paramentri.add(eventoEsistente.getCittà());
+		paramentri.add(String.valueOf(eventoEsistente.getIdEvento()));
 		assertEquals(eventoEsistente.getArgomento(),DAOEvento.doRetrieveByKey(paramentri).getArgomento());
 	}
 	@Test

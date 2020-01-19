@@ -8,7 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import model.bean.Commento;
 import storage.DriverManagerConnectionPool;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative ai commenti
+ * 
+ *
+ */
 public class CommentoManagment implements ItemModel<Commento,String>
 {
 	private DriverManagerConnectionPool forConnection;
@@ -21,7 +26,11 @@ public class CommentoManagment implements ItemModel<Commento,String>
 		forConnection=pool;
 	}
 	
-	
+	/**
+	 * Metodo per recuperare un commento tramite il suo identidicatico
+	 * @param item_value String, l'identificativo dell commento fornito nel seguente formato idArticolo emailUtente
+	 * @return comm Commento, l'oggetto che rappresenta il commento cercato
+	 */
 	@Override
 	public Commento doRetrieveByKey(String item_value) throws SQLException
 	{
@@ -58,7 +67,11 @@ public class CommentoManagment implements ItemModel<Commento,String>
 		}
 		return comm;
 	}
-
+	/**
+	 * Metodo per recuperare un insieme di commenti tramite identidicatico di un articolo
+	 * @param order String, l'identificativo dell'articolo da cui prelevare i commenti
+	 * @return commenti Collection<Commento>, l'oggetto che rappresenta il commento cercato
+	 */
 	@Override
 	public Collection<Commento> doRetrieveAll(String order) throws SQLException
 	{
@@ -97,6 +110,10 @@ public class CommentoManagment implements ItemModel<Commento,String>
 		return commenti;
 	}
 
+	/**
+	 * Metodo per memorizzare un commento
+	 * @param item Commento, l'oggetto che rappresenta il commento da memorizzare
+	 */
 	@Override
 	public void doSave(Commento item) throws SQLException 
 	{
@@ -127,7 +144,10 @@ public class CommentoManagment implements ItemModel<Commento,String>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per aggiornare le informazioni di un commento
+	 * @param item Commento, l'oggetto che rappresenta il commento con le informazioni aggiornate da memorizzare
+	 */
 	@Override
 	public void doUpdate(Commento item) throws SQLException 
 	{

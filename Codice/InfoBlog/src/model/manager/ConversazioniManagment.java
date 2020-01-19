@@ -9,6 +9,11 @@ import storage.DriverManagerConnectionPool;
 
 public class ConversazioniManagment 
 {	
+	/**
+	 * Metodo per recuperare i destinatari di un utente
+	 * @param idUtente String identificativo dell'utente secondo questa convenzione M per messaggio R per risposta
+	 * @return nomi ArrayList<String> insieme dei contatti dell'utente
+	 */
 	public static ArrayList<String> getUtenti(String idUtente) throws SQLException 
 	{
 		ArrayList<String> nomi=new ArrayList<String>();
