@@ -11,6 +11,13 @@ $(document).ready(function(){
 					var number = parseInt($(".numeroNotifiche").text(), 10);
 					$(".numeroNotifiche").text(number-1);
 				}
+				if(caratterePazzo==="m"){
+					$(".numeroNotifiche").text(0);
+					if(jsons[i].contenuto.includes("Richiesta_pubblicazione_articolo")){
+						var number = parseInt($(".numeroNotifiche").text(), 10);
+						$(".numeroNotifiche").text(number+1);
+					}
+				}
 				if(number>99)
 					$(".numeroNotifiche").text("99+");
 			}
@@ -55,15 +62,17 @@ $(document).ready(function(){
 					$("#lista").append("<div style='display:flex; color:black; border-style:solid; border-width:thin;'>Non ci sono notifiche...</div>");
 				}
 				for(var i=0;i<jsons.length;i++){
-					$("#lista").append("<li id='notifica"+i+"' class='itemx'/>")
-					if(jsons[i].stato==="letto"){
-						$("#notifica"+i+"").append("<div class='stato'><span>(LETTO)</span></div>");
+					if(jsons[i].contenuto.includes("Richiesta_pubblicazione_articolo")){
+						$("#lista").append("<li id='notifica"+i+"' class='itemx'/>")
+						if(jsons[i].stato==="letto"){
+							$("#notifica"+i+"").append("<div class='stato'><span>(LETTO)</span></div>");
+						}
+						else{
+							$("#notifica"+i+"").append("<div class='stato'><span>(NUOVO)</span></div>");
+						}
+						$("#notifica"+i+"")
+							.append("<div class='testo'><a href='/InfoBlog/LetturaNotificaControl?idNotifica="+jsons[i].id+"'>"+jsons[i].contenuto+"</a></div>");
 					}
-					else{
-						$("#notifica"+i+"").append("<div class='stato'><span>(NUOVO)</span></div>");
-					}
-					$("#notifica"+i+"")
-						.append("<div class='testo'><a href='/InfoBlog/LetturaNotificaControl?idNotifica="+jsons[i].id+"'>"+jsons[i].contenuto+"</a></div>");
 				}
 			});
 		}
