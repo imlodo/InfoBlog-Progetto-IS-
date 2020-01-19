@@ -45,7 +45,8 @@ public class HomepageArticoliControl extends HttpServlet {
 			for(Seguace e:seguaci) {
 				ArrayList<Articolo> results=(ArrayList<Articolo>)artMan.doRetrieveAll("a:"+e.getAutore());
 				for(Articolo a:results) {
-					articoli.add(a);
+					if(a.getStato().equals("Pubblicato"))
+						articoli.add(a);
 				}
 			}
 			request.setAttribute("articoli", articoli);
