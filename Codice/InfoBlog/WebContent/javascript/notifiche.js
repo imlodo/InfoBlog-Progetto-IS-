@@ -7,7 +7,7 @@ $(document).ready(function(){
 				var number = parseInt($(".numeroNotifiche").text(), 10);
 				console.log(number);
 				$(".numeroNotifiche").text(number+1);
-				if(caratterePazzo==="a" && (jsons[i].contenuto.indexOf("Richiesta_pubblicazione_articolo") >= 0)){
+				if((caratterePazzo==="a") && (jsons[i].contenuto.includes("Richiesta_pubblicazione_articolo"))){
 					var number = parseInt($(".numeroNotifiche").text(), 10);
 					$(".numeroNotifiche").text(number-1);
 				}
@@ -25,12 +25,8 @@ $(document).ready(function(){
 			else{
 				$("#itemNotifiche").append("<ul id='lista'/>");
 				$.post("/InfoBlog/PrelevaNotificheControl",{e_mail:email},function(jsons){
-					if(jsons.length==0){
-						$("#lista").append("<div style='display:flex; color:black; border-style:solid; border-width:thin;'>Non ci sono notifiche...</div>");
-					}
 					for(var i=0;i<jsons.length;i++){
-						console.log(jsons[i].contenuto)
-						if(jsons[i].contenuto.indexOf("Richiesta_pubblicazione_articolo") < 0){
+						if(!jsons[i].contenuto.includes("Richiesta_pubblicazione_articolo")){
 							$("#lista").append("<li id='notifica"+i+"' class='itemx'/>")
 							if(jsons[i].stato==="letto"){
 								$("#notifica"+i+"").append("<div class='stato'><span>(LETTO)</span></div>");
@@ -42,6 +38,7 @@ $(document).ready(function(){
 								.append("<div class='testo'><a href='/InfoBlog/LetturaNotificaControl?idNotifica="+jsons[i].id+"'>"+jsons[i].contenuto+"</a></div>");
 						}
 					}
+					$("#lista:empty").prepend("<div style='display:flex; color:black; border-style:solid; border-width:thin;'>Non ci sono notifiche...</div>")
 				});
 			}
 	});
@@ -58,7 +55,7 @@ $(document).ready(function(){
 					$("#lista").append("<div style='display:flex; color:black; border-style:solid; border-width:thin;'>Non ci sono notifiche...</div>");
 				}
 				for(var i=0;i<jsons.length;i++){
-					$("#lista").append("<li id='notifica"+i+"' class='item'/>")
+					$("#lista").append("<li id='notifica"+i+"' class='itemx'/>")
 					if(jsons[i].stato==="letto"){
 						$("#notifica"+i+"").append("<div class='stato'><span>(LETTO)</span></div>");
 					}

@@ -209,4 +209,4 @@ else
 	}
 %>
 <script type="text/javascript" src="javascript/suggerimento.js"></script>
-<div id="containerDati"></div>
+<div id="containerDati" style="background-color:Grey;"></div>
