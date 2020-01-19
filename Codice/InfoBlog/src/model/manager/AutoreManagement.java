@@ -72,8 +72,8 @@ public class AutoreManagement implements ItemModel<Autore, String>
 		return autore;
 	}
 	/**
-	 * Metodo per recuperare le informazioni di più autori
-	 * @param email String , email dell'autore
+	 * Metodo per recuperare le informazioni di più autori in un determinato ordine
+	 * @param order String : criterio di ordinamento
 	 * @return  autori Collection<Autore> l'oggetto rappresenta l'insieme degli autori ricercati
 	 */
 	@Override

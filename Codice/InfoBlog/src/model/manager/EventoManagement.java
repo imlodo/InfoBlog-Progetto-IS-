@@ -239,7 +239,11 @@ public class EventoManagement implements ItemModel<Evento,ArrayList<String>>
 		}
 		return flag;
 	}
-	
+	/**
+	 * Metodo per recuperare un evento tramite il suo identidicatico
+	 * @param item_value ArrayList<String>, l'identificativo dell'evento secondo il seguente formato data via citta 
+	 * @return event Evento, l'oggetto che rappresenta l'evento cercato
+	 */
 	public Evento doRetrieveByKey2(ArrayList<String> item_value) throws SQLException 
 	{
 		Evento event=null;
