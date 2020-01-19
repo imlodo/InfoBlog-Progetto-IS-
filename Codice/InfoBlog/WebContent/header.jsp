@@ -5,7 +5,9 @@
     <link rel="stylesheet" href="css/Header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/notifiche.css">
+    <link rel="stylesheet" href="css/container.css">
     <script type="text/javascript" src="javascript/notifiche.js"></script>
+    <script type="text/javascript" src="javascript/ricerca.js"></script>
     <%
     	String email = Utils.checkLogin(request.getSession(), request.getCookies());
     	Cookie[] cookies = request.getCookies();
@@ -207,3 +209,4 @@ else
 	}
 %>
 <script type="text/javascript" src="javascript/suggerimento.js"></script>
+<div id="containerDati"></div>
