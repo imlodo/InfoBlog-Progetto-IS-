@@ -165,7 +165,7 @@ public class Utils
 	{
 		if(text == null)
 			return false;
-		String regexp = "[a-zA-Z0-9 #.:(),!@&<>'�\\�\\�\\�\\�\\\"~;$^%{}?]{200,15000}$";
+		String regexp = "[a-zA-Z0-9 #.:(),!@&<>'’+\\ì\\à\\è\\é\\ù\\ò\\\"~;$^%{}?]{200,15000}$";
 		// in javascript vanno inserite tra /regexrp/ in java NO
 		Pattern pt = Pattern.compile(regexp);
 		Matcher mt = pt.matcher(text);
