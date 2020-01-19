@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import exception.DatiEsistentiException;
 import model.bean.Autore;
 import model.bean.Moderatore;
 import model.bean.Utente;
@@ -137,15 +136,16 @@ public class RegistrazioneControl extends HttpServlet
 							found=true;
 						}
 					}
-					if(found)
-					{
-						// Dati già presenti
-						// mandiamo l'errore alla jsp 
-						request.setAttribute("errore", "DATI_PRESENTI");
-						RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
-						dispatcher.forward(request, response);
-						return;
-					}
+					System.out.println(found);
+				}
+				if(found)
+				{
+					// Dati già presenti
+					// mandiamo l'errore alla jsp 
+					request.setAttribute("errore", "DATI_PRESENTI");
+					RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
+					dispatcher.forward(request, response);
+					return;
 				}
 			}
 			catch (SQLException e)

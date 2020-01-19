@@ -42,7 +42,7 @@ public class ArticleShowServlet extends HttpServlet {
 	}
 
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String url="AllArticle.jsp";
 		ArticoloManagement DAOArticolo=new ArticoloManagement(new DriverManagerConnectionPool());
@@ -68,8 +68,6 @@ public class ArticleShowServlet extends HttpServlet {
 					articoli=(ArrayList<Articolo>)DAOArticolo.doRetrieveAll("m:"+mod.getCategoria_moderazione());
 					if(articoli!=null && articoli.size()>0)
 					{
-						request.setAttribute("Nocommenti",null);
-						request.setAttribute("Norating", null);
 						request.setAttribute("articoli",articoli);
 					}
 					else
