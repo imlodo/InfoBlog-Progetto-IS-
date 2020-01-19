@@ -77,7 +77,7 @@ public class MessaggioManagment implements ItemModel<Messagio, String>{
 	/**
 	 * Metodo per recuperare un insieme di Messaggi tramite mittente e destinatario 
 	 * @param item_value String, chiave di ricerca tramite il seguente formato emailUtente emailAutore
-	 * @return mess Messagio, l'oggetto che rappresenta il messaggio cercato
+	 * @return messaggi Collection<Messagio>, l'oggetto che rappresenta i messaggi cercati
 	 */
 	@Override
 	public Collection<Messagio> doRetrieveAll(String order) throws SQLException {
@@ -123,7 +123,11 @@ public class MessaggioManagment implements ItemModel<Messagio, String>{
 		}
 		return messaggi;
 	}
-
+	/**
+	 * Metodo per memorizzare un messaggio
+	 * @param item Messagio, l'oggetto contenente le informazioni sul messaggio da memorizzare
+	 * 
+	 */
 	@Override
 	public void doSave(Messagio item) throws SQLException {
 		String query="";
@@ -158,7 +162,11 @@ public class MessaggioManagment implements ItemModel<Messagio, String>{
 			}
 		}
 	}
-
+	/**
+	 * Metodo per aggiornare le informazioni di un messaggio 
+	 *@param item Messagio, l'oggetto contenente le informazioni sul messaggio da memorizzare
+	 * 
+	 */
 	@Override
 	public void doUpdate(Messagio item) throws SQLException 
 	{

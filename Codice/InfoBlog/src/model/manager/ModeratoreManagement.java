@@ -8,7 +8,12 @@ import java.util.Collection;
 
 import model.bean.Moderatore;
 import storage.DriverManagerConnectionPool;
-//categoriaModerazione
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative ai moderatori
+ * 
+ *
+ */
 public class ModeratoreManagement implements ItemModel<Moderatore, String>
 {
 	private DriverManagerConnectionPool pool;
@@ -16,7 +21,11 @@ public class ModeratoreManagement implements ItemModel<Moderatore, String>
 	{
 		this.pool = pool;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni di un moderatore
+	 * @param email String , email del moderatore
+	 * @return  moderatore Moderatore l'oggetto rappresenta il moderatore ricercato
+	 */
 	@Override
 	public Moderatore doRetrieveByKey(String email) throws SQLException
 	{
@@ -62,7 +71,11 @@ public class ModeratoreManagement implements ItemModel<Moderatore, String>
 		}
 		return moderatore;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni di più moderatori in un determinato ordine
+	 * @param order String criterio di ordinamento
+	 * @return  moderatori Collection<Moderatore> l'oggetto rappresenta l'insieme dei moderatori ricercati
+	 */
 	@Override
 	public Collection<Moderatore> doRetrieveAll(String order) throws SQLException
 	{
@@ -113,7 +126,11 @@ public class ModeratoreManagement implements ItemModel<Moderatore, String>
 
 		return moderatori;
 	}
-
+	/**
+	 * Metodo per memorizzare le informazione di un moderatore
+	 * @param moderatore Moderatore moderatore da memorizzare
+	 *
+	 */
 	@Override
 	public void doSave(Moderatore moderatore) throws SQLException
 	{
@@ -157,7 +174,11 @@ public class ModeratoreManagement implements ItemModel<Moderatore, String>
 		}
 		
 	}
-
+	/**
+	 * Metodo per aggiornare le informazione di un moderatore
+	 * @param moderatore Moderatore moderatore contenente le informazioni aggiornate che verranno memorizzate
+	 *
+	 */
 	@Override
 	public void doUpdate(Moderatore moderatore) throws SQLException
 	{
@@ -199,7 +220,11 @@ public class ModeratoreManagement implements ItemModel<Moderatore, String>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per cancellare le informazione di un moderatore
+	 * @param moderatore Moderatore:  moderatore contenente le informazioni che devono essere cancellate
+	 * 
+	 */
 	@Override
 	public boolean doDelete(Moderatore moderatore) throws SQLException
 	{
