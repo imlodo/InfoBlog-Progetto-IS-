@@ -31,7 +31,7 @@ public class ViewForModifyEvent extends HttpServlet {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession().getAttribute("Moderatore")==null)
 		{
 			EventoManagement DAOEvento=new EventoManagement(new DriverManagerConnectionPool());
@@ -61,6 +61,7 @@ public class ViewForModifyEvent extends HttpServlet {
 				}
 				catch (DateTimeParseException  e) 
 				{
+					System.out.println(data);
 					request.setAttribute("errore","Formato data Errato");
 					request.setAttribute("citta", request.getParameter("citta"));
 					request.setAttribute("data", request.getParameter("dataEvento"));

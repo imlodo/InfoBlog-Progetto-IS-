@@ -30,7 +30,7 @@ public class EventInsertServlet extends HttpServlet
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		if(request.getSession().getAttribute("Autore")!=null)
 		{
@@ -162,6 +162,7 @@ public class EventInsertServlet extends HttpServlet
 				if(event2==null)
 				{
 					DAOEvento.doSave(event);
+					request.setAttribute("successo","successoInserimento");
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher("EventShowServlet");
 					requestDispatcher.forward(request, response);
 				}

@@ -28,7 +28,7 @@ public class EventModifyServlet extends HttpServlet {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getSession().getAttribute("Autore")!=null)
 		{
 			String nome=request.getParameter("event-title");
@@ -172,6 +172,7 @@ public class EventModifyServlet extends HttpServlet {
 				Evento event2=DAOEvento.doRetrieveByKey(parametri);
 				if(event2==null)
 				{
+					/****/
 					DAOEvento.doUpdate(event);
 					RequestDispatcher requestDispatcher=request.getRequestDispatcher("EventShowServlet");
 					requestDispatcher.forward(request, response);

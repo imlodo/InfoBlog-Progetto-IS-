@@ -53,17 +53,6 @@ public class EventShowServletTester extends Mockito
 		}).when(request).getAttribute(Mockito.anyString()); 
 	}
 	
-	@Test
-	public void UtenteEventiDisponibiliTest() throws Exception 
-	{   
-		when(request.getSession()).thenReturn(session);
-		when(request.getSession().getAttribute("Utente")).thenReturn("testutente@test.com");
-		when(request.getRequestDispatcher("ShowEvent.jsp")).thenReturn(dispatcher);
-
-		new EventShowServlet().doPost(request, response);
-		assertNotNull(request.getAttribute("eventi"));
-	}
-	
 	//Da rivedere riga 65 EventShowServlet
 	@Test
 	public void UtenteNoEventiDisponibiliTest() throws Exception 

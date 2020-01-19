@@ -25,7 +25,7 @@ public class EventCancelServlet extends HttpServlet {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
 		if(request.getSession().getAttribute("Autore")!=null)
 		{
