@@ -28,11 +28,11 @@ public class RegistrazioneControl extends HttpServlet
 	private static final long serialVersionUID = 1L;
 	private static final String regPage = "registrazione.jsp";
 	private static final String notFoundPage = "notfound.jsp";
-	
-    public RegistrazioneControl() 
-    {
-        super();
-    }
+
+	public RegistrazioneControl() 
+	{
+		super();
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -59,7 +59,7 @@ public class RegistrazioneControl extends HttpServlet
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String type = request.getParameter("typeUser");
-		
+
 		//Setto i parametri passati per non perdere lo stato in caso di errore
 		request.setAttribute("nome", nome);
 		request.setAttribute("cognome", cognome);
@@ -67,7 +67,7 @@ public class RegistrazioneControl extends HttpServlet
 		request.setAttribute("username", username);
 		request.setAttribute("password", password);
 		request.setAttribute("checked", type+"Check");
-		
+
 		//Serve a controllare i parametri passati alla servlet
 		boolean cname = Utils.checkName(nome);
 		boolean ccognome = Utils.checkName(cognome);
@@ -75,7 +75,7 @@ public class RegistrazioneControl extends HttpServlet
 		boolean cusername = Utils.checkUsername(username);
 		boolean cpassword = Utils.controlPassword(password);
 		boolean ctype = Utils.controlTypeUser(type);
-		
+
 		if(!cname || !ccognome || !cemail || !cusername || !cpassword || !ctype)
 		{
 			// errore nell'inserimento dei dati da parte dell'utente
@@ -85,7 +85,7 @@ public class RegistrazioneControl extends HttpServlet
 			dispatcher.forward(request, response);
 			return;
 		}
-		
+
 		//Se tutti i controlli precedenti sono stati superati, si può provare a registrare l'account.
 		else
 		{
@@ -95,14 +95,19 @@ public class RegistrazioneControl extends HttpServlet
 			UserManagement userDM = new UserManagement(pool);
 			ModeratoreManagement moderatoreDM = new ModeratoreManagement(pool);
 			AutoreManagement autoreDM = new AutoreManagement(pool);
+
+			Utente u = null;
+			Moderatore m = null;
+			Autore a = null;
 			try
 			{
-				Utente u = userDM.doRetrieveByKey(email);
-				Moderatore m = moderatoreDM.doRetrieveByKey(email);
-				Autore a = autoreDM.doRetrieveByKey(email);
-				if((m.getNome() != null) || (u.getNome() != null) || (a.getNome() != null)) 
+				u = userDM.doRetrieveByKey(email);
+				m = moderatoreDM.doRetrieveByKey(email);
+				a = autoreDM.doRetrieveByKey(email);
+				boolean found = false;
+				if((m!= null) || (u != null) || (a != null)) 
 				{
-					throw new DatiEsistentiException("Email già esistente");
+					found = true;
 				}
 				else
 				{
@@ -111,124 +116,137 @@ public class RegistrazioneControl extends HttpServlet
 					{
 						if(user.getUsername().equals(username))
 						{
-							throw new DatiEsistentiException("Username già esistente");
+							found=true;
 						}
 					}
-					
+
 					ArrayList<Autore> autori =  (ArrayList<Autore>) autoreDM.doRetrieveAll("username");
 					for(Autore aut : autori)
 					{
 						if(aut.getUsername().equals(username))
 						{
-							throw new DatiEsistentiException("Username già esistente");
+							found=true;
 						}
 					}
-					
+
 					ArrayList<Moderatore> moderatori =  (ArrayList<Moderatore>) moderatoreDM.doRetrieveAll("username");
 					for(Moderatore mod : moderatori)
 					{
 						if(mod.getUsername().equals(username))
 						{
-							throw new DatiEsistentiException("Username già esistente");
+							found=true;
 						}
+					}
+					if(found)
+					{
+						// Dati già presenti
+						// mandiamo l'errore alla jsp 
+						request.setAttribute("errore", "DATI_PRESENTI");
+						RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
+						dispatcher.forward(request, response);
+						return;
 					}
 				}
 			}
-			catch(Exception e)
-			{
-				// Dati già presenti
-				// mandiamo l'errore alla jsp 
-				request.setAttribute("errore", "DATI_PRESENTI");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
-				dispatcher.forward(request, response);
-				return;
-			}
-			try
-			{
-				switch(type)
-				{
-					case "Utente":
-					{
-						//Istanzio il manager per l'utente
-						UserManagement managerUser = new UserManagement(pool);
-						//Creo l'utente
-						Utente user = new Utente(email, password, nome, cognome, username);
-						//Provo a salvare l'utente
-						managerUser.doSave(user);
-						//Se tutto è andato a buon fine Visualizzo un messaggio di successo registrazione
-						ServletOutputStream out = response.getOutputStream();
-						out.print("<h1 id='success'>Account Utente registrato con successo!</h1>\r\n" + 
-								"	<table>\r\n" + 
-								"		<caption>Riepilogo dati registrazione</caption>\r\n" + 
-								"		<tr>\r\n" + 
-								"			<th>Nome</th>\r\n" + 
-								"			<th>Cognome</th>\r\n" + 
-								"			<th>Email</th>\r\n" + 
-								"			<th>Username</th>\r\n" + 
-								"			<th>Password</th>\r\n" + 
-								"		</tr>\r\n" + 
-								"		<tr>\r\n" + 
-								"			<td>"+nome+"</td>\r\n" + 
-								"			<td>"+cognome+"</td>\r\n" + 
-								"			<td>"+email+"</td>\r\n" + 
-								"			<td>"+username+"</td>\r\n" + 
-								"			<td><input type='password' value="+password+"/></td>\r\n" + 
-								"		</tr>\r\n" + 
-								"	</table>\r\n" + 
-								"	<p><a href='/InfoBlog/'>Torna alla HomePage</a></p>");
-					}break;
-					
-					case "Autore":
-					{
-						AutoreManagement managerAutore = new AutoreManagement(pool);
-						//Creo l'autore
-						Autore autore = new Autore(email, password, nome, cognome, username);
-						//Provo a salvare l'autore
-						managerAutore.doSave(autore);
-						ServletOutputStream out = response.getOutputStream();
-						response.setContentType("text/html");
-						out.println("<link rel='stylesheet' type='text/css' href='" + request.getContextPath() +  "/css/successoRegistrazione.css' />");
-						//Se tutto è andato a buon fine Visualizzo un messaggio di successo registrazione
-						out.print(
-						"<div class='container'>"+
-						"<div class='subContainer'>"+
-						"<h1 id='success'>Account Utente registrato con successo!</h1>"+
-						"<table>"+
-						  "<caption>Riepilogo dati registrazione</caption>"+
-						    "<thead>"+
-						      "<tr>"+
-						        "<th scope='col'>Nome</th>"+
-						        "<th scope='col'>Cognome</th>"+
-						        "<th scope='col'>Email</th>"+
-						        "<th scope='col'>Username</th>"+
-						        "<th scope='col'>Password</th>"+
-						      "</tr>"+
-						  "</thead>"+
-						  "<tbody>"+
-						    "<tr>"+
-						      "<td data-label='Nome'>"+nome+"</td>"+
-						      "<td data-label='Cognome'>"+cognome+"</td>"+
-						      "<td data-label='Email'>"+email+"</td>"+
-						      "<td data-label='Username'>"+username+"</td>"+
-						"<td data-label='Password'><input type='password' value="+password+"/></td>"+
-						    "</tr>"+
-						  "</tbody>"+
-						"</table>"+
-						"<p class='link'><a href='/InfoBlog/'>Torna alla HomePage</a><a href='/InfoBlog/login.jsp'>Vai al login</a></p></div>"+
-						"</div>");
-					}break;
-				}
-			
-			}
 			catch (SQLException e)
 			{
-				// Dati già presenti
-				// mandiamo l'errore alla jsp 
-				request.setAttribute("errore", "DATI_PRESENTI");
-				RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
-				dispatcher.forward(request, response);
-			}		
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		try
+		{
+			DriverManagerConnectionPool pool = new DriverManagerConnectionPool();
+			switch(type)
+			{
+			case "Utente":
+			{
+				//Istanzio il manager per l'utente
+				UserManagement managerUser = new UserManagement(pool);
+				//Creo l'utente
+				Utente user = new Utente(email, password, nome, cognome, username);
+				//Provo a salvare l'utente
+				managerUser.doSave(user);
+				//Se tutto è andato a buon fine Visualizzo un messaggio di successo registrazione
+				ServletOutputStream out = response.getOutputStream();
+				out.print(
+						"<div class='container'>"+
+								"<div class='subContainer'>"+
+								"<h1 id='success'>Account Utente registrato con successo!</h1>"+
+								"<table>"+
+								"<caption>Riepilogo dati registrazione</caption>"+
+								"<thead>"+
+								"<tr>"+
+								"<th scope='col'>Nome</th>"+
+								"<th scope='col'>Cognome</th>"+
+								"<th scope='col'>Email</th>"+
+								"<th scope='col'>Username</th>"+
+								"<th scope='col'>Password</th>"+
+								"</tr>"+
+								"</thead>"+
+								"<tbody>"+
+								"<tr>"+
+								"<td data-label='Nome'>"+nome+"</td>"+
+								"<td data-label='Cognome'>"+cognome+"</td>"+
+								"<td data-label='Email'>"+email+"</td>"+
+								"<td data-label='Username'>"+username+"</td>"+
+								"<td data-label='Password'><input type='password' value="+password+"/></td>"+
+								"</tr>"+
+								"</tbody>"+
+								"</table>"+
+								"<p class='link'><a href='/InfoBlog/'>Torna alla HomePage</a><a href='/InfoBlog/login.jsp'>Vai al login</a></p></div>"+
+						"</div>");
+			}break;
+
+			case "Autore":
+			{
+				AutoreManagement managerAutore = new AutoreManagement(pool);
+				//Creo l'autore
+				Autore autore = new Autore(email, password, nome, cognome, username);
+				//Provo a salvare l'autore
+				managerAutore.doSave(autore);
+				ServletOutputStream out = response.getOutputStream();
+				response.setContentType("text/html");
+				out.println("<link rel='stylesheet' type='text/css' href='" + request.getContextPath() +  "/css/successoRegistrazione.css' />");
+				//Se tutto è andato a buon fine Visualizzo un messaggio di successo registrazione
+				out.print(
+						"<div class='container'>"+
+								"<div class='subContainer'>"+
+								"<h1 id='success'>Account Autore registrato con successo!</h1>"+
+								"<table>"+
+								"<caption>Riepilogo dati registrazione</caption>"+
+								"<thead>"+
+								"<tr>"+
+								"<th scope='col'>Nome</th>"+
+								"<th scope='col'>Cognome</th>"+
+								"<th scope='col'>Email</th>"+
+								"<th scope='col'>Username</th>"+
+								"<th scope='col'>Password</th>"+
+								"</tr>"+
+								"</thead>"+
+								"<tbody>"+
+								"<tr>"+
+								"<td data-label='Nome'>"+nome+"</td>"+
+								"<td data-label='Cognome'>"+cognome+"</td>"+
+								"<td data-label='Email'>"+email+"</td>"+
+								"<td data-label='Username'>"+username+"</td>"+
+								"<td data-label='Password'><input type='password' value="+password+"/></td>"+
+								"</tr>"+
+								"</tbody>"+
+								"</table>"+
+								"<p class='link'><a href='/InfoBlog/'>Torna alla HomePage</a><a href='/InfoBlog/login.jsp'>Vai al login</a></p></div>"+
+						"</div>");
+			}break;
+			}
+
+		}
+		catch (SQLException e)
+		{
+			// Dati già presenti
+			// mandiamo l'errore alla jsp 
+			request.setAttribute("errore", "DATI_PRESENTI");
+			RequestDispatcher dispatcher = request.getRequestDispatcher(regPage);
+			dispatcher.forward(request, response);
+		}		
 	}
-	
 }
