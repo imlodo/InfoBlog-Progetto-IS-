@@ -65,8 +65,10 @@ public class PubblicazioneControl extends HttpServlet {
 		String categoriaArticolo = request.getParameter("categoria");
 		
 		//Serve per non perdere lo stato della jsp, in caso di fallimento
-		request.setAttribute("titolo", titoloArticolo);
-		request.setAttribute("contenuto", contenutoArticolo);
+		if(titoloArticolo != null)
+			request.setAttribute("titolo", titoloArticolo);
+		if(contenutoArticolo != null)
+			request.setAttribute("contenuto", contenutoArticolo);
 		
 		if(!Utils.checkTitolo(titoloArticolo) || !Utils.checkContenuto(contenutoArticolo) || !Utils.checkCategoria(categoriaArticolo))
 		{
@@ -220,7 +222,7 @@ public class PubblicazioneControl extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

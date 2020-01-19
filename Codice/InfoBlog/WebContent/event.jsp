@@ -26,9 +26,9 @@ function controlla()
 	
 	var regexpTitotolo =/^[A-Z][a-z][^#!@&<>\[\]~;$^%{}?{0-9}]{0,50}$/;
 	var resultTitolo=titolo.match(regexpTitotolo)	
-	var regexpVia=/[A-Z][a-zA-Z][^#&@<>~;$^%{}?{0-9}]{3,30}$/;
+	var regexpVia=/[A-Z][a-zA-Z][^#&@<>~;$^%{}?{0-9}]{2,30}$/;
 	var resultVia=via.match(regexpVia)
-	var regexpCitta=/[A-Z][a-zA-Z][^#&<>@~;$^%{}?{0-9}]{3,30}$/
+	var regexpCitta=/[A-Z][a-zA-Z][^#&<>@~;$^%{}?{0-9}]{2,30}$/
 	var resultCitta=citta.match(regexpCitta)
 	var regexpArgomento=/[a-zA-Z0-9#&<>~;$^%{}?][^~^]{4,500}$/ 
 	var resultArgomento=argomento.match(regexpArgomento)

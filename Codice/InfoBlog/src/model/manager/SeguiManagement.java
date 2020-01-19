@@ -10,6 +10,12 @@ import java.util.Collection;
 import model.bean.Seguace;
 import storage.DriverManagerConnectionPool;
 
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative ai seguaci
+ * @author Federico
+ *
+ */
 public class SeguiManagement implements ItemModel<Seguace, String>
 {
 
@@ -26,7 +32,12 @@ public class SeguiManagement implements ItemModel<Seguace, String>
 	public Seguace doRetrieveByKey(String item_value) throws SQLException {
 		return null;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni sui seguaci di un determinato utente
+	 * @param order String: l'email dell'utente
+	 * @return seguaci Collection<Seguace> : oggetto che rappresenta l'insieme degli autori seguiti dall'utente
+	 *
+	 */
 	@Override
 	public Collection<Seguace> doRetrieveAll(String order) throws SQLException {
 		String query="SELECT * FROM seguace WHERE utente=?";
@@ -60,7 +71,11 @@ public class SeguiManagement implements ItemModel<Seguace, String>
 		}
 		return seguaci;
 	}
-
+	/**
+	 * Metodo per memorizzare le informazioni sui seguaci di un determinato utente
+	 * @param item Seguace: oggetto contenente l'autore e l'utente da memorizzare
+	 *
+	 */
 	@Override
 	public void doSave(Seguace item) throws SQLException {
 		String query="INSERT INTO seguace(autore,utente) VALUES(?,?)";

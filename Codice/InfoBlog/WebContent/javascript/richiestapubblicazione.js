@@ -1,7 +1,6 @@
 /**
  * 
  */
-
 	
 	$("[name='titolo']").keyup(function(){
 		titoloCheck = $("[name='titolo']");
@@ -176,7 +175,7 @@
 			$("#errorImgCategoria").click(function(){
 				if($(".errorCategoria").val() == undefined)
 				{
-					$("<div class='errorCategoria'><label>Titolo errato: Deve iniziare con una lettera maiuscola, lunghezza:(min=4,max=50) caratteri ammessi:(numeri,lettere,^#@&<>\"~;$^%{}?) </label></div>").insertAfter(categoriaCheck);
+					$("<div class='errorCategoria'><label>Devi selezionare almeno una categoria</label></div>").insertAfter(categoriaCheck);
 					$(".errorCategoria").css("cssText", "display:block;position: relative;bottom: 30px;font-size: 10px;width: 80%;background: white;padding: 10px;color: red;border: 1px solid red;left: 10%;");
 				}
 				else
@@ -539,7 +538,7 @@
 			$("#errorImgCategoria").click(function(){
 				if($(".errorCategoria").val() == undefined)
 				{
-					$("<div class='errorCategoria'><label>Titolo errato: Deve iniziare con una lettera maiuscola, lunghezza:(min=4,max=50) caratteri ammessi:(numeri,lettere,^#@&<>\"~;$^%{}?) </label></div>").insertAfter(categoriaCheck);
+					$("<div class='errorCategoria'><label>Devi selezionare almeno una categoria</label></div>").insertAfter(categoriaCheck);
 					$(".errorCategoria").css("cssText", "display:block;position: relative;bottom: 30px;font-size: 10px;width: 80%;background: white;padding: 10px;color: red;border: 1px solid red;left: 10%;");
 				}
 				else

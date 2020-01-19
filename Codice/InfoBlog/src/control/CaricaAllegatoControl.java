@@ -97,19 +97,7 @@ public class CaricaAllegatoControl extends HttpServlet
 						
 					response.setContentType("application/json");
 						
-					if(file.delete()) 
-					{
-//						System.out.println("cancellato"+file.getAbsolutePath());
-						String result=gson.toJson("si");
-						response.getWriter().print(result);
-//						System.out.println(result);
-							
-					}
-					else {
-//						System.out.println("non cancellato"+file.getAbsolutePath());
-						String result=gson.toJson("no");
-						response.getWriter().print(result);
-					}
+					file.delete();
 					InputStream fileContent=el.getInputStream();
 					Files.copy(fileContent, new File(uploadsDir,fileName).toPath());
 					allMan.doSave(nuovoAll);
@@ -137,19 +125,7 @@ public class CaricaAllegatoControl extends HttpServlet
 					
 					response.setContentType("application/json");
 					
-					if(file.delete()) 
-					{
-//						System.out.println("cancellato"+file.getAbsolutePath());
-						String result=gson.toJson("si");
-						response.getWriter().print(result);
-						System.out.println(result);
-						
-					}
-					else {
-//						System.out.println("non cancellato"+file.getAbsolutePath());
-						String result=gson.toJson("no");
-						response.getWriter().print(result);
-					}
+					file.delete();
 				}
 				catch (SQLException e1)
 				{
