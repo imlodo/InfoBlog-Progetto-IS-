@@ -1,9 +1,9 @@
 package test.control;
-
 import static org.junit.Assert.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,18 +12,17 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import control.CaricaAllegatoControl;
+import control.PrelevaNotificheControl;
 
-public class CaricaAllegatoControlTester extends Mockito
+public class PrelevaNotificaControlTester extends Mockito
 {
 
 	private final Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();  
 	private HttpServletRequest request = mock(HttpServletRequest.class);       
 	private HttpServletResponse response = mock(HttpServletResponse.class);    
 	private HttpSession session = mock(HttpSession.class);
-	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-//	StringWriter stringWriter = new StringWriter();
-//    private PrintWriter writer = new PrintWriter(stringWriter);
+	StringWriter stringWriter = new StringWriter();
+    private PrintWriter writer = new PrintWriter(stringWriter);
 
 	//Serve per il forward
 	@Before
@@ -51,16 +50,25 @@ public class CaricaAllegatoControlTester extends Mockito
 			}
 		}).when(request).getAttribute(Mockito.anyString()); 
 	}
-
+	
 	@Test
-	public void RedirectToNotFoundPage() throws Exception 
+	public void PrelevaNotificaAutoreTest() throws Exception 
 	{   
 		when(request.getSession()).thenReturn(session);
-		when(request.getRequestDispatcher("notfound.jsp")).thenReturn(dispatcher);
-
-		new CaricaAllegatoControl().doPost(request, response);
-		assertNull(request.getAttribute("successUpload"));
+		when(request.getParameter("e_mail")).thenReturn("testautore@test.it");
+		when(response.getWriter()).thenReturn(writer);
+		
+		new PrelevaNotificheControl().doPost(request, response);
+		assertEquals("ok",request.getAttribute("ok"));
 	}
-	
-	
+	@Test
+	public void PrelevaNotificaModeratoreTest() throws Exception 
+	{   
+		when(request.getSession()).thenReturn(session);
+		when(request.getParameter("e_mail")).thenReturn("testmod@test.com");
+		when(response.getWriter()).thenReturn(writer);
+		
+		new PrelevaNotificheControl().doPost(request, response);
+		assertEquals("ok",request.getAttribute("ok"));
+	}
 }

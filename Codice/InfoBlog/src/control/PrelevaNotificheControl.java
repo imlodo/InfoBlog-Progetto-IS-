@@ -37,12 +37,15 @@ public class PrelevaNotificheControl extends HttpServlet {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("utf-8");
 			response.getWriter().print(jsonNotifiche);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			request.setAttribute("ok", "ok");
+		} 
+		catch (SQLException e) 
+		{
+			response.sendRedirect("notfound.jsp");
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 }

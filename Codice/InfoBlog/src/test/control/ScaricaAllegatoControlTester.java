@@ -1,9 +1,12 @@
 package test.control;
-
 import static org.junit.Assert.*;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.RequestDispatcher;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,18 +15,18 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import control.CaricaAllegatoControl;
+import control.ScaricaAllegatoControl;
 
-public class CaricaAllegatoControlTester extends Mockito
+public class ScaricaAllegatoControlTester extends Mockito
 {
 
 	private final Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();  
 	private HttpServletRequest request = mock(HttpServletRequest.class);       
 	private HttpServletResponse response = mock(HttpServletResponse.class);    
 	private HttpSession session = mock(HttpSession.class);
-	private RequestDispatcher dispatcher = mock(RequestDispatcher.class);
-//	StringWriter stringWriter = new StringWriter();
-//    private PrintWriter writer = new PrintWriter(stringWriter);
+	StringWriter stringWriter = new StringWriter();
+    private PrintWriter writer = new PrintWriter(stringWriter);
+    ServletOutputStream buffer = mock(ServletOutputStream.class);
 
 	//Serve per il forward
 	@Before
@@ -51,16 +54,36 @@ public class CaricaAllegatoControlTester extends Mockito
 			}
 		}).when(request).getAttribute(Mockito.anyString()); 
 	}
-
+	
 	@Test
-	public void RedirectToNotFoundPage() throws Exception 
+	public void PathNotFoundTest() throws Exception 
 	{   
 		when(request.getSession()).thenReturn(session);
-		when(request.getRequestDispatcher("notfound.jsp")).thenReturn(dispatcher);
-
-		new CaricaAllegatoControl().doPost(request, response);
-		assertNull(request.getAttribute("successUpload"));
+		when(response.getWriter()).thenReturn(writer);
+		when(response.getOutputStream()).thenReturn(buffer);
+		new ScaricaAllegatoControl().doPost(request, response);
+		assertEquals("notfound",request.getAttribute("notfound"));
 	}
 	
+	@Test
+	public void DownloadAllegatiMultipliTest() throws Exception 
+	{   
+		when(request.getSession()).thenReturn(session);
+		when(response.getWriter()).thenReturn(writer);
+		when(request.getParameter("id")).thenReturn("3");
+		when(response.getOutputStream()).thenReturn(buffer);
+		new ScaricaAllegatoControl().doPost(request, response);
+		assertEquals("ok",request.getAttribute("ok"));
+	}
 	
+	@Test
+	public void DownloadSingoloAllegatoTest() throws Exception 
+	{   
+		when(request.getSession()).thenReturn(session);
+		when(response.getWriter()).thenReturn(writer);
+		when(request.getParameter("path")).thenReturn("test3.pdf");
+		when(response.getOutputStream()).thenReturn(buffer);
+		new ScaricaAllegatoControl().doPost(request, response);
+		assertEquals("ok",request.getAttribute("ok"));
+	}
 }

@@ -1,5 +1,4 @@
 package test.control;
-
 import static org.junit.Assert.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +11,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import control.CaricaAllegatoControl;
+import control.ModuloServlet;
 
-public class CaricaAllegatoControlTester extends Mockito
+public class ModuloServletTester extends Mockito
 {
 
 	private final Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();  
@@ -51,16 +50,40 @@ public class CaricaAllegatoControlTester extends Mockito
 			}
 		}).when(request).getAttribute(Mockito.anyString()); 
 	}
-
+	
 	@Test
-	public void RedirectToNotFoundPage() throws Exception 
+	public void ModuloServletNotFoundTest() throws Exception 
 	{   
 		when(request.getSession()).thenReturn(session);
+//		when(request.getSession().getAttribute("Utente")).thenReturn("testutente@test.com");
 		when(request.getRequestDispatcher("notfound.jsp")).thenReturn(dispatcher);
 
-		new CaricaAllegatoControl().doPost(request, response);
-		assertNull(request.getAttribute("successUpload"));
+		new ModuloServlet().doPost(request, response);
+		assertEquals("Accesso negato",request.getAttribute("errore"));
 	}
 	
+	@Test
+	public void ModuloServletUtenteModuloContattaTest() throws Exception 
+	{   
+		when(request.getSession()).thenReturn(session);
+		when(request.getSession().getAttribute("Utente")).thenReturn("testutente@test.com");
+		when(request.getParameter("email")).thenReturn("testautore@test.it");
+		when(request.getRequestDispatcher("ModuloContatta.jsp")).thenReturn(dispatcher);
+
+		new ModuloServlet().doPost(request, response);
+		assertNotNull(request.getAttribute("emailAutore"));
+	}
+	
+	@Test
+	public void ModuloServletUtenteErroreFormatoEmailTest() throws Exception 
+	{   
+		when(request.getSession()).thenReturn(session);
+		when(request.getSession().getAttribute("Utente")).thenReturn("testutente@test.com");
+		when(request.getParameter("email")).thenReturn("testautore@");
+		when(request.getRequestDispatcher("notfound.jsp")).thenReturn(dispatcher);
+
+		new ModuloServlet().doPost(request, response);
+		assertEquals("Errore, email errata",request.getAttribute("errore"));
+	}
 	
 }

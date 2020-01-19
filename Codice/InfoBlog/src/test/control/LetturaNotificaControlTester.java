@@ -1,5 +1,4 @@
 package test.control;
-
 import static org.junit.Assert.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,9 +11,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import control.CaricaAllegatoControl;
 
-public class CaricaAllegatoControlTester extends Mockito
+import control.LetturaNotificaControl;
+
+public class LetturaNotificaControlTester extends Mockito
 {
 
 	private final Map<String, Object> attributes = new ConcurrentHashMap<String, Object>();  
@@ -51,16 +51,15 @@ public class CaricaAllegatoControlTester extends Mockito
 			}
 		}).when(request).getAttribute(Mockito.anyString()); 
 	}
-
+	
 	@Test
-	public void RedirectToNotFoundPage() throws Exception 
+	public void LeggiNotificaTest() throws Exception 
 	{   
 		when(request.getSession()).thenReturn(session);
-		when(request.getRequestDispatcher("notfound.jsp")).thenReturn(dispatcher);
+		when(request.getParameter("idNotifica")).thenReturn("1");
+		when(request.getRequestDispatcher("homepage.jsp")).thenReturn(dispatcher);
 
-		new CaricaAllegatoControl().doPost(request, response);
-		assertNull(request.getAttribute("successUpload"));
+		new LetturaNotificaControl().doPost(request, response);
+		assertEquals("ok",request.getAttribute("ok"));
 	}
-	
-	
 }

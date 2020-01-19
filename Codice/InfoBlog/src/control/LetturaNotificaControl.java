@@ -29,14 +29,14 @@ public class LetturaNotificaControl extends HttpServlet {
 	
 		try {
 			notMan.leggiNotifica(Integer.valueOf(request.getParameter("idNotifica")));
-			
-		    response.sendRedirect(request.getContextPath()+"/homepage.jsp");
+			request.setAttribute("ok", "ok");
+		    response.sendRedirect("homepage.jsp");
 		}catch(SQLException e) {
-			e.printStackTrace();
+			response.sendRedirect("notfound.jsp");
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 }

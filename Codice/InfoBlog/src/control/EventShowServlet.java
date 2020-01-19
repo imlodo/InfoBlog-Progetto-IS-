@@ -31,7 +31,7 @@ public class EventShowServlet extends HttpServlet {
 		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EventoManagement DAOEvento=new EventoManagement(new DriverManagerConnectionPool());
 		HttpSession ssn=request.getSession();
 
@@ -62,7 +62,7 @@ public class EventShowServlet extends HttpServlet {
 						response.sendRedirect("notfound.jsp");
 					}
 					else
-						if((ssn.getAttribute("Utente")!=null | ssn.getAttribute("Utente")==null) && ssn.getAttribute("Moderatore")!=null)
+						if((ssn.getAttribute("Utente")!=null))
 						{
 							ArrayList<Evento> eventi=(ArrayList<Evento>) DAOEvento.doRetrieveAll("");
 							if(eventi.size()>0)

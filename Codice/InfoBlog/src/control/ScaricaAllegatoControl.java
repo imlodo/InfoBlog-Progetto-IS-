@@ -55,6 +55,7 @@ public class ScaricaAllegatoControl extends HttpServlet {
 			        // not available on BufferedOutputStream
 			        zos.closeEntry();
 				}
+				request.setAttribute("ok", "ok");
 			}
 			catch (SQLException e) {
 				System.out.println("SQL andato storto...");
@@ -70,7 +71,8 @@ public class ScaricaAllegatoControl extends HttpServlet {
 			try {
 				if(path != null)
 				{
-					Allegato allegato=allMan.doRetrieveByKey(getServletContext().getInitParameter("allegati")+"\\"+path);
+					String pathContext = "C:\\users\\public";
+					Allegato allegato=allMan.doRetrieveByKey(pathContext+"\\"+path);
 					File file=new File(allegato.getPercorsoFile());
 					
 					response.setContentType("application/octet-stream");
@@ -86,9 +88,11 @@ public class ScaricaAllegatoControl extends HttpServlet {
 			        }
 			        in.close();
 			        out.flush();
+			        request.setAttribute("ok", "ok");
 				}
 				else
 				{
+					request.setAttribute("notfound", "notfound");
 					response.sendRedirect("notfound.jsp");
 				}
 			}catch (SQLException e) {
@@ -98,7 +102,7 @@ public class ScaricaAllegatoControl extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 }
