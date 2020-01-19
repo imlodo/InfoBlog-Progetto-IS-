@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.io.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
+<%@ page import="model.bean.Articolo" %>
+<%@page import="utils.Utils"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +16,19 @@
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
+	<%
+		String emailSession = Utils.checkLogin(request.getSession(), request.getCookies());
+		if(emailSession!=null && emailSession.subSequence(0, 1).equals("u")){
+			ArrayList<Articolo> articoli=(ArrayList<Articolo>)request.getAttribute("articoli");
+			  if(articoli == null){
+                RequestDispatcher dispatcher = request.getRequestDispatcher("HomepageArticoliControl");
+           		dispatcher.forward(request,response);  
+		  	}
+			  for(Articolo a:articoli){
+       			System.out.println(a.getContenuto());
+       		}
+		}
+	%>
 	<!-- Slideshow container -->
 <div class="slideshow-container">
 
