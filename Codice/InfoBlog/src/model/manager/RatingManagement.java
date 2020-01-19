@@ -8,7 +8,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import model.bean.Rating;
 import storage.DriverManagerConnectionPool;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative al rating di un articolo
+ * 
+ *
+ */
 public class RatingManagement implements ItemModel<Rating,String>
 {
 	private DriverManagerConnectionPool forConnection;
@@ -20,7 +25,11 @@ public class RatingManagement implements ItemModel<Rating,String>
 	{
 		forConnection=pool;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni relative al rating fornito da un utente ad un articolo
+	 * @param item_value String :  chiave fornita nel seguente fomato idArticolo emailUtente
+	 * @return  rat Rating l'oggetto rappresenta il rating fornito da un utente
+	 */
 	@Override
 	public Rating doRetrieveByKey(String item_value) throws SQLException 
 	{
@@ -55,6 +64,11 @@ public class RatingManagement implements ItemModel<Rating,String>
 	    return rat;
 	}
 
+	/**
+	 * Metodo per recuperare le informazioni sul rating di un articolo
+	 * @param order String : identificativo dell'articolo
+	 * @return  rat Collection<Rating> : l'oggetto rappresenta il rating medio dell'articolo
+	 */
 	@Override
 	public Collection<Rating> doRetrieveAll(String order) throws SQLException {
 		String query="SELECT avg(numeroStelle) as stelle FROM rating WHERE id=?";
@@ -89,6 +103,11 @@ public class RatingManagement implements ItemModel<Rating,String>
 	    return rat;
 	}
 
+	/**
+	 * Metodo per memorizzare le informazioni sul rating 
+	 * @param item Rating rating da memorizzare
+	 *
+	 */
 	@Override
 	public void doSave(Rating item) throws SQLException 
 	{
@@ -118,7 +137,11 @@ public class RatingManagement implements ItemModel<Rating,String>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per aggiornare le informazione sul rating
+	 * @param item Rating rating contenente le informazioni aggiornate che verranno memorizzate
+	 *
+	 */
 	@Override
 	public void doUpdate(Rating item) throws SQLException
 	{

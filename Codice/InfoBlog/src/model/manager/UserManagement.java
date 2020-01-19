@@ -8,7 +8,11 @@ import java.util.Collection;
 
 import model.bean.Utente;
 import storage.DriverManagerConnectionPool;
-
+/**
+ * Classe che implementa i metodi dell'interfaccia CRUD, questi metodi permettono di fare operazioni con
+ * il BD come salvataggio, recupero dati, cancellazioni relative agli utenti
+ * 
+ */
 public class UserManagement implements ItemModel<Utente, String>
 {
 	private DriverManagerConnectionPool pool;
@@ -16,7 +20,11 @@ public class UserManagement implements ItemModel<Utente, String>
 	{
 		this.pool = pool;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni di un utente
+	 * @param email String , email dell'utente
+	 * @return  utente Utente l'oggetto rappresenta l'utente ricercato
+	 */
 	@Override
 	public Utente doRetrieveByKey(String email) throws SQLException
 	{
@@ -62,7 +70,11 @@ public class UserManagement implements ItemModel<Utente, String>
 		}
 		return utente;
 	}
-
+	/**
+	 * Metodo per recuperare le informazioni di più utenti in un determinato ordine
+	 * @param order String : criterio di ordinamento
+	 * @return  utenti Collection<Utente> l'oggetto rappresenta l'insieme degli utenti ricercati
+	 */
 	@Override
 	public Collection<Utente> doRetrieveAll(String order) throws SQLException
 	{
@@ -113,6 +125,11 @@ public class UserManagement implements ItemModel<Utente, String>
 		return utenti;
 	}
 
+	/**
+	 * Metodo per memorizzare le informazione di un utente
+	 * @param utente Utente utente da memorizzare
+	 *
+	 */
 	@Override
 	public void doSave(Utente utente) throws SQLException
 	{
@@ -156,7 +173,11 @@ public class UserManagement implements ItemModel<Utente, String>
 		}
 		
 	}
-
+	/**
+	 * Metodo per aggiornare le informazione di un utente
+	 * @param utente Utente utente contenente le informazioni aggiornate che verranno memorizzate
+	 *
+	 */
 	@Override
 	public void doUpdate(Utente utente) throws SQLException
 	{
@@ -196,7 +217,11 @@ public class UserManagement implements ItemModel<Utente, String>
 			}
 		}
 	}
-
+	/**
+	 * Metodo per cancellare le informazione di un utente
+	 * @param utente Utente utente contenente le informazioni che devono essere cancellate
+	 * 
+	 */
 	@Override
 	public boolean doDelete(Utente utente) throws SQLException
 	{
