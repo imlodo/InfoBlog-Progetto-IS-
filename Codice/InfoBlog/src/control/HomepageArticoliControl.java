@@ -49,7 +49,8 @@ public class HomepageArticoliControl extends HttpServlet {
 				}
 			}
 			request.setAttribute("articoli", articoli);
-			getServletContext().getRequestDispatcher("/homepage.jsp").forward(request, response);
+			request.getRequestDispatcher("homepage.jsp").forward(request, response);
+			return;
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
