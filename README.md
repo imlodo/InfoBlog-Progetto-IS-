@@ -5,11 +5,11 @@ Progetto per Ingegneria del Software 2019/2020
 La piattaforma “InfoBlog” intende fornire agli utenti del web servizi per facilitare la ricerca di informazioni, informatiche, focalizzandosi sulla loro comprensione e correttezza. Le informazioni vengono pubblicate da autori mediante i propri articoli e certificati prima di renderle visibili.
 
 # Il team
-0512105076 Siano Federico
+Siano Federico
 <br>
-0512105328 Lodato Antonio	
+Lodato Antonio	
 <br>
-0512105548 Lauro Francesco
+Lauro Francesco
 
 
 # Come utilizzare il progetto
